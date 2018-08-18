@@ -21,4 +21,4 @@ urlpatterns = [
 	path('', include('home.urls')),
     path('dash/', include('dashboard.urls')),
     path('snail_master/', admin.site.urls),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] 
