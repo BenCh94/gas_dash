@@ -1,4 +1,4 @@
-{% extends 'gas_dash/base.html' %}
+{% extends 'dash/base.html' %}
 {% block sidebar_content %}
 	
 {% endblock sidebar_content %}
@@ -12,7 +12,7 @@
 			        <li class="list-group-item list-group-item-action flex-column align-items-start" id="{{ stock.ticker }}">
 			        	<div class="d-flex w-100 justify-content-between">
 					      <h5 class="mb-1">{{ stock.ticker }}</h5>
-					      <a href="{% url 'gas_dash:stock' stock.id %}" class="btn btn-outline-primary btn-sm">Detail</a>
+					      <a href="{% url 'dash:stock' stock.id %}" class="btn btn-outline-primary btn-sm">Detail</a>
 					    </div>
 					    <small class="text-muted stock_name">{{ stock.name }}</small>
 			        </li>
@@ -44,7 +44,7 @@
 	{% else %}
 		<div class="row">
 			<div class="col-md-4 col-offset-1">
-				<p>No stocks are available <a class="btn btn-success" href="{% url 'gas_dash:add_stock' %}">Add</a></p>
+				<p>No stocks are available <a class="btn btn-success" href="{% url 'dash:add_stock' %}">Add</a></p>
 			</div>
 		</div>
 	{% endif %}

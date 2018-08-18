@@ -12,16 +12,16 @@
     <title>GAS Investments</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="{% static 'gas_dash/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
     <!-- Custom fonts for this template -->
-    <link href="{% static 'gas_dash/vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'gas_dash/vendor/simple-line-icons/css/simple-line-icons.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'vendor/simple-line-icons/css/simple-line-icons.css' %}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
     <!-- Custom styles for this template -->
-    <link href="{% static 'gas_dash/css/landing-page.min.css' %}" rel="stylesheet">
-    <link href="{% static 'gas_dash/css/dashboard.css' %}" rel="stylesheet">
+    <link href="{% static 'css/landing-page.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
     
     <!-- Snail icon -->
     <link rel="icon" href="https://vignette.wikia.nocookie.net/adventuretimewithfinnandjake/images/0/07/Waving_Snail.png/revision/latest?cb=20120729225549">
@@ -34,8 +34,8 @@
 
     <!-- Navigation -->
     <nav class="navbar navbar-toggleable-md navbar-dark bg-dark fixed-top" id="main_nav">
-        <a class="navbar-brand" href="{% url 'gas_dash:index' %}">GAS Dash</a>
-        <a class="btn btn-secondary" href="{% url 'gas_dash:logout' %}">Logout</a>
+        <a class="navbar-brand" href="{% url 'dash:index' %}">GAS Dash</a>
+        <a class="btn btn-secondary" href="{% url 'dash:logout' %}">Logout</a>
     </nav>
 
     <!-- Sidebar and Main Page -->
@@ -45,19 +45,19 @@
               <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                   <li class="nav-item">
-                      <a class="nav-link active" href="{% url 'gas_dash:index' %}">
+                      <a class="nav-link active" href="{% url 'dash:index' %}">
                         <span data-feather="home"></span>
                         Dashboard
                       </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url 'gas_dash:add_stock' %}">
+                    <a class="nav-link" href="{% url 'dash:add_stock' %}">
                     <span data-feather="home"></span>
                       Add Stock
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url 'gas_dash:add_trade' %}">
+                    <a class="nav-link" href="{% url 'dash:add_trade' %}">
                     <span data-feather="home"></span>
                       Add Trade
                     </a>
@@ -66,7 +66,7 @@
                   {% endblock sidebar_content %}
                   <div id="loading-gif"  style="display:none;z-index: 2;">
                     <h5 class="text-muted">Loading...</h5>
-                    <img src="{% static 'gas_dash/img/snail_loading.gif' %}" alt="loading-gif">
+                    <img src="{% static 'img/snail_loading.gif' %}" alt="loading-gif">
                   </div>
                 </ul>
               </div>
@@ -95,8 +95,8 @@
     </div>
 
     <!-- Bootstrap core JavaScript -->
-    <script src="{% static 'gas_dash/vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'gas_dash/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
     {% block footer_files %}
     {% endblock footer_files %}

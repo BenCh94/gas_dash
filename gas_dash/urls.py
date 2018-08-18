@@ -17,8 +17,9 @@ from django.contrib import admin
 from django.urls import include, path
 from . import settings
 
+app_name = 'gas_dash'
 urlpatterns = [
 	path('', include('home.urls')),
-    path('dash/', include('dashboard.urls')),
+    path('dash/', include('dashboard.urls', namespace='dash')),
     path('snail_master/', admin.site.urls),
 ] 

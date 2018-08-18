@@ -1,11 +1,11 @@
-{% extends 'gas_dash/base.html' %}
+{% extends 'dash/base.html' %}
 {% block head_files %}
 	{% load static %}
 	<script type="text/javascript">
 		var symbols = {{ symbols|safe }};
 		console.log(symbols);
 	</script>
-	<link href="{% static 'gas_dash/css/forms.css' %}" rel="stylesheet">
+	<link href="{% static 'css/forms.css' %}" rel="stylesheet">
 {% endblock head_files %}
 {% block content %}
 <div class="container-fluid">
@@ -21,6 +21,6 @@
 </div>
 {% endblock content %}
 {% block footer_files %}
-	<script src="{% static 'gas_dash/js/jquery.autocomplete.js' %}"></script>
-	<script src="{% static 'gas_dash/js/tickerSearch.js' %}"></script>
+	<script src="{% static 'js/jquery.autocomplete.js' %}"></script>
+	<script src="{% static 'js/tickerSearch.js' %}"></script>
 {% endblock footer_files %}

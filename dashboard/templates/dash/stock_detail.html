@@ -1,4 +1,4 @@
-{% extends 'gas_dash/base.html' %}
+{% extends 'dash/base.html' %}
 {% block head_files %}
 {% load static %}
 <script type="text/javascript">
@@ -8,24 +8,24 @@
 {% block sidebar_content %}
 	<hr>
 	<li class="nav-item">
-        <h5 class="nav-link active" href="{% url 'gas_dash:index' %}">
+        <h5 class="nav-link active" href="{% url 'dash:index' %}">
             {{ stock_data.stock.ticker }}
         </h5>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'gas_dash:add_stock' %}">
+        <a class="nav-link" href="{% url 'dash:add_stock' %}">
         <span data-feather="home"></span>
             Financials
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'gas_dash:add_stock' %}">
+        <a class="nav-link" href="{% url 'dash:add_stock' %}">
         <span data-feather="home"></span>
             News & Content
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'gas_dash:add_stock' %}">
+        <a class="nav-link" href="{% url 'dash:add_stock' %}">
         <span data-feather="home"></span>
             ESG
         </a>
@@ -95,5 +95,5 @@
 </div>
 {% endblock content %}
 {% block footer_files %}
-    <script src="{% static 'gas_dash/js/priceChart.js' %}"></script>
+    <script src="{% static 'js/priceChart.js' %}"></script>
 {% endblock footer_files %}
