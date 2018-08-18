@@ -15,9 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from . import settings
 
 urlpatterns = [
-	(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT})
 	path('', include('home.urls')),
     path('dash/', include('dashboard.urls')),
     path('snail_master/', admin.site.urls),
