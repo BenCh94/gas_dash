@@ -1,0 +1,51 @@
+{% extends 'gas_dash/base.html' %}
+{% block sidebar_content %}
+	
+{% endblock sidebar_content %}
+{% block content %}
+	{% if stocks %}
+		<div class="row">
+			<div class="col-md-10"></div>
+			<div class="col-md-2">
+				<ul class="list-group list-group-flush stock_list">
+				  {% for stock in stocks %}
+			        <li class="list-group-item list-group-item-action flex-column align-items-start" id="{{ stock.ticker }}">
+			        	<div class="d-flex w-100 justify-content-between">
+					      <h5 class="mb-1">{{ stock.ticker }}</h5>
+					      <a href="{% url 'gas_dash:stock' stock.id %}" class="btn btn-outline-primary btn-sm">Detail</a>
+					    </div>
+					    <small class="text-muted stock_name">{{ stock.name }}</small>
+			        </li>
+			    {% endfor %}
+				</ul>
+			</div>
+		</div>
+		<hr>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="card metrics">
+				  <div class="card-header">
+				    Totals
+				  </div>
+				  <div class="card-body">
+				  </div>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<div class="card metrics">
+				  <div class="card-header">
+				    Metrics
+				  </div>
+				  <div class="card-body">
+				  </div>
+				</div>
+			</div>
+		</div>
+	{% else %}
+		<div class="row">
+			<div class="col-md-4 col-offset-1">
+				<p>No stocks are available <a class="btn btn-success" href="{% url 'gas_dash:add_stock' %}">Add</a></p>
+			</div>
+		</div>
+	{% endif %}
+{% endblock content %}

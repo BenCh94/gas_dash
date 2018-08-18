@@ -1,0 +1,99 @@
+{% extends 'gas_dash/base.html' %}
+{% block head_files %}
+{% load static %}
+<script type="text/javascript">
+    var ticker = "{{ stock_data.stock.ticker}}";
+</script>
+{% endblock head_files %}
+{% block sidebar_content %}
+	<hr>
+	<li class="nav-item">
+        <h5 class="nav-link active" href="{% url 'gas_dash:index' %}">
+            {{ stock_data.stock.ticker }}
+        </h5>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'gas_dash:add_stock' %}">
+        <span data-feather="home"></span>
+            Financials
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'gas_dash:add_stock' %}">
+        <span data-feather="home"></span>
+            News & Content
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'gas_dash:add_stock' %}">
+        <span data-feather="home"></span>
+            ESG
+        </a>
+    </li>
+{% endblock sidebar_content %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12" id="share-price-box">
+    
+        <canvas id="share-price-chart">
+        </canvas>
+        <div class="btn-group" id="price_charts">
+            <button type="button" class="btn btn-outline-success btn-md priceChart" id="1m">1M</butto>
+            <button type="button" class="btn btn-outline-success btn-md priceChart" id="6m">6M</button>
+            <button type="button" class="btn btn-outline-success btn-md priceChart" id="1y">1y</button>
+            <button type="button" class="btn btn-outline-success btn-md priceChart" id="5y">5y</button>
+            <button type="button" class="btn btn-outline-success btn-md" id="timeIn">Time In</button>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="row card-deck">
+    <div class="card bg-dark company-details col-md-4">
+        <div class="card-header d-flex flex-row align-items-center">
+            <img src="{{ stock_data.logo.url }}" alt="company_logo" id="company-logo" class="mr-auto">
+            <h5 class="p-2 bd-highlight">{{  stock_data.company.companyName  }}</h5>
+        </div>
+        <div class="card-body">
+            <p class="card-title">
+                CEO:  {{  stock_data.company.CEO  }}
+            </p>
+            <p class="card-text">
+                {{  stock_data.company.description  }}
+            </p>
+            <p class="text-muted small">
+                Industry: {{  stock_data.company.industry  }}
+            </p>
+            <a href="{{  stock_data.company.website  }}" target="_blank" class="btn btn-primary">Website</a>
+        </div>
+    </div>
+    <div class="card bg-dark company-details col-md-8">
+        <div class="card-header d-flex flex-row align-items-center">
+            <ul class="nav nav-tabs bg-dark card-header-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+              </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <p>
+                 Market Cap: {{ stock_data.stats.marketcap }}   
+                </p>
+              </div>
+              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">2...</div>
+              <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">3...</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block footer_files %}
+    <script src="{% static 'gas_dash/js/priceChart.js' %}"></script>
+{% endblock footer_files %}

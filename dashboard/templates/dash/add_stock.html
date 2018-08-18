@@ -1,0 +1,26 @@
+{% extends 'gas_dash/base.html' %}
+{% block head_files %}
+	{% load static %}
+	<script type="text/javascript">
+		var symbols = {{ symbols|safe }};
+		console.log(symbols);
+	</script>
+	<link href="{% static 'gas_dash/css/forms.css' %}" rel="stylesheet">
+{% endblock head_files %}
+{% block content %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-4 col-offset-1">
+			<form method="post">
+		    	{% csrf_token %}
+		    	{{ form.as_p }}
+		    	<button class="btn btn-success" type="submit">Add</button>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock content %}
+{% block footer_files %}
+	<script src="{% static 'gas_dash/js/jquery.autocomplete.js' %}"></script>
+	<script src="{% static 'gas_dash/js/tickerSearch.js' %}"></script>
+{% endblock footer_files %}
