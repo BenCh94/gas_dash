@@ -108,11 +108,14 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
-USE_L10N = True
+USE_L10N = False
 USE_TZ = True
 
 # Change 'default' database configuration with $DATABASE_URL.
 DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require=True))
+
+# Dates 
+DATE_INPUT_FORMATS = ['%d/%m/%Y', '%d-%m-%Y', '%m/%d/%Y', '%m-%d-%Y']
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

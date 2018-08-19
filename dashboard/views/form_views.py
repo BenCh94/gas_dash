@@ -33,6 +33,7 @@ def add_trade(request):
 	if request.method == 'POST':
 		# Create form instance and populate with data from reqquest
 		form = TradeForm(request, request.POST)
+		print(request.POST['date'])
 		if form.is_valid():
 			trade = form.save(commit=False)
 			d = datetime.strptime(request.POST['date'], '%d/%m/%Y').date()

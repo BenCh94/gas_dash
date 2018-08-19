@@ -2,6 +2,7 @@ from django import forms
 from django.forms import ModelForm, TextInput, ModelChoiceField, DateInput
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from gas_dash import settings
 from .models import Stock, Trade
 
 
@@ -36,6 +37,7 @@ class TradeForm(ModelForm):
 		super(TradeForm, self).__init__(*args, **kwargs)
 		current_profile = request.user.profile
 		self.fields['stock'].queryset = Stock.objects.filter(user_profile=current_profile)
+		self.fields['date'].input_formats = ['%d/%m/%Y']
 		self.fields['date'].widget = DateInput(attrs={
 			'class': 'datepicker',
 			'placeholder': 'dd/mm/yyyy'

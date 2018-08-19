@@ -6,6 +6,7 @@ from django.contrib import messages
 from dashboard.forms import SignUpForm, StockForm
 from dashboard.models import Stock, Trade
 from dashboard.iex_requests import *
+from dashboard.dash_functions import portfolio_data
 
 
 @login_required(login_url='/dash/login/')
@@ -15,6 +16,7 @@ def index(request):
 	profile = current_user.profile
 	stocks = Stock.objects.filter(user_profile=profile, status='a')
 	context = {'stocks': stocks}
+	context['portfolio'] = portfolio_data(stocks)
 	return render(request, 'dash/dashboard.html', context)
 
 
@@ -23,6 +25,7 @@ def stock(request, stock_id):
 	stock = get_object_or_404(Stock, pk=stock_id)
 	stock_data = stock_profile(stock.ticker)
 	stock_data['stock'] = stock
+	stock_data['trades'] = stock.trades()
 	return render(request, 'dash/stock_detail.html', {'stock_data': stock_data})
 
 @login_required(login_url='/dash/login/')
@@ -31,5 +34,5 @@ def trades(request, stock_id):
 
 @login_required(login_url='/dash/login/')
 def trade(request, trade_id):
-	stocks = Stock.objects.all()
-	return HttpResponse("You're looking at trade %s." % trade_id)
+	trade = get_object_or_404(Trade, pk=trade_id)
+	return render(request, 'dash/trade.html')

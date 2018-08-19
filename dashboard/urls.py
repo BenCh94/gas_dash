@@ -22,5 +22,5 @@ urlpatterns = [
     # This is a stock trades page '/gas_dash/<stock_id>/trades'
     path('stocks/<int:stock_id>/trades', dash_views.trades, name='trades'),
     # This is a trade page '/gas_dash/<trade_id>'
-    path('trade/<int:stock_id>', dash_views.trade, name='trade')
+    path('trade/<int:trade_id>', dash_views.trade, name='trade')
 ]
