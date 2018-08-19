@@ -13,7 +13,7 @@ def index(request):
 	""" The home dashboards view """
 	current_user = request.user
 	profile = current_user.profile
-	stocks = Stock.objects.filter(user_profile=profile)
+	stocks = Stock.objects.filter(user_profile=profile, status='a')
 	context = {'stocks': stocks}
 	return render(request, 'dash/dashboard.html', context)
 
