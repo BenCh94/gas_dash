@@ -1,6 +1,6 @@
 var graphData;
 var priceOptions;
-var myLineChart;
+var mixedChart;
 
 var pricectx = document.getElementById("share-price-chart");
 
@@ -23,6 +23,25 @@ function getClosePrices(data){
     return closePrices
 }
 
+function getVolumes(data){
+    var volumes = []
+    data.forEach(function(d){
+        volumes.push(Number(d.volume))
+    })
+    console.log(volumes)
+    return volumes
+}
+
+function getMaxVolume(data){
+    var vols = []
+    data.forEach(function(d){
+        vols.push(Number(d.volume))
+    })
+    var max_val = Math.max.apply(Math, vols)
+    console.log(max_val)
+    return max_val*10
+}
+
 function getDailyLabels(data){
     var days = []
     data.forEach(function(d){
@@ -43,6 +62,13 @@ function drawGraph(iexdata){
             backgroundColor: 'rgb(45, 134, 51, 0.2)',
             borderColor: 'rgb(45, 134, 51)',
             data: getClosePrices(iexdata),
+            type: 'line',
+            yAxisID: 'price'
+        },
+        {
+            label: "Volume",
+            data: getVolumes(iexdata),
+            yAxisID: 'volume'
         }],
     };
 
@@ -59,12 +85,21 @@ function drawGraph(iexdata){
                     unit: 'day'
                     },
                 display: false
-                }]
+            }],
+            yAxes: [{
+                id: 'price'
+            },
+            {
+                id: 'volume',
+                position: 'right',
+                display: false,
+                max: getMaxVolume(iexdata)
+            }]
         }
     }
 
-    myLineChart = new Chart(pricectx, {
-        type: 'line',
+    mixedChart = new Chart(pricectx, {
+        type: 'bar',
         data: graphData,
         options: priceOptions
     });
@@ -81,8 +116,8 @@ $(document).ready(function(){
         $('#timeIn').removeClass('active');
         $(this).addClass('active');
         var time = e.target.id;
-        if(myLineChart){
-            myLineChart.destroy();
+        if(mixedChart){
+            mixedChart.destroy();
         }
         console.log(time)
         getChartData(time);
@@ -92,5 +127,4 @@ $(document).ready(function(){
         $('#timeIn').addClass('active');
         drawGraph("5y");
     })
-    $('#timeIn').addClass('active');
 })

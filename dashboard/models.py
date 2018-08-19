@@ -38,6 +38,16 @@ class Stock(models.Model):
 	def __str__(self):
 		return self.name
 
+	def trades(self):
+		trades = Trade.objects.filter(stock = self)
+		if trades.count() > 0:
+			return trades.order_by('date')
+		else:
+			return 'None'
+
+	def get_ticker(self):
+		return self.ticker		
+
 
 class Trade(models.Model):
 	TradeTypes = [('b', 'Buy'), ('s','Sell')]
