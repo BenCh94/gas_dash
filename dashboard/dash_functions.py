@@ -27,10 +27,9 @@ def get_trade_data(stock):
 	for trade in trade_list:
 		trade['invested'] = (trade['amount']*trade['avg_price'])+trade['fees_usd']
 		if trade['trade_type'] == 'b':
-			trade_df = add_buy(trade, init_data)
+			return add_buy(trade, init_data)
 		else:
-			trade_df = add_sell(trade, init_data)
-	return trade_df
+			return add_sell(trade, init_data)
 
 def apply_trade_data(df, trade):
 	df['amount'] = trade['amount']
