@@ -93,7 +93,6 @@ function drawGraph(iexdata){
                 id: 'volume',
                 position: 'right',
                 display: false,
-                max: getMaxVolume(iexdata)
             }]
         }
     }

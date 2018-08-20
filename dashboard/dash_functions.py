@@ -63,14 +63,16 @@ def get_daily_data(df, ticker):
 	df['date'] = pd.to_datetime(df['date'])
 	price_chart = price_chart[price_chart['date'] >= df['date'].iloc[0]]
 	combined = combine_trades_price(df, price_chart)
-	print(combined)
+	return combined
 
 
 
 def portfolio_data(stocks):
+	stock_dfs = []
 	for stock in stocks:
 		if stock.trades() == 'None':
 			continue
 		else:
 			trade_data = get_trade_data(stock)
-			stock_df = get_daily_data(trade_data, stock.get_ticker())
+			stock_dfs.append(get_daily_data(trade_data, stock.get_ticker()))
+	return pd.concat(stock_dfs)
