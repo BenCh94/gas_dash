@@ -16,7 +16,6 @@ def index(request):
 	profile = current_user.profile
 	stocks = Stock.objects.filter(user_profile=profile, status='a')
 	context = {'stocks': stocks}
-	context['portfolio'] = portfolio_data(stocks)
 	return render(request, 'dash/dashboard.html', context)
 
 

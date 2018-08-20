@@ -30,7 +30,7 @@ class Stock(models.Model):
 	user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 	name = models.CharField(max_length=200)
 	ticker = models.CharField(max_length=10)
-	quantity = models.IntegerField(blank=True, null=True)
+	quantity = models.FloatField(blank=True, null=True)
 	invested = models.FloatField(blank=True, null=True)
 	fees_usd = models.FloatField(blank=True, null=True)
 	start_date = models.DateField(blank=True, null=True)

@@ -50,7 +50,7 @@
 <div class="row card-deck">
     <div class="card bg-dark company-details col-md-4">
         <div class="card-header d-flex flex-row align-items-center">
-            <img src="{{ stock_data.logo.url }}" alt="company_logo" id="company-logo" class="mr-auto">
+            <img src="{{ stock_data.logo.url }}" alt="logo" id="company-logo" class="mr-auto">
             <h5 class="p-2 bd-highlight">{{  stock_data.company.companyName  }}</h5>
         </div>
         <div class="card-body">
@@ -70,7 +70,7 @@
         <div class="card-header d-flex flex-row align-items-center">
             <ul class="nav nav-tabs bg-dark card-header-tabs" id="myTab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Company Stats</a>
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Stats</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Price</a>
@@ -83,6 +83,7 @@
         <div class="card-body">
             <div class="tab-content" id="myTabContent">
               <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <p>Amount: {{ stock_data.stock.quantity }}</p>
                 <p>
                  Market Cap: {{ stock_data.stats.marketcap }}   
                 </p>
@@ -91,7 +92,7 @@
               <div class="tab-pane fade" id="trades" role="tabpanel" aria-labelledby="trades-tab">
                 <ul class="list-group">
                     {% if stock_data.trades == 'None' %}
-                    <h5>No trades found for this stock</h5>
+                    <h5>No trades found for this stock <a class="btn btn-success" href="{% url 'dash:add_trade' %}">Add Trade</a></h5>
                     {% else %}
                         {% for trade in stock_data.trades %}
                           <a href="{% url 'dash:trade' trade.id %}" class="list-group-item {% if trade.type == 'b' %}list-group-item-danger{% else %}list-group-item-success{%endif%}">

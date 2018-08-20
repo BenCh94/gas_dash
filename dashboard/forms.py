@@ -37,6 +37,9 @@ class TradeForm(ModelForm):
 		super(TradeForm, self).__init__(*args, **kwargs)
 		current_profile = request.user.profile
 		self.fields['stock'].queryset = Stock.objects.filter(user_profile=current_profile)
+		self.fields['amount'].widget = TextInput(attrs={
+			'placeholder': 'Quantity of the stock...'
+			})
 		self.fields['date'].input_formats = ['%d/%m/%Y']
 		self.fields['date'].widget = DateInput(attrs={
 			'class': 'datepicker',
