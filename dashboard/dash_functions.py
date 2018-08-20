@@ -21,15 +21,16 @@ def add_sell(trade, df):
 
 def get_trade_data(stock):
 	trade_list = list(stock.trades().values('date', 'amount', 'fees_usd', 'stock_id', 'trade_type', 'avg_price'))
-	init_data = pd.DataFrame([trade_list[0]])
-	init_data['invested'] = (init_data['amount']*init_data['avg_price'])+init_data['fees_usd']
+	trade_df = pd.DataFrame([trade_list[0]])
+	trade_df['invested'] = (trade_df['amount']*trade_df['avg_price'])+trade_df['fees_usd']
 	del trade_list[0]
 	for trade in trade_list:
 		trade['invested'] = (trade['amount']*trade['avg_price'])+trade['fees_usd']
 		if trade['trade_type'] == 'b':
-			return add_buy(trade, init_data)
+			trade_df = add_buy(trade, trade_df)
 		else:
-			return add_sell(trade, init_data)
+			trade_df = add_sell(trade, trade_df)
+	return trade_df
 
 def apply_trade_data(df, trade):
 	df['amount'] = trade['amount']
