@@ -1,5 +1,20 @@
 /*Autocomplete serch bar settings */
 
+.gradient_form {
+    background: linear-gradient(#1A1F24, #343A40);
+    padding: 20%;
+}
+
+.form-tab {
+    background-color: #343A40!important;
+    border: none!important;
+}
+
+.form-tab.active {
+    background-color: #1A1F24!important; 
+    border: none!important;  
+}
+
 input, select {
     width: 100%;
     background: transparent;

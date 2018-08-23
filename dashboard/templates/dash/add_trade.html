@@ -7,12 +7,17 @@
 {% block content %}
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-4 col-offset-1">
-			<form method="post">
-		    	{% csrf_token %}
-		    	{{ form.as_p }}
-		    	<button class="btn btn-success" type="submit">Add</button>
-			</form>
+		<div class="card col-md-4 col-offset-1 text-white bg-dark mb-3">
+		  	<div class="card-header">
+		    Add Trade
+		  	</div>
+		    <div class="card-body">
+		    	<form method="post">
+		    		{% csrf_token %}
+		    		{{ form.as_p }}
+		    		<button class="btn btn-success" type="submit">Add</button>
+				</form>
+			</div>
 		</div>
 		{% if errors %}
 		<div class="col-md-4">
