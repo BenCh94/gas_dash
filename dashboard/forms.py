@@ -1,17 +1,27 @@
 from django import forms
-from django.forms import ModelForm, TextInput, ModelChoiceField, DateInput
-from django.contrib.auth.forms import UserCreationForm
+from django.forms import ModelForm, TextInput, ModelChoiceField, DateInput, PasswordInput
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from gas_dash import settings
 from .models import Stock, Trade
 
 
 class SignUpForm(UserCreationForm):
+    username = forms.CharField(max_length=254)
     email = forms.EmailField(max_length=254, help_text='A valid email address is required.')
+    password1 = forms.CharField(max_length=32, widget=forms.PasswordInput, label='Password')
+    password2 = forms.CharField(max_length=32, widget=forms.PasswordInput, label=' Confirm Password')
 
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2' )
+
+
+class LoginForm(AuthenticationForm):
+
+    class Meta:
+        model = User
+        fields = ('username', 'password' )
 
 
 class StockForm(ModelForm):
@@ -39,6 +49,12 @@ class TradeForm(ModelForm):
 		self.fields['stock'].queryset = Stock.objects.filter(user_profile=current_profile)
 		self.fields['amount'].widget = TextInput(attrs={
 			'placeholder': 'Quantity of the stock...'
+			})
+		self.fields['avg_price'].widget = TextInput(attrs={
+			'placeholder': '$'
+			})
+		self.fields['fees_usd'].widget = TextInput(attrs={
+			'placeholder': '$'
 			})
 		self.fields['date'].input_formats = ['%d/%m/%Y']
 		self.fields['date'].widget = DateInput(attrs={

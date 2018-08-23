@@ -9,5 +9,4 @@ def recalc_stock(stock_id):
 	stock.invested = stock_df['invested'].iloc[-1]
 	stock.quantity = stock_df['amount'].iloc[-1]
 	stock.fees_usd = stock_df['fees_usd'].iloc[-1]
-	print(stock)
 	stock.save()

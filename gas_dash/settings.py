@@ -30,6 +30,8 @@ DEBUG = True
 # Application definition
 
 INSTALLED_APPS = [
+    'home.apps.HomeConfig',
+    'dashboard.apps.DashboardConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,9 +41,7 @@ INSTALLED_APPS = [
     # greater consistency between gunicorn and `./manage.py runserver`. See:
     # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
     'whitenoise.runserver_nostatic',
-    'django.contrib.staticfiles',
-    'home.apps.HomeConfig',
-    'dashboard.apps.DashboardConfig'
+    'django.contrib.staticfiles'
 ]
 
 MIDDLEWARE = [
