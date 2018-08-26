@@ -3,7 +3,6 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.contrib import messages
-from dashboard.forms import SignUpForm, StockForm
 from dashboard.models import Stock, Trade
 from dashboard.iex_requests import *
 from dashboard.dash_functions import portfolio_data
@@ -23,8 +22,10 @@ def index(request):
 def stock(request, stock_id):
 	stock = get_object_or_404(Stock, pk=stock_id)
 	stock_data = stock_profile(stock.ticker)
+	other_stocks = Stock.objects.filter(user_profile=request.user.profile, status='a').exclude(pk=stock_id)
 	stock_data['stock'] = stock
 	stock_data['trades'] = stock.trades()
+	stock_data['stocks'] = other_stocks
 	return render(request, 'dash/stock_detail.html', {'stock_data': stock_data})
 
 @login_required(login_url='/dash/login/')

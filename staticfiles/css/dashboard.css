@@ -74,4 +74,14 @@ Once graphs have been added set stock list height based off graph height*/
     height: 10%;
 }
 
-.company
+#tickerDrop {
+    background-color: #343a40!important;
+    width: 60%;
+    color: #007bff;
+    border-color: #007bff;
+}
+
+.tickerOption {
+    background-color: #343a40!important;
+    color: #007bff;
+}
