@@ -5,17 +5,29 @@ from ..views import dash_views
 
 def signup(request):
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect(request.GET.get('next'))
+        if request.POST.get('submit') == 'login':
+            username = request.POST.get('username')
+            raw_password = request.POST.get('password')
+            user = authenticate(request, username=username, password=raw_password)
+            if user is not None:
+                login(request, user)
+                if request.GET:
+                    return redirect(request.GET.get('next'))
+                else:
+                    return redirect('/dash')
+        elif request.POST.get('submit') == 'signup':
+            form = SignUpForm(request.POST)
+            if form.is_valid():
+                form.save()
+                username = form.cleaned_data.get('username')
+                raw_password = form.cleaned_data.get('password1')
+                user = authenticate(username=username, password=raw_password)
+                login(request, user)
+                return redirect('/dash')
     else:
         signup_form = SignUpForm()
-    return render(request, 'registration/signup.html', {'form': signup_form})
+        login_form = LoginForm()
+    return render(request, 'registration/signup.html', {'signup_form': signup_form, 'login_form': login_form})
 
 
 def login_view(request):
@@ -26,7 +38,10 @@ def login_view(request):
             user = authenticate(request, username=username, password=raw_password)
             if user is not None:
                 login(request, user)
-                return redirect(request.GET.get('next'))
+                if request.GET:
+                    return redirect(request.GET.get('next'))
+                else:
+                    return redirect('/dash')
         elif request.POST.get('submit') == 'signup':
             form = SignUpForm(request.POST)
             if form.is_valid():
@@ -35,7 +50,7 @@ def login_view(request):
                 raw_password = form.cleaned_data.get('password1')
                 user = authenticate(username=username, password=raw_password)
                 login(request, user)
-                return redirect(request.GET.get('next'))
+                return redirect('/dash')
     else:
         signup_form = SignUpForm()
         login_form = LoginForm()
