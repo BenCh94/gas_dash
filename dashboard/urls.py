@@ -1,6 +1,6 @@
 from django.urls import path, re_path
 
-from .views import dash_views, registration_views, form_views
+from .views import form_views, dash_views, registration_views
 from django.contrib.auth import views as auth_views 
 from gas_dash import settings
 
@@ -19,7 +19,7 @@ urlpatterns = [
     # Add a trade
     path('trade/add', form_views.add_trade, name='add_trade'),
     # This is a stock page '/gas_dash/<stock_id>'
-    path('stocks/<int:stock_id>', dash_views.stock, name='stock'),
+    re_path(r'^stocks/(?P<stock_id>[0-9]+)$', dash_views.stock, name='stock'),
     # This is a stock trades page '/gas_dash/<stock_id>/trades'
     path('stocks/<int:stock_id>/trades', dash_views.trades, name='trades'),
     # This is a trade page '/gas_dash/<trade_id>'

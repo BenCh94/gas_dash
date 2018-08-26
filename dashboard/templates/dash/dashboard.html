@@ -12,7 +12,7 @@
 			        <li class="list-group-item list-group-item-action flex-column align-items-start" id="{{ stock.ticker }}">
 			        	<div class="d-flex w-100 justify-content-between">
 					      <h5 class="mb-1">{{ stock.ticker }}</h5>
-					      <a href="{% url 'dash:stock' stock.id %}" class="btn btn-outline-primary btn-sm">Detail</a>
+					      <a href="{% url 'dash:stock' stock_id=stock.id %}" class="btn btn-outline-primary btn-sm">Detail</a>
 					    </div>
 					    <small class="text-muted stock_name">{{ stock.name }}</small>
 			        </li>

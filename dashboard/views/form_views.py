@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.contrib import messages
 from datetime import datetime
-from dashboard.forms import SignUpForm, StockForm, TradeForm
 from dashboard.models import Stock, Trade
+from dashboard.forms import SignUpForm, StockForm, TradeForm
 from dashboard.iex_requests import *
 from dashboard.stock_functions import recalc_stock
 
