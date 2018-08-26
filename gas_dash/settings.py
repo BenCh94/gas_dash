@@ -32,8 +32,8 @@ DEBUG = True
 INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'dashboard.apps.DashboardConfig',
-    'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -101,6 +101,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+LOGOUT_REDIRECT_URL = 'home:index'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
