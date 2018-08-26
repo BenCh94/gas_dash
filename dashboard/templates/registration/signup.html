@@ -34,22 +34,43 @@
 
     <!-- Navigation -->
     <nav class="navbar navbar-toggleable-md navbar-dark bg-dark">
-    	<a class="navbar-brand" href="{% url 'dash:index' %}">GAS Dash</a>
+        <a class="navbar-brand" href="{% url 'dash:dashboard' %}">GAS Dash</a>
     </nav>
 
     <div class="container">
-    	<div class="row">
-			<h2>Register</h2>
-		</div>
-		<hr>
-		<div class="row">
-			<form method="post">
-		    	{% csrf_token %}
-		    	{{ form.as_p }}
-		    	<button class="btn btn-success" type="submit">Register</button>
-			</form>
-		</div>
-	</div>
+        <div class="row">
+            <h2>Login</h2>
+        </div>
+        <hr>
+        <div class="row d-flex p-2 bd-highlight align-items-center">
+            <div class="col-md-6">
+                <ul class="nav nav-tabs nav-fill" id="loginTab">
+                    <li class="nav-item">
+                        <a href="#login" class=" form-tab nav-link" id="login-tab" data-toggle="tab" role="tab" aria-controls="login" aria-selected="false">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#register" class="form-tab nav-link active" id="register-tab" data-toggle="tab" role="tab" aria-controls="register" aria-selected="false">Register</a>
+                    </li>
+                </ul>
+                <div class="tab-content gradient_form" id="loginTabContent">
+                    <div class="tab-pane fade active show" id="register" role="tabpanel" aria-labelledby="register-tab">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ signup_form.as_p }}
+                            <button class="btn btn-success" type="submit" name="submit" value="signup">Register</button>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="login-tab">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ login_form.as_p }}
+                            <button class="btn btn-success" type="submit" name="submit" value="login">Login</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
  <!-- Bootstrap core JavaScript -->
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
