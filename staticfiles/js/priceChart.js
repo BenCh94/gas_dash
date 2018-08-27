@@ -77,7 +77,10 @@ function drawGraph(iexdata){
         elements: {
             line: {
                 tension: 0, // disables bezier curves
-            }
+            },
+            point: {
+                radius: 0,
+            },
         },
         scales: {
             xAxes: [{
@@ -94,6 +97,9 @@ function drawGraph(iexdata){
                 position: 'right',
                 display: false,
             }]
+        },
+        legend: {
+            display: false,
         }
     }
 
