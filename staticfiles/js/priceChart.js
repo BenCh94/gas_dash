@@ -113,7 +113,7 @@ function drawGraph(iexdata){
 
 // Charts
 $(document).ready(function(){
-    pricectx.height = ($(window).height())*0.525;
+    pricectx.height = ($(window).height())*0.45;
     getChartData("5y");
 
     $(".priceChart").click(function(e){
