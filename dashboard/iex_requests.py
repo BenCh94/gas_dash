@@ -38,3 +38,11 @@ def stock_profile(ticker):
     profile_req = r.get(iex_base_url+"stock/"+ ticker + batch_reqs)
     profile_data = json.loads(profile_req.text)
     return profile_data
+
+
+def batch_quotes(tickers):
+    """ Batch request for most recent quotes """
+    batch_reqs = "/stock/market/batch?symbols=" + tickers + "&types=quote"
+    quotes_req = r.get(iex_base_url + batch_reqs)
+    quotes = quotes_req.json()
+    return quotes

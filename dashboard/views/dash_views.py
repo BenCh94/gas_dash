@@ -5,6 +5,7 @@ from django.http import Http404
 from django.contrib import messages
 from dashboard.models import Stock, Trade
 from dashboard.iex_requests import *
+from dashboard.stock_functions import get_current_quotes
 from dashboard.dash_functions import portfolio_data
 
 
@@ -14,6 +15,7 @@ def index(request):
 	current_user = request.user
 	profile = current_user.profile
 	stocks = Stock.objects.filter(user_profile=profile, status='a')
+	stocks = get_current_quotes(stocks)
 	context = {'stocks': stocks}
 	return render(request, 'dash/dashboard.html', context)
 

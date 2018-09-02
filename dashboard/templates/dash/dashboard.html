@@ -1,4 +1,5 @@
 {% extends 'dash/base.html' %}
+{% load dashboard_extras %}
 {% block sidebar_content %}
 	
 {% endblock sidebar_content %}
@@ -9,13 +10,22 @@
 			<div class="col-md-2">
 				<ul class="list-group list-group-flush stock_list">
 				  {% for stock in stocks %}
-			        <li class="list-group-item list-group-item-action flex-column align-items-start" id="{{ stock.ticker }}">
+			        <a href="{% url 'dash:stock' stock_id=stock.id %}" class="list-group-item list-group-item-action flex-column align-items-start" id="{{ stock.ticker }}">
 			        	<div class="d-flex w-100 justify-content-between">
 					      <h5 class="mb-1">{{ stock.ticker }}</h5>
-					      <a href="{% url 'dash:stock' stock_id=stock.id %}" class="btn btn-outline-primary btn-sm">Detail</a>
+					      <span data-toggle="tooltip" class="badge badge-{% if stock.quote.changePercent < 0 %}danger{% else %}success{% endif %}">
+					      	<div class="container-fluid">
+					      		<div class="row">
+					      			{{ stock.quote.latestPrice }} ({{ stock.quote.changePercent|percentage }})
+					      		</div>
+					      		<div class="row">
+					      			<small>ytd: {{ stock.quote.ytdChange|percentage }}</small>
+					      		</div>
+					      	</div>
+					      </span>
 					    </div>
 					    <small class="text-muted stock_name">{{ stock.name }}</small>
-			        </li>
+			        </a>
 			    {% endfor %}
 				</ul>
 			</div>

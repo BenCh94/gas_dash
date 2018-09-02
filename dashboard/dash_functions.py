@@ -16,6 +16,7 @@ def add_sell(trade, df):
 	new_entry = trade
 	new_entry['amount'] = trade['amount'] - last_entry[0]['amount']
 	new_entry['fees_usd'] = trade['fees_usd'] + last_entry[0]['fees_usd']
+	new_entry['invested'] =  (last_entry[0]['invested'] - trade['invested']) + trade['fees_usd']
 	df = df.append([new_entry], ignore_index=True)
 	return df
 
