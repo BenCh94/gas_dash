@@ -25,4 +25,5 @@ class Stock(models.Model):
 			return 'None'
 
 	def get_ticker(self):
-		return self.ticker		
+		return self.ticker	
+	
