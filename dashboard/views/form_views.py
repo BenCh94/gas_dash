@@ -21,7 +21,7 @@ def add_stock(request):
 			stock.user_profile_id = request.user.profile.id
 			stock.save()
 			messages.success(request, 'Congrats, Your stock was added!')
-			return redirect('dash:index')
+			return redirect('dash:dashboard')
 	symbols = list_symbols()
 	current_user = request.user
 	profile = current_user.profile
@@ -41,7 +41,7 @@ def add_trade(request):
 			trade.save()
 			messages.success(request, 'Congrats, Your trade was added!')
 			recalc_stock(trade.stock_id)
-			return redirect('dash:index')
+			return redirect('dash:dashboard')
 		else:
 			errors = form.errors
 			trade_form = TradeForm(request, request.POST)
