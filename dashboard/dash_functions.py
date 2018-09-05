@@ -1,4 +1,7 @@
 import pandas as pd 
+import numpy as np
+import json
+from datetime import datetime
 
 from .iex_requests import stock_price
 from .models import Stock, Trade
@@ -42,6 +45,7 @@ def apply_trade_data(df, trade):
 	df['gain_pct'] = (df['gain']/df['invested'])*100
 	return df
 
+
 def combine_trades_price(trades, prices):
 	frames = []
 	for index, row in trades.iterrows():
@@ -58,6 +62,7 @@ def combine_trades_price(trades, prices):
 	full_df = pd.concat(frames)
 	return full_df
 
+
 def get_daily_data(df, ticker):
 	price_chart = pd.DataFrame(stock_price(ticker))
 	price_chart['date'] = pd.to_datetime(price_chart['date'])
@@ -66,6 +71,15 @@ def get_daily_data(df, ticker):
 	combined = combine_trades_price(df, price_chart)
 	return combined
 
+
+def combine_portfolio(df):
+	portfolio = df.groupby('date', as_index=False).agg({'gain': np.sum, 'value': np.sum, 'amount': np.sum, 'fees_usd': np.sum, 'invested': np.sum })
+	portfolio.apply(lambda x: x.to_json(orient='records'))
+	portfolio_dict = portfolio.to_dict(orient='records')
+	for d in portfolio_dict:
+		d['date'] =  d['date'].strftime('%Y-%m-%d')
+		d['pct_gain'] = (d['gain']/d['invested']) * 100
+	return json.dumps(portfolio_dict)
 
 
 def portfolio_data(stocks):
@@ -76,4 +90,13 @@ def portfolio_data(stocks):
 		else:
 			trade_data = get_trade_data(stock)
 			stock_dfs.append(get_daily_data(trade_data, stock.get_ticker()))
-	return pd.concat(stock_dfs)
+	portfolio = combine_portfolio(pd.concat(stock_dfs))
+	return portfolio
+
+
+def update_portfolio():
+	users = Users.objects.all()
+	for user in users:
+		portfolio = portfolio_data(Stock.objects.filter(user_profile=user.profile))
+		# Portfolio.objects.update_or_create(user_profile=user.profile, portfolio=portfolio)
+
