@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from .stock_model import Stock
 
 # Create your models here.
 
@@ -14,6 +15,12 @@ class Profile(models.Model):
 
     def __str__(self):
     	return self.user.username
+
+    def has_stocks(self):
+    	if Stock.objects.filter(user_profile=self).count() > 0:
+    		return True
+    	else:
+    		return False
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
