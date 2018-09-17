@@ -6,7 +6,7 @@ from django.contrib import messages
 from dashboard.models import Stock, Trade
 from dashboard.iex_requests import *
 from dashboard.stock_functions import get_current_quotes
-from dashboard.dash_functions import portfolio_data
+from dashboard.dash_functions import update_portfolio
 
 
 @login_required(login_url='/dash/login/')
@@ -16,6 +16,7 @@ def index(request):
 	profile = current_user.profile
 	stocks = Stock.objects.filter(user_profile=profile, status='a')
 	stocks = get_current_quotes(stocks)
+	update_portfolio()
 	context = {'stocks': stocks}
 	return render(request, 'dash/dashboard.html', context)
 

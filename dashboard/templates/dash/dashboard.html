@@ -13,7 +13,7 @@
 			        <a href="{% url 'dash:stock' stock_id=stock.id %}" class="list-group-item list-group-item-action flex-column align-items-start" id="{{ stock.ticker }}">
 			        	<div class="d-flex w-100 justify-content-between">
 					      <h5 class="mb-1">{{ stock.ticker }}</h5>
-					      <h5 class="price_gain_box">
+					      <h5 class="price_gain_box test">
 					      	<span data-toggle="tooltip" class="badge badge-{% if stock.quote.changePercent < 0 %}danger{% else %}success{% endif %}">
 						      	<div class="container-fluid">
 						      		<div class="row">

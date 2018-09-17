@@ -4,7 +4,7 @@ import json
 from datetime import datetime
 
 from .iex_requests import stock_price
-from .models import Stock, Trade
+from .models import Stock, Trade, User, Profile, Portfolio
 
 def add_buy(trade, df):
 	last_entry = df.tail(1).to_dict(orient='records')
@@ -91,12 +91,14 @@ def portfolio_data(stocks):
 			trade_data = get_trade_data(stock)
 			stock_dfs.append(get_daily_data(trade_data, stock.get_ticker()))
 	portfolio = combine_portfolio(pd.concat(stock_dfs))
-	return portfolio
+	return json.dumps(portfolio)
 
 
 def update_portfolio():
-	users = Users.objects.all()
+	users = User.objects.all()
 	for user in users:
-		portfolio = portfolio_data(Stock.objects.filter(user_profile=user.profile))
-		# Portfolio.objects.update_or_create(user_profile=user.profile, portfolio=portfolio)
+		if user.profile.has_stocks():
+			portfolio = portfolio_data(Stock.objects.filter(user_profile=user.profile))
+			print(portfolio)
+			Portfolio.objects.update_or_create(user_profile=user.profile, data=portfolio, name=user.username)
 
