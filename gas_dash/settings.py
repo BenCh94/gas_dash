@@ -149,6 +149,7 @@ USE_TZ = True
 # Change 'default' database configuration with $DATABASE_URL.
 DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require=True))
 
+
 # Dates 
 DATE_INPUT_FORMATS = ['%d/%m/%Y', '%d-%m-%Y', '%m/%d/%Y', '%m-%d-%Y']
 

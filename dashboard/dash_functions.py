@@ -85,13 +85,14 @@ def combine_portfolio(df):
 def portfolio_data(stocks):
 	stock_dfs = []
 	for stock in stocks:
-		if stock.trades() == 'None':
-			continue
-		else:
+		if stock.trades():
 			trade_data = get_trade_data(stock)
 			stock_dfs.append(get_daily_data(trade_data, stock.get_ticker()))
-	portfolio = combine_portfolio(pd.concat(stock_dfs))
-	return json.dumps(portfolio)
+	if len(stock_dfs) > 0:
+		portfolio = combine_portfolio(pd.concat(stock_dfs))
+		return json.dumps(portfolio)
+	else:
+		return "None"
 
 
 def update_portfolio():
@@ -100,5 +101,5 @@ def update_portfolio():
 		if user.profile.has_stocks():
 			portfolio = portfolio_data(Stock.objects.filter(user_profile=user.profile))
 			print(portfolio)
-			Portfolio.objects.update_or_create(user_profile=user.profile, data=portfolio, name=user.username)
+			Portfolio.objects.update_or_create(user_profile=user.profile, name=user.username, defaults={ 'data': portfolio })
 
