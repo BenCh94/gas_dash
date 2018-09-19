@@ -1,5 +1,10 @@
 {% extends 'dash/base.html' %}
 {% load dashboard_extras %}
+{% block head_files %}
+	<script type="text/javascript">
+		var portfolio = {{ portfolio.data|safe }};
+	</script>
+{% endblock head_files %}
 {% block sidebar_content %}
 	
 {% endblock sidebar_content %}

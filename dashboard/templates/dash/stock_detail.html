@@ -121,14 +121,14 @@
               <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">2...</div>
               <div class="tab-pane fade" id="trades" role="tabpanel" aria-labelledby="trades-tab">
                 <ul class="list-group tradeList">
-                    {% if stock_data.trades == 'None' %}
-                    <h5>No trades found for this stock <a class="btn btn-success" href="{% url 'dash:add_trade' %}">Add Trade</a></h5>
-                    {% else %}
+                    {% if stock_data.trades %}
                         {% for trade in stock_data.trades %}
                           <a href="{% url 'dash:trade' trade.id %}" class="list-group-item {% if trade.type == 'b' %}list-group-item-danger{% else %}list-group-item-success{%endif%}">
                               {{ trade.date }}: {{ trade.trade_type }},{{ trade.amount }} @ ${{ trade.avg_price }}
                           </a>
                         {% endfor %}
+                    {% else %}
+                        <h5>No trades found for this stock <a class="btn btn-success" href="{% url 'dash:add_trade' %}">Add Trade</a></h5>
                     {% endif %}
                 </ul>
               </div>
