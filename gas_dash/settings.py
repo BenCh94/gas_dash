@@ -26,7 +26,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Admins
 ADMINS = [('Ben', 'gasinvestdash@gmail.com')]
@@ -115,7 +115,7 @@ WSGI_APPLICATION = 'gas_dash.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.postgresl_psycopg2',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
