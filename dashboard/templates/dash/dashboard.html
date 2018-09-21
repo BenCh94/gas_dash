@@ -1,8 +1,9 @@
 {% extends 'dash/base.html' %}
 {% load dashboard_extras %}
 {% block head_files %}
+{% load static %}
 	<script type="text/javascript">
-		var portfolio = {{ portfolio.data|safe }};
+		var portfolio = JSON.parse({{ portfolio.data|safe }});
 	</script>
 {% endblock head_files %}
 {% block sidebar_content %}
@@ -11,7 +12,11 @@
 {% block content %}
 	{% if stocks %}
 		<div class="row">
-			<div class="col-md-9"></div>
+			<div class="col-md-9">
+				<canvas id="portfolio-chart">
+					
+				</canvas>
+			</div>
 			<div class="col-md-3">
 				<ul class="list-group list-group-flush stock_list">
 				  {% for stock in stocks %}
@@ -66,3 +71,6 @@
 		</div>
 	{% endif %}
 {% endblock content %}
+{% block footer_files %}
+	<script src="{% static 'js/portfolioChart.js' %}"></script>
+{% endblock footer_files %}
