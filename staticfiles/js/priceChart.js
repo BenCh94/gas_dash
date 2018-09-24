@@ -114,7 +114,7 @@ function drawGraph(iexdata){
 // Charts
 $(document).ready(function(){
     pricectx.height = ($(window).height())*0.45;
-    getChartData("1m");
+    getChartData("6m");
 
     $(".priceChart").click(function(e){
         $('.priceChart').removeClass('active');

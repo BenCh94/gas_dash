@@ -100,6 +100,5 @@ def update_portfolio():
 	for user in users:
 		if user.profile.has_stocks():
 			portfolio = portfolio_data(Stock.objects.filter(user_profile=user.profile))
-			print(portfolio)
 			Portfolio.objects.update_or_create(user_profile=user.profile, name=user.username, defaults={ 'data': portfolio })
 
