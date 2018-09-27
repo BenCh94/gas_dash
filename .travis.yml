@@ -14,3 +14,6 @@ language: python
 
   before_script:
     - psql -c 'create database test_db;' -U postgres
+
+  script:
+    - python manage.py test
