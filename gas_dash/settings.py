@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'coverage',
     # Disable Django's own staticfiles handling in favour of WhiteNoise, for
     # greater consistency between gunicorn and `./manage.py runserver`. See:
     # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
@@ -116,7 +117,11 @@ WSGI_APPLICATION = 'gas_dash.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresl_psycopg2',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'gaslocaldb',
+        'USER': 'dbadmin',
+        'PASSWORD': os.environ.get('db_pass'),
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
 
