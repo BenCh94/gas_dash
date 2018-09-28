@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.shortcuts import get_object_or_404
-from .factories import *
-from ..models import Stock, Trade, Portfolio, Profile, User
+from ..factories import UserFactory, StockFactory, TradeFactory
+from ...models import Stock, Trade, Profile, User
 
 
 class StockTestCase(TestCase):
@@ -27,15 +27,3 @@ class StockTestCase(TestCase):
 
 		self.assertEqual(stock.trades().count(), 1)
 		self.assertEqual(stock2.trades(), None)
-
-
-class TradeTestCase(TestCase):
-	def setUp(self):
-		user = UserFactory.create()
-		stock = stock = StockFactory.create(user_profile=user.profile)
-		trade = TradeFactory.create(stock=stock)
-
-	def test_trade_string(self):
-		trade = Trade.objects.first()
-
-		self.assertEqual(str(trade), trade.trade_type)
