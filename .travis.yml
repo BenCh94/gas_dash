@@ -1,4 +1,5 @@
 language: python
+
   python:
     - "3.6"
     - "3.7"
@@ -7,7 +8,7 @@ language: python
     - postgresql
 
   env:
-    - DJANGO=2.1, DB=postgresql
+    - DJANGO=2.1 DB=postgresql
 
   install:
     - pip install -r requirements.txt
