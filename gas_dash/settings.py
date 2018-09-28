@@ -116,7 +116,7 @@ WSGI_APPLICATION = 'gas_dash.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresl_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'gaslocaldb',
         'USER': 'dbadmin',
         'PASSWORD': os.environ.get('db_pass'),
