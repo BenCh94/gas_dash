@@ -113,10 +113,9 @@ WSGI_APPLICATION = 'gas_dash.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresl_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'gaslocaldb',
         'USER': 'dbadmin',
         'PASSWORD': os.environ.get('db_pass'),
@@ -124,6 +123,18 @@ DATABASES = {
         'PORT': '5432'
     }
 }
+
+if 'TRAVIS' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE':   'django.db.backends.postgresql',
+            'NAME':     'travisci',
+            'USER':     'postgres',
+            'PASSWORD': '',
+            'HOST':     'localhost',
+            'PORT':     '',
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
