@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import json
 from datetime import datetime
-
 from .iex_requests import stock_price
 from .models import Stock, Trade, User, Profile, Portfolio
 
@@ -25,8 +24,8 @@ def add_sell(trade, df):
 	df = df.append([new_entry], ignore_index=True)
 	return df
 
-def get_trade_data(stock):
-	trade_list = list(stock.trades().values('date', 'amount', 'fees_usd', 'stock_id', 'trade_type', 'avg_price'))
+def apply_trades(stock):
+	trade_list = list(self.trades().values('date', 'amount', 'fees_usd', 'stock_id', 'trade_type', 'avg_price'))
 	trade_df = pd.DataFrame([trade_list[0]])
 	trade_df['invested'] = (trade_df['amount']*trade_df['avg_price'])+trade_df['fees_usd']
 	del trade_list[0]
@@ -88,7 +87,7 @@ def portfolio_data(stocks):
 	stock_dfs = []
 	for stock in stocks:
 		if stock.trades():
-			trade_data = get_trade_data(stock)
+			trade_data = apply_trades(stock)
 			stock_dfs.append(get_daily_data(trade_data, stock.get_ticker()))
 	if len(stock_dfs) > 0:
 		portfolio = combine_portfolio(pd.concat(stock_dfs))

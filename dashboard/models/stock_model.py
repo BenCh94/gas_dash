@@ -1,5 +1,5 @@
 import datetime
-
+import pandas as pd 
 from django.db import models
 from django.utils import timezone
 from .trade_model import Trade
@@ -26,4 +26,4 @@ class Stock(models.Model):
 
 	def get_ticker(self):
 		return self.ticker	
-	
+		
