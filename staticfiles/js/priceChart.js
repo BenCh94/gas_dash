@@ -85,9 +85,9 @@ function drawGraph(iexdata){
         scales: {
             xAxes: [{
                 time: {
-                    unit: 'day'
-                    },
-                display: false
+                    unit: 'day',
+                },
+                display: false,
             }],
             yAxes: [{
                 id: 'price'

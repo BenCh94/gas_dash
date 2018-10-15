@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = False
 
 # Admins
-ADMINS = [('Ben', 'gasinvestdash@gmail.com')]
+ADMINS = [(os.environ.get('ADMIN'), os.environ.get('EMAIL'))]
 
 # Logging setup
 LOGGING = {
@@ -58,7 +58,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_SSL = True
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'gasinvestdash@gmail.com'
+EMAIL_HOST_USER = os.environ.get('EMAIL')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
 # Application definition

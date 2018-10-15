@@ -54,7 +54,7 @@
                         <form method="post" action=".">
                             {% csrf_token %}
                             {% for field in login_form %}
-                            <label for="id_{{ field.name }}"><i class="{% if field.name == 'username' %}fa fa-user{% else %}fa fa-unlock-alt{% endif %}"></i> {{ field.label }}</label>
+                            <label for="id_{{ field.name }}"><i class="{% if field.name == 'username' %}fa fa-user{% else %}fa fa-unlock-alt{% endif %}"></i></label>
                             {{ field }}
                             {% endfor %}
                             <hr>

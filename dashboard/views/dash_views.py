@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.contrib import messages
 from dashboard.models import Stock, Trade, Portfolio
+from dashboard.forms import PortfolioForm
 from dashboard.iex_requests import *
 from dashboard.stock_functions import get_current_quotes
 from dashboard.dash_functions import update_portfolio
@@ -16,8 +17,10 @@ def index(request):
 	profile = current_user.profile
 	stocks = Stock.objects.filter(user_profile=profile, status='a')
 	stocks = get_current_quotes(stocks)
-	portfolio = Portfolio.objects.filter(user_profile=profile).first
-	context = { 'stocks': stocks, 'portfolio': portfolio }
+	portfolio = Portfolio.objects.filter(user_profile=profile).first()
+	portfolio_form = PortfolioForm()
+	symbols = list_symbols()
+	context = { 'stocks': stocks, 'portfolio': portfolio, 'portfolio_form': portfolio_form, 'symbols': symbols }
 	return render(request, 'dash/dashboard.html', context)
 
 

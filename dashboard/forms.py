@@ -1,5 +1,5 @@
 from django import forms
-from dashboard.models import Stock, Trade
+from dashboard.models import Stock, Trade, Portfolio
 from django.forms import ModelForm, TextInput, ModelChoiceField, DateInput, PasswordInput
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -18,10 +18,14 @@ class SignUpForm(UserCreationForm):
 
 
 class LoginForm(AuthenticationForm):
-
     class Meta:
         model = User
         fields = ('username', 'password' )
+
+    def __init__(self, *args, **kwargs):
+    	super(LoginForm, self).__init__(*args, **kwargs)
+    	self.fields['username'].widget = TextInput(attrs={'placeholder': 'Username'})
+    	self.fields['password'].widget = PasswordInput(attrs={'placeholder': 'Password'})
 
 
 class StockForm(ModelForm):
@@ -61,3 +65,16 @@ class TradeForm(ModelForm):
 			'class': 'datepicker',
 			'placeholder': 'dd/mm/yyyy'
 			}, format='%d/%m/%Y')
+
+
+class PortfolioForm(ModelForm):
+	class Meta:
+		model = Portfolio
+		fields = ('name', 'benchmark')
+	
+	def __init__(self, *args, **kwargs):
+		super(PortfolioForm, self).__init__(*args, **kwargs)
+		self.fields['name'].widget = TextInput(attrs={'placeholder': 'Name'})
+		self.fields['benchmark'].widget = TextInput(attrs={
+			'id': 'autocompleteName',
+			'placeholder': 'Start typing a fund name...'})

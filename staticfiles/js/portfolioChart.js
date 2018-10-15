@@ -109,7 +109,10 @@ $(document).ready(function(){
     portfolioctx.height = ($(window).height())*0.55;
     console.log(typeof portfolio)
     drawGraph(portfolio, getGain);
-    $('#pct_gain').click(function(){
+    $('#pct_view').click(function(){
         drawGraph(portfolio, getGainPct)
+    })
+    $('#dollar_view').click(function(){
+        drawGraph(portfolio, getGain)
     })
 })
