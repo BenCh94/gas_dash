@@ -11,6 +11,7 @@ def add_buy(trade, df):
 	trade['amount'] = trade['amount'] + last_entry[0]['amount']
 	trade['fees_usd'] = trade['fees_usd'] + last_entry[0]['fees_usd']
 	trade['invested'] = trade['invested'] + last_entry[0]['invested']
+	buy_benchmark(trade)
 	df = df.append([trade], ignore_index=True)
 	return df
 
@@ -20,6 +21,7 @@ def add_sell(trade, df):
 	new_entry['amount'] = trade['amount'] - last_entry[0]['amount']
 	new_entry['fees_usd'] = trade['fees_usd'] + last_entry[0]['fees_usd']
 	new_entry['invested'] =  (last_entry[0]['invested'] - trade['invested']) + trade['fees_usd']
+	sell_benchmark(trade)
 	df = df.append([new_entry], ignore_index=True)
 	return df
 
