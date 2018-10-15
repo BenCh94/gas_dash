@@ -24,6 +24,13 @@ body {
     font-size: large;
 }
 
+.graph_settings{
+    position: absolute;
+    top: 3px;
+    right: 25px;
+    z-index: 1;
+}
+
 
 @media screen and (max-width: 768px) {
     main {
