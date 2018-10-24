@@ -5,6 +5,7 @@ class Command(BaseCommand):
 	help = "function to update users portfolios"
 
 	def handle(self, *args, **options):
+		self.stdout.write('updating portfolios...')
 		try:
 			update_portfolio()
 		except ValueError:
