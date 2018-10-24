@@ -9,7 +9,6 @@ class StockTestCase(TestCase):
 		user = UserFactory.create()
 		stock = StockFactory.create(user_profile=user.profile)
 		stock2 = StockFactory.create(user_profile=user.profile, name='testnotrades')
-		trade = TradeFactory.create(stock=stock)
 
 	def test_stock_str(self):
 		stock = get_object_or_404(Stock, name='test')
@@ -24,6 +23,7 @@ class StockTestCase(TestCase):
 	def test_stock_trades(self):
 		stock = get_object_or_404(Stock, name='test')
 		stock2 = get_object_or_404(Stock, name='testnotrades')
+		trade = TradeFactory.create(stock=stock)
 
 		self.assertEqual(stock.trades().count(), 1)
 		self.assertEqual(stock2.trades(), None)

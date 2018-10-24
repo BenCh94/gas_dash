@@ -110,9 +110,15 @@ $(document).ready(function(){
     console.log(typeof portfolio)
     drawGraph(portfolio, getGain);
     $('#pct_view').click(function(){
+         if(mixedChart){
+            mixedChart.destroy();
+        }
         drawGraph(portfolio, getGainPct)
     })
     $('#dollar_view').click(function(){
+         if(mixedChart){
+            mixedChart.destroy();
+        }
         drawGraph(portfolio, getGain)
     })
 })

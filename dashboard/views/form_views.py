@@ -4,10 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.contrib import messages
 from datetime import datetime
-from dashboard.models import Stock, Trade
-from dashboard.forms import SignUpForm, StockForm, TradeForm
-from dashboard.iex_requests import *
-from dashboard.stock_functions import recalc_stock
+from ..models import Stock, Trade
+from ..forms import SignUpForm, StockForm, TradeForm
+from ..iex_requests import list_symbols
+from ..dash_functions import apply_trades
 
 
 @login_required(login_url='/dash/login/')
@@ -40,7 +40,7 @@ def add_trade(request):
 			trade.date = d
 			trade.save()
 			messages.success(request, 'Congrats, Your trade was added!')
-			recalc_stock(trade.stock_id)
+			apply_trades(trade.stock)
 			return redirect('dash:dashboard')
 		else:
 			errors = form.errors
