@@ -7,7 +7,7 @@ from datetime import datetime
 from ..models import Stock, Trade
 from ..forms import SignUpForm, StockForm, TradeForm
 from ..iex_requests import list_symbols
-from ..stock_functions import recalculate
+from ..dash_functions import apply_trades
 
 
 @login_required(login_url='/dash/login/')
@@ -40,7 +40,7 @@ def add_trade(request):
 			trade.date = d
 			trade.save()
 			messages.success(request, 'Congrats, Your trade was added!')
-			recalculate(trade.stock)
+			apply_trades(trade.stock)
 			return redirect('dash:dashboard')
 		else:
 			errors = form.errors

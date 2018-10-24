@@ -39,6 +39,10 @@ def apply_trades(stock):
 			trade_df = add_buy(trade, trade_df)
 		else:
 			trade_df = add_sell(trade, trade_df)
+	stock.invested = trade_df['invested'].iloc[-1]
+	stock.quantity = trade_df['amount'].iloc[-1]
+	stock.fees_usd = trade_df['fees_usd'].iloc[-1]
+	stock.save()
 	return trade_df
 
 def apply_trade_data(df, trade):
