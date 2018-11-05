@@ -6,6 +6,10 @@ from datetime import datetime
 from .iex_requests import stock_price
 from .models import Stock, Trade, User, Profile, Portfolio
 
+def buy_benchmark(trade):
+	# add benchmark trade
+	return None
+
 def add_buy(trade, df):
 	last_entry = df.tail(1).to_dict(orient='records')
 	trade['amount'] = trade['amount'] + last_entry[0]['amount']
