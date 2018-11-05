@@ -2,13 +2,19 @@ import pandas as pd
 import numpy as np
 import json
 from datetime import datetime
-
+from django.shortcuts import get_object_or_404
 from .iex_requests import stock_price
-from .models import Stock, Trade, User, Profile, Portfolio
+from .models import Stock, Trade, User, Profile, Portfolio, Benchmark
 
 def buy_benchmark(trade):
-	# add benchmark trade
-	return None
+	stock = Stock.objects.get(pk=trade['stock_id'])
+	portfolio = Portfolio.objects.filter(user_profile=stock.user_profile).first()
+	benchmark = Benchmark.objects.filter(pk=portfolio.benchmark_id).first()
+	if benchmark:
+		buy_amount = trade['invested'] - trade['fees_usd']
+		bench_chart = stock_price(benchmark.ticker)
+	else:
+		return None
 
 def add_buy(trade, df):
 	last_entry = df.tail(1).to_dict(orient='records')

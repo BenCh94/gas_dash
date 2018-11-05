@@ -78,3 +78,5 @@ class PortfolioForm(ModelForm):
 		self.fields['benchmark'].widget = TextInput(attrs={
 			'id': 'autocompleteName',
 			'placeholder': 'Start typing a fund name...'})
+		self.fields['ticker'].widget = forms.HiddenInput()
+
