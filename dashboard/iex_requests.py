@@ -3,17 +3,17 @@ import requests as r
 import pandas as pd 
 import json
 
-iex_base_url = "https://api.iextrading.com/1.0/"
+iex_base_url = "https://api.iextrading.com/1.0"
 
 def list_symbols():
-	req = r.get(iex_base_url+"ref-data/symbols") 
+	req = r.get(iex_base_url+"/ref-data/symbols") 
 	symbols = req.json()
 	symbol_list = [{'data':stock['symbol'], 'value':stock['name']} for stock in symbols]
 	return symbol_list
 
 def stock_price(ticker):
 	""" Function gets share chart 5y"""
-	req = r.get(iex_base_url+"stock/"+ ticker +"/chart/5y")
+	req = r.get(iex_base_url+"/stock/"+ ticker +"/chart/5y")
 	prices = req.json()
 	return prices
 

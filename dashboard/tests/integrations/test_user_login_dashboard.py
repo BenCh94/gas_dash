@@ -1,18 +1,21 @@
 # tests valid user can login to the dashboard (uses selenium)
 from django.shortcuts import get_object_or_404
+from django.test.utils import override_settings
 from ...models import Stock, Trade, Profile, User
 from ..factories import UserFactory, StockFactory, TradeFactory
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase, LiveServerTestCase
 from selenium.webdriver.chrome.webdriver import WebDriver
 
-class TestLogin(StaticLiveServerTestCase):
-
+class TestLogin(LiveServerTestCase):
+    
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
         cls.selenium = WebDriver('/home/ben/path_executable/chromedriver')
         cls.selenium.implicitly_wait(10)
         user = UserFactory.create(username='login_user')
+        user.set_password('test12345')
+        user.save()
 
     @classmethod
     def tearDownClass(cls):
@@ -28,13 +31,11 @@ class TestLogin(StaticLiveServerTestCase):
         self.selenium.find_element_by_id('sign_in').click()
         self.assertIn('%s%s' % (self.live_server_url, '/dash/login/'), self.selenium.current_url)
         # Test filling in form with users credentials
-        username_input = self.selenium.find_element_by_id("id_username")
-        username_input.send_keys(user.username)
-        pass_input = self.selenium.find_element_by_id("id_password")
-        pass_input.send_keys(user.password)
-        self.selenium.find_element_by_name("submit").click()
+        self.selenium.find_element_by_id('login_username').send_keys(user.username)
+        self.selenium.find_element_by_id('login_password').send_keys('test12345')
+        self.selenium.find_element_by_id('login_submit').click()
         # Test dashboard shows correctly
         self.assertIn('%s%s' % (self.live_server_url, '/dash/'), self.selenium.current_url)
         stock_card = self.selenium.find_element_by_id(stock.ticker)
-        card_name = stock_card.find_element_by_class_name('stock_name').text()
+        card_name = stock_card.find_element_by_class_name('stock_name').text
         self.assertIn(stock.name, card_name)

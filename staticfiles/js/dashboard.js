@@ -17,4 +17,8 @@ $(document).ready(function(){
 		$('.sidebar').toggleClass('active');
 		$('.overlay').toggleClass('active');
 	})
+
+	$('#graph_timelines').on('click', function(){
+		$('#time_btns').show()
+	})
 })

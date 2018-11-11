@@ -16,3 +16,8 @@ install:
 
 script:
   - python manage.py test
+
+addons:
+  sauce_connect:
+    username: ""
+    access_key: ""
