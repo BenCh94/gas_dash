@@ -1,23 +1,18 @@
 language: python
 python:
-  - "3.6"
-
+- '3.6'
 services:
-  - postgresql
-
-addons:
-  postgresql: '9.4'
-
-before_script:
-  - psql -c 'create database travis_ci_test;' -U postgres
-
-install:
-  - pip install -r requirements.txt
-
-script:
-  - python manage.py test
-
+- postgresql
 addons:
   sauce_connect:
-    username: ""
-    access_key: ""
+    username:
+      secure: "j93jYenrggqqNmKgkL+rk/lx2ecuVGFMRBHBVSx45NdZ986RS0dIOgwavBehIX0WAhAaoCAapPH7dzFnR+4NPox75kK2RU5qLPMNy59t9a/h1DyD0rGddP+f5uZhkdT0mqk6STI8zzZ2apxke9OmjbAR9wLgsYuEKALuGLn7bt0r96k7TEvBbqRPAsEjZ2bqnaQxAeEEZmvwP0xRNyP61r+riZOSfVtSfaVQT5OKS+MP3l+xNHpGkHGzvABwNvuJCdBFBTk32QYv0SEJr5xMY7qB3i0XuBolyMBnaTrC7dMK22ImmwBElYQm14+BRgYnvIbLjwiHES/FTagKPDFeTElhddjJAjugInGxp9IgZXNP7uKa1ioz/lxht+tY9J67Y3p7SxLVowrOAW3/CwTKZRaNADlSZWd4B88zIpNl30k6o+GkeIhk1kMn10RoT0SMbA2x47R8Qt6E964Vdm606oW/1nmtjToOxY5nmL97FbVA+WsgSUnVWUG9xATHzyWu/nikYNyWRda3hBPQ19CZHph5lh+sumPRKlUPZ37Hwfe0inqiiryWmTu6zHbfEdZPmLc9dc5APLfMTI+kHxvc9sjdOX0P1khXnutxGgJF6spALW9xhBrn3UNIpvLhSnESFQVc8WI0URPvsZ+r6EwuzMO9lwDbe7VMtfVoBt6nb10="
+    access_key:
+      secure: "AuGRWjcfiD/2mrK+ycfrRDvIDElxHiJIFz7DyisqBNmiJM6z1CMhobfGBxnVkw92asZrynfT9A3p+PPHWYyCHuw9A7XKXNmjcvy1euvapWMDocBoF+Tu7VNU/jKas8CFY9fjMe7ZX8kXI/08E1Cv868GaSvLoU8TURFCbPxpIvMfEhi34gIGdlkOGskP55oBJ9EcL9exfXsK4wCoRdyrKKGnUl8eZQ2d2qW1XJ2RVW2Fp7zy8OocWU1ea41aOonTrUEVFM4iE61EDQ6mOLib166IM7gUK+YMM9rCg77SYCal7D4bptgN9Dt71FSK7lKdfdyQGdfHXvolp8PMWPGiK26tcpqhukwxBCcMdJ48KjrCUF7QXL0IVNqCRO6I04EvOZFGm53eM/P4KXhUp0WbnITGxAhQ1jokdckKK3IQyDr+4ir0iMjBSC32yMPHohJEy6pyuORckaTvOB+OEdULu/M6LeHA+19BPfhpMK/lUR6TSHTQvwiFoR93hzuLORFFNMBB1+fb4YHjQJTVqV9BE7L5/LioTXJkZ1Ae85pVu4oDfsPoG2wtkexiIoPH0oSCQ4XfnsqPx4D8b3jw0TZ5ymgqpsYOjzy8qYAn7AL0lJLOu0pGfU6FfDFo+kIkI9ez4AnxhG7lPdmjcWCyKlJOlPypnOFkx4o6wK3X0AsIars="
+
+before_script:
+- psql -c 'create database travis_ci_test;' -U postgres
+install:
+- pip install -r requirements.txt
+script:
+- python manage.py test
