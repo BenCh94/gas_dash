@@ -13,13 +13,6 @@ from ..factories import UserFactory, StockFactory, TradeFactory
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase, LiveServerTestCase
 from selenium.webdriver.chrome.webdriver import WebDriver
 
-desired_cap = {
-    'platform': "Mac OS X 10.12",
-    'browserName': "chrome",
-    'version': "latest",
-}
-username = os.environ['SAUCE_USERNAME']
-access_key = os.environ['SAUCE_ACCESS_KEY']
 
 class TestLogin(LiveServerTestCase):
     
@@ -27,7 +20,13 @@ class TestLogin(LiveServerTestCase):
     def setUpClass(cls):
         super().setUpClass()
         if 'TRAVIS' in os.environ:
-            cls.selenium = webdriver.Remote(command_executor='https://{}:{}@ondemand.saucelabs.com/wd/hub'.format(username, access_key), desired_capabilities=desired_cap)
+            username = os.environ['SAUCE_USERNAME']
+            access_key = os.environ['SAUCE_ACCESS_KEY']
+            capabilities['tunnel-identifier'] = os.environ["TRAVIS_JOB_NUMBER"]
+            capabilities["build"] = os.environ["TRAVIS_BUILD_NUMBER"]
+            capabilities["tags"] = [os.environ["TRAVIS_PYTHON_VERSION"], "CI"]
+            hub_url = "%s:%s@localhost:4445" % (username, access_key)
+            cls.selenium = webdriver.Remote(desired_capabilities=capabilities, command_executor="http://%s/wd/hub" % hub_url)
         else:
             cls.selenium = WebDriver('/home/ben/path_executable/chromedriver')
         cls.selenium.implicitly_wait(10)
