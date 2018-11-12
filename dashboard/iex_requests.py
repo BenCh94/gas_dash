@@ -35,7 +35,7 @@ def get_stock_logo(ticker):
 def stock_profile(ticker):
     """ Batch request for company details and logo url """
     batch_reqs = "/batch?types=company,logo,stats&range=5y"
-    profile_req = r.get(iex_base_url+"stock/"+ ticker + batch_reqs)
+    profile_req = r.get(iex_base_url+"/stock/"+ ticker + batch_reqs)
     profile_data = json.loads(profile_req.text)
     return profile_data
 
