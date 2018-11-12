@@ -126,10 +126,14 @@ $(document).ready(function(){
         }
         console.log(time)
         getChartData(time);
+        $('#time_btns').hide()
+        $('#graph_timelines').show()
     })
     $('#timeIn').click(function(){
         $('.priceChart').removeClass('active');
         $('#timeIn').addClass('active');
         drawGraph("5y");
+        $('#time_btns').hide()
+        $('#graph_timelines').show()
     })
 })
