@@ -22,6 +22,7 @@ class TestLogin(LiveServerTestCase):
         if 'TRAVIS' in os.environ:
             username = os.environ['SAUCE_USERNAME']
             access_key = os.environ['SAUCE_ACCESS_KEY']
+            capabilities = Dict()
             capabilities['tunnel-identifier'] = os.environ["TRAVIS_JOB_NUMBER"]
             capabilities["build"] = os.environ["TRAVIS_BUILD_NUMBER"]
             capabilities["tags"] = [os.environ["TRAVIS_PYTHON_VERSION"], "CI"]
