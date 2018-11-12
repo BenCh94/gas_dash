@@ -6,3 +6,4 @@ venv
 staticfiles.json
 .coverage
 htmlcov
+seed_data.json

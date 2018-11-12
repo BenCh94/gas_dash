@@ -6,9 +6,10 @@ from django.contrib.postgres.fields import JSONField
 
 class Portfolio(models.Model):
 	user_profile = models.ForeignKey('dashboard.Profile', on_delete=models.CASCADE)
-	benchmark = models.ForeignKey('dashboard.Benchmark', on_delete=models.SET_NULL, null=True)
 	data = JSONField()
 	name = models.CharField(max_length=200)
+	benchmark_name = models.CharField(max_length=200, null=True)
+	benchmark_ticker = models.CharField(max_length=5, null=True)
 	def __str__(self):
 		return self.name
 

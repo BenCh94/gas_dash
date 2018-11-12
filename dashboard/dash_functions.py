@@ -16,6 +16,10 @@ def buy_benchmark(trade):
 	else:
 		return None
 
+def buy_benchmark(trade):
+	return 'none'
+
+
 def add_buy(trade, df):
 	last_entry = df.tail(1).to_dict(orient='records')
 	trade['amount'] = trade['amount'] + last_entry[0]['amount']
@@ -35,7 +39,7 @@ def add_sell(trade, df):
 	df = df.append([new_entry], ignore_index=True)
 	return df
 
-def get_trade_data(stock):
+def apply_trades(stock):
 	trade_list = list(stock.trades().values('date', 'amount', 'fees_usd', 'stock_id', 'trade_type', 'avg_price'))
 	trade_df = pd.DataFrame([trade_list[0]])
 	trade_df['invested'] = (trade_df['amount']*trade_df['avg_price'])+trade_df['fees_usd']
@@ -46,6 +50,10 @@ def get_trade_data(stock):
 			trade_df = add_buy(trade, trade_df)
 		else:
 			trade_df = add_sell(trade, trade_df)
+	stock.invested = trade_df['invested'].iloc[-1]
+	stock.quantity = trade_df['amount'].iloc[-1]
+	stock.fees_usd = trade_df['fees_usd'].iloc[-1]
+	stock.save()
 	return trade_df
 
 def apply_trade_data(df, trade):
@@ -98,7 +106,7 @@ def portfolio_data(stocks):
 	stock_dfs = []
 	for stock in stocks:
 		if stock.trades():
-			trade_data = get_trade_data(stock)
+			trade_data = apply_trades(stock)
 			stock_dfs.append(get_daily_data(trade_data, stock.get_ticker()))
 	if len(stock_dfs) > 0:
 		portfolio = combine_portfolio(pd.concat(stock_dfs))
@@ -112,5 +120,7 @@ def update_portfolio():
 	for user in users:
 		if user.profile.has_stocks():
 			portfolio = portfolio_data(Stock.objects.filter(user_profile=user.profile))
+			print(user.username)
 			Portfolio.objects.update_or_create(user_profile=user.profile, name=user.username, defaults={ 'data': portfolio })
+			print('Done')
 

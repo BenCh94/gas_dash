@@ -27,6 +27,12 @@ def index(request):
 	profile = current_user.profile
 	stocks = Stock.objects.filter(user_profile=profile, status='a')
 	stocks = get_current_quotes(stocks)
+	if request.method == 'POST':
+		form = PortfolioForm(request.POST)
+		if form.is_valid():
+			Portfolio.objects.filter(user_profile=profile).update(name=request.POST['name'], benchmark_name=request.POST['benchmark_name'], benchmark_ticker=request.POST['benchmark_ticker'])
+			messages.success(request, 'Congrats, Your portfolio was updated!')
+			return redirect('dash:dashboard')
 	portfolio = Portfolio.objects.filter(user_profile=profile).first()
 	portfolio_form = PortfolioForm()
 	symbols = list_symbols()
