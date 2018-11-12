@@ -4,19 +4,24 @@ import json
 from datetime import datetime
 from django.shortcuts import get_object_or_404
 from .iex_requests import stock_price
-from .models import Stock, Trade, User, Profile, Portfolio, Benchmark
+from .models import Stock, Trade, User, Profile, Portfolio
 
 def buy_benchmark(trade):
 	stock = Stock.objects.get(pk=trade['stock_id'])
 	portfolio = Portfolio.objects.filter(user_profile=stock.user_profile).first()
-	benchmark = Benchmark.objects.filter(pk=portfolio.benchmark_id).first()
+	benchmark = portfolio.benchmark_ticker
 	if benchmark:
+		# Get benchmark price on trade day
 		buy_amount = trade['invested'] - trade['fees_usd']
-		bench_chart = stock_price(benchmark.ticker)
+		bench_chart = stock_price(benchmark)
+		day = [day for day in bench_chart if day.get('date') == str(trade['date'])]
+		# Average open/close and purchase amount
+		price = (day[0]['open']+day[0]['close'])/2
+		trade['bench_amnt'] = buy_amount*price
 	else:
 		return None
 
-def buy_benchmark(trade):
+def sell_benchmark(trade):
 	return 'none'
 
 
