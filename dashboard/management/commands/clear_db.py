@@ -15,7 +15,6 @@ class Command(BaseCommand):
 def clear_data():
     """Deletes all the table data"""
     logger.info("Delete all tables")
-    Benchmark.objects.all().delete()
     Portfolio.objects.all().delete()
     Stock.objects.all().delete()
     Trade.objects.all().delete()

@@ -77,11 +77,14 @@ class TradeForm(ModelForm):
 class PortfolioForm(ModelForm):
 	class Meta:
 		model = Portfolio
-		fields = ('name', 'benchmark')
+		fields = ('name', 'benchmark_name', 'benchmark_ticker')
 	
 	def __init__(self, *args, **kwargs):
 		super(PortfolioForm, self).__init__(*args, **kwargs)
 		self.fields['name'].widget = TextInput(attrs={'placeholder': 'Name'})
-		self.fields['benchmark'].widget = TextInput(attrs={
+		self.fields['benchmark_name'].widget = TextInput(attrs={
 			'id': 'autocompleteName',
 			'placeholder': 'Start typing a fund name...'})
+		self.fields['benchmark_ticker'].widget = forms.HiddenInput()
+
+
