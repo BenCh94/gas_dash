@@ -13,10 +13,26 @@ from dashboard.dash_functions import update_portfolio
 @login_required(login_url='/dash/login/')
 def index(request):
 	""" The home dashboards view """
+	if request.method == 'POST':
+		# Create form instance and populate with data from request
+		form = PortfolioForm(request.POST)
+		benchmark_ticker = form.benchmark
+		if form.is_valid():
+			portfolio = form.save(commit=False)
+			portfolio.user_profile_id = request.user.profile.id
+			portfolio.save()
+			messages.success(request, 'Congrats, Your portfolio was updated!')
+			return redirect('dash:dashboard')
 	current_user = request.user
 	profile = current_user.profile
 	stocks = Stock.objects.filter(user_profile=profile, status='a')
 	stocks = get_current_quotes(stocks)
+	if request.method == 'POST':
+		form = PortfolioForm(request.POST)
+		if form.is_valid():
+			Portfolio.objects.filter(user_profile=profile).update(name=request.POST['name'], benchmark_name=request.POST['benchmark_name'], benchmark_ticker=request.POST['benchmark_ticker'])
+			messages.success(request, 'Congrats, Your portfolio was updated!')
+			return redirect('dash:dashboard')
 	portfolio = Portfolio.objects.filter(user_profile=profile).first()
 	portfolio_form = PortfolioForm()
 	symbols = list_symbols()

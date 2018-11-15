@@ -26,7 +26,16 @@ function getGainPct(data){
 function getBenchmark(data){
     var benchmarks = []
     data.forEach(function(d){
-        benchmarks.push(Number(d.benchmark_gain))
+        benchmarks.push(Number(d.bench_gain))
+    })
+    console.log(benchmarks)
+    return benchmarks
+}
+
+function getBenchmarkPct(data){
+    var benchmarks = []
+    data.forEach(function(d){
+        benchmarks.push(Number(d.bench_gain_pct))
     })
     console.log(benchmarks)
     return benchmarks
@@ -42,13 +51,13 @@ function getDailyLabels(data){
     return days
 }
 
-function drawGraph(portfolio, metric){
+function drawGraph(portfolio, metric, benchMetric, symbol){
     // Chart settings
 
     graphData =  {
         labels: getDailyLabels(portfolio),
         datasets: [{
-            label: "Gain ($)",
+            label: "Gain "+symbol,
             backgroundColor: 'rgb(45, 134, 51, 0.2)',
             borderColor: 'rgb(45, 134, 51)',
             data: metric(portfolio),
@@ -57,8 +66,9 @@ function drawGraph(portfolio, metric){
         },
         {
             label: "Benchmark",
-            data: getBenchmark(portfolio),
-            yAxisID: 'benchmark'
+            data: benchMetric(portfolio),
+            yAxisID: 'gain',
+            type: 'line',
         }],
     };
 
@@ -108,17 +118,17 @@ function drawGraph(portfolio, metric){
 $(document).ready(function(){
     portfolioctx.height = ($(window).height())*0.55;
     console.log(typeof portfolio)
-    drawGraph(portfolio, getGain);
+    drawGraph(portfolio, getGain, getBenchmark, '$');
     $('#pct_view').click(function(){
          if(mixedChart){
             mixedChart.destroy();
         }
-        drawGraph(portfolio, getGainPct)
+        drawGraph(portfolio, getGainPct, getBenchmarkPct, '%')
     })
     $('#dollar_view').click(function(){
          if(mixedChart){
             mixedChart.destroy();
         }
-        drawGraph(portfolio, getGain)
+        drawGraph(portfolio, getGain, getBenchmark, '$')
     })
 })

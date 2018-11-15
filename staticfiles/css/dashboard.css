@@ -19,6 +19,10 @@ i {
     text-align: center;
 }
 
+.messages {
+    z-index: 1;
+}
+
 #main_nav {
     box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
 }

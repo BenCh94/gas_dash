@@ -46,3 +46,10 @@ def batch_quotes(tickers):
     quotes_req = r.get(iex_base_url + batch_reqs)
     quotes = quotes_req.json()
     return quotes
+
+def batch_price(tickers):
+    """ Batch request for most recent quotes """
+    batch_reqs = "/stock/market/batch?symbols=" + tickers + "&types=chart&range=5y"
+    quotes_req = r.get(iex_base_url + batch_reqs)
+    quotes = quotes_req.json()
+    return quotes
