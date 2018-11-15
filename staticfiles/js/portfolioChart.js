@@ -67,7 +67,7 @@ function drawGraph(portfolio, metric, benchMetric, symbol){
         {
             label: "Benchmark",
             data: benchMetric(portfolio),
-            yAxisID: 'benchmark',
+            yAxisID: 'gain',
             type: 'line',
         }],
     };

@@ -31,8 +31,9 @@ def portfolio_data(stocks):
 def apply_trades(stock):
 	trade_list = list(stock.trades().values('date', 'amount', 'fees_usd', 'stock_id', 'trade_type', 'avg_price'))
 	trade_list[0]['invested'] = (trade_list[0]['amount']*trade_list[0]['avg_price'])+trade_list[0]['fees_usd']
-	buy_benchmark(trade_list[0])
-	trade_df = pd.DataFrame([trade_list[0]])
+	init_trade = buy_benchmark(trade_list[0])
+	print(init_trade)
+	trade_df = pd.DataFrame(init_trade, index=[0])
 	del trade_list[0]
 	for trade in trade_list:
 		trade['invested'] = (trade['amount']*trade['avg_price'])+trade['fees_usd']
@@ -59,7 +60,7 @@ def add_buy(trade, df):
 	trade['amount'] = trade['amount'] + last_entry[0]['amount']
 	trade['fees_usd'] = trade['fees_usd'] + last_entry[0]['fees_usd']
 	trade['invested'] = trade['invested'] + last_entry[0]['invested']
-	trade = buy_benchmark(trade)
+	trade = add_benchmark(trade, last_entry)
 	df = df.append([trade], ignore_index=True)
 	return df
 
@@ -90,6 +91,19 @@ def buy_benchmark(trade):
 	else:
 		trade['benchmark'] = 'None'
 		return trade
+
+def add_benchmark(trade, last_entry):
+	if last_entry[0]['benchmark'] != 'None':
+		buy_amount = trade['invested'] - trade['fees_usd']
+		bench_chart = stock_price(last_entry[0]['benchmark'])
+		day = [day for day in bench_chart if day.get('date') == str(trade['date'])]
+		# Average open/close and purchase amount
+		price = (day[0]['open']+day[0]['close'])/2
+		trade['bench_amnt'] = buy_amount/price
+		trade['benchmark'] = last_entry[0]['benchmark']
+	trade['bench_amnt'] = trade['bench_amnt'] + last_entry[0]['bench_amnt']
+	trade = buy_benchmark(trade)
+	return trade
 
 def sell_benchmark(trade):
 	return 'none'
@@ -131,7 +145,7 @@ def apply_final_benchmark(df, trade):
 		bench_chart = pd.DataFrame(stock_price(str(trade['benchmark'])))
 		bench_chart['date'] = pd.to_datetime(bench_chart['date'])
 		bench_prices = bench_chart[bench_chart['date'] >= trade['date']]
-		df['bench_value'] = bench_prices['close']*trade['amount']
+		df['bench_value'] = bench_prices['close']*trade['bench_amnt']
 		df['bench_gain'] = df['bench_value'] - df['invested']
 		df['bench_gain_pct'] = (df['bench_gain']/df['invested'])*100
 		return df
