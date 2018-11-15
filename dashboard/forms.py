@@ -16,6 +16,13 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('username', 'email', 'password1', 'password2' )
 
+    def __init__(self, *args, **kwargs):
+    	super(SignUpForm, self).__init__(*args, **kwargs)
+    	self.fields['username'].widget = TextInput(attrs={'placeholder': 'Username', 'id': 'register_username'})
+    	self.fields['email'].widget = TextInput(attrs={'placeholder': 'E-mail', 'id': 'register_email'})
+    	self.fields['password1'].widget = PasswordInput(attrs={'placeholder': 'Password', 'id': 'register_password1'})
+    	self.fields['password2'].widget = PasswordInput(attrs={'placeholder': 'Confirm Password', 'id': 'register_password2'})
+
 
 class LoginForm(AuthenticationForm):
     class Meta:
@@ -24,8 +31,8 @@ class LoginForm(AuthenticationForm):
 
     def __init__(self, *args, **kwargs):
     	super(LoginForm, self).__init__(*args, **kwargs)
-    	self.fields['username'].widget = TextInput(attrs={'placeholder': 'Username'})
-    	self.fields['password'].widget = PasswordInput(attrs={'placeholder': 'Password'})
+    	self.fields['username'].widget = TextInput(attrs={'placeholder': 'Username', 'id': 'login_username'})
+    	self.fields['password'].widget = PasswordInput(attrs={'placeholder': 'Password', 'id': 'login_password'})
 
 
 class StockForm(ModelForm):
@@ -70,11 +77,14 @@ class TradeForm(ModelForm):
 class PortfolioForm(ModelForm):
 	class Meta:
 		model = Portfolio
-		fields = ('name', 'benchmark')
+		fields = ('name', 'benchmark_name', 'benchmark_ticker')
 	
 	def __init__(self, *args, **kwargs):
 		super(PortfolioForm, self).__init__(*args, **kwargs)
 		self.fields['name'].widget = TextInput(attrs={'placeholder': 'Name'})
-		self.fields['benchmark'].widget = TextInput(attrs={
+		self.fields['benchmark_name'].widget = TextInput(attrs={
 			'id': 'autocompleteName',
 			'placeholder': 'Start typing a fund name...'})
+		self.fields['benchmark_ticker'].widget = forms.HiddenInput()
+
+

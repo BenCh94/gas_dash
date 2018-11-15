@@ -8,7 +8,7 @@ class StockFactory(factory.django.DjangoModelFactory):
 		model = Stock
 
 	name = 'test'
-	ticker = 'aaa'
+	ticker = 'DIS' # Needs a real ticker for testing requests
 	quantity = 1
 	invested = 10
 	fees_usd = 2.99

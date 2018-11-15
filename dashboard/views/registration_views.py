@@ -9,7 +9,7 @@ def signup(request):
         if request.POST.get('submit') == 'login':
             username = request.POST.get('username')
             raw_password = request.POST.get('password')
-            user = authenticate(request, username=username, password=raw_password)
+            user = authenticate(username=username, password=raw_password)
             if user is not None:
                 login(request, user)
                 if request.GET:
@@ -32,7 +32,7 @@ def signup(request):
     signup_form = SignUpForm()
     login_form = LoginForm()
     print(errors)
-    return render(request, 'registration/signup.html', {'signup_form': signup_form, 'login_form': login_form})
+    return render(request, 'registration/login.html', {'signup_form': signup_form, 'login_form': login_form, 'errors': errors, 'page': 'register'})
 
 
 def login_view(request):
@@ -64,6 +64,6 @@ def login_view(request):
                 errors['error'] = form.errors
     signup_form = SignUpForm()
     login_form = LoginForm()
-    return render(request, 'registration/login.html', {'signup_form': signup_form, 'login_form': login_form, 'errors': errors})    
+    return render(request, 'registration/login.html', {'signup_form': signup_form, 'login_form': login_form, 'errors': errors, 'page': 'login'})    
 
 

@@ -7,6 +7,22 @@ body {
   	min-height: 100vh;
 }
 
+a {
+   color: #ffffff; 
+}
+
+a:hover {
+    color: #797D7C;
+}
+
+i {
+    text-align: center;
+}
+
+.messages {
+    z-index: 1;
+}
+
 #main_nav {
     box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
 }
@@ -116,9 +132,9 @@ Once graphs have been added set stock list height based off graph height*/
     overflow-y: scroll;
 }*/
 
-#price_charts{
+#time_btns{
     position: absolute;
-    top: 5px;
+    top: 3px;
     right: 10px;
     z-index: 1;
 }
@@ -130,8 +146,8 @@ Once graphs have been added set stock list height based off graph height*/
 #tickerDrop {
     background-color: #343a40!important;
     width: 60%;
-    color: #007bff;
-    border-color: #007bff;
+    color: #ffffff;
+    border-color: #ffffff;
 }
 
 .tickerOption {

@@ -77,8 +77,10 @@
 		  	{% if field.name == 'name' %}
             <label for="id_{{ field.name }}"><i class="fas fa-pen"></i> Name</label>
             <input type="text" name="name" value="{{ portfolio.name }}" required="" id="id_name">
+            {% elif field.name == 'benchmark_name' %}
+            <label for="autocompleteName"><i class="fa fa-chart-line"></i> Benchmark</label>
+            <input type="text" name="benchmark_name" value="{{ portfolio.benchmark_name }}" placeholder="Start typing a fund name..."" id="autocompleteName">
             {% else %}
-            <label for="id_{{ field.name }}"><i class="fa fa-chart-line"></i> Benchmark</label>
             {{ field }}
             {% endif %}
             {% endfor %}
