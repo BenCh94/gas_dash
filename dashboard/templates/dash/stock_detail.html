@@ -1,4 +1,5 @@
 {% extends 'dash/base.html' %}
+{% load dashboard_extras %}
 {% block head_files %}
 {% load static %}
 <script type="text/javascript">
@@ -125,8 +126,12 @@
               <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <p>Amount: {{ stock_data.stock.quantity }}</p>
                 <p>
-                 Market Cap: {{ stock_data.stats.marketcap }}   
+                 Market Cap: {{ stock_data.stats.marketcap|big_number }}   
                 </p>
+                <p>Cash: {{ stock_data.stats.cash|big_number }}</p>
+                <p>Short Interest: {{ stock_data.stats.shortInterest|big_number }}</p>
+                <p>Revenue: {{ stock_data.stats.revenue|big_number }}</p>
+                <p>Debt: {{ stock_data.stats.debt|big_number }}</p>
               </div>
               <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">2...</div>
               <div class="tab-pane fade" id="trades" role="tabpanel" aria-labelledby="trades-tab">
