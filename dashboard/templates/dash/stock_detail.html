@@ -124,14 +124,28 @@
         <div class="card-body">
             <div class="tab-content" id="stockTabContent">
               <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <p>Amount: {{ stock_data.stock.quantity }}</p>
-                <p>
-                 Market Cap: {{ stock_data.stats.marketcap|big_number }}   
-                </p>
-                <p>Cash: {{ stock_data.stats.cash|big_number }}</p>
-                <p>Short Interest: {{ stock_data.stats.shortInterest|big_number }}</p>
-                <p>Revenue: {{ stock_data.stats.revenue|big_number }}</p>
-                <p>Debt: {{ stock_data.stats.debt|big_number }}</p>
+                <table class="table table-dark">
+                  <thead>
+                    <tr>
+                      <th scope="col">Amount</th>
+                      <th scope="col">Market Cap</th>
+                      <th scope="col">Cash</th>
+                      <th scope="col">Debt</th>
+                      <th scope="col">Revenue</th>
+                      <th scope="col">Short Interest</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{ stock_data.stock.quantity }}</th>
+                      <td>${{ stock_data.stats.marketcap|big_number }}</td>
+                      <td>${{ stock_data.stats.cash|big_number }}</td>
+                      <td>${{ stock_data.stats.debt|big_number }}</td>
+                      <td>${{ stock_data.stats.revenue|big_number }}</td>
+                      <td>${{ stock_data.stats.shortInterest|big_number }}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
               <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">2...</div>
               <div class="tab-pane fade" id="trades" role="tabpanel" aria-labelledby="trades-tab">
