@@ -20,17 +20,12 @@ class TestLogin(LiveServerTestCase):
     def setUpClass(cls):
         super().setUpClass()
         if 'TRAVIS' in os.environ:
-            username = os.environ['SAUCE_USERNAME']
-            access_key = os.environ['SAUCE_ACCESS_KEY']
-            capabilities = {}
-            capabilities['browserName'] = "chrome"
-            capabilities['platform'] = "Linux"
-            capabilities['version'] = "48.0"
-            capabilities['tunnel-identifier'] = os.environ["TRAVIS_JOB_NUMBER"]
-            capabilities["build"] = os.environ["TRAVIS_BUILD_NUMBER"]
-            capabilities["tags"] = [os.environ["TRAVIS_PYTHON_VERSION"], "CI"]
-            hub_url = "%s:%s@localhost:4445" % (username, access_key)
-            cls.selenium = webdriver.Remote(desired_capabilities=capabilities, command_executor="http://%s/wd/hub" % hub_url)
+            chrome_options = webdriver.ChromeOPtions()
+            chrome_options.add_argument('--no-snadbox')
+            chrome_options.add_argument('--window-size=1420,1080')
+            chrome_options.add_argument('--headless')
+            chrome_options.add_argument('--disbale-gpu')
+            cls.selenium = webdriver.Chrome(chrome_options=chrome_options)
         else:
             cls.selenium = WebDriver('/home/ben/path_executable/chromedriver')
         cls.selenium.implicitly_wait(10)
