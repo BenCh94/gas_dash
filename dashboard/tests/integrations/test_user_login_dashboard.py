@@ -21,7 +21,7 @@ class TestLogin(LiveServerTestCase):
         super().setUpClass()
         if 'TRAVIS' in os.environ:
             chrome_options = webdriver.ChromeOptions()
-            chrome_options.binary_location('/usr/local/bin/chromedriver')
+            chrome_options.binary_location = "/usr/local/bin/chromedriver"
             chrome_options.add_argument('--no-snadbox')
             chrome_options.add_argument('--window-size=1420,1080')
             chrome_options.add_argument('--headless')
