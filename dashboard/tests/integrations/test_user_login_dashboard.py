@@ -26,7 +26,7 @@ class TestLogin(LiveServerTestCase):
             chrome_options.add_argument('--window-size=1420,1080')
             chrome_options.add_argument('--headless')
             chrome_options.add_argument('--disbale-gpu')
-            cls.selenium = webdriver.Chrome(chrome_options=chrome_options, executable_path="/usr/local/share/chromedriver")
+            cls.selenium = webdriver.Chrome(chrome_options=chrome_options, executable_path="/usr/local/bin/chromedriver")
         else:
             cls.selenium = WebDriver('/home/ben/path_executable/chromedriver')
         cls.selenium.implicitly_wait(10)
