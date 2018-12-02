@@ -26,6 +26,7 @@ class TestLogin(LiveServerTestCase):
             chrome_options.add_argument('--headless')
             chrome_options.add_argument('--disbale-gpu')
             chrome_options.add_argument("--disable-dev-shm-usage")
+            chrome_options.binary_location = "/usr/local/bin/chromedriver"
             cls.selenium = webdriver.Chrome(chrome_options=chrome_options, executable_path="/usr/local/bin/chromedriver")
         else:
             chrome_options = webdriver.ChromeOptions()
