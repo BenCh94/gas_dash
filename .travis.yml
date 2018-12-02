@@ -8,7 +8,7 @@ addons:
   postgresql: '9.4'
   chrome: stable
 before_install:
-  google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+  google-chrome-stable --headless --disable-gpu --disable-dev-shm-usage --no-sandbox --remote-debugging-port=9222 http://localhost &
 before_script:
 - psql -c 'create database travis_ci_test;' -U postgres
 install:

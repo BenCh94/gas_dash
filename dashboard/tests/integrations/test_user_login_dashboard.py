@@ -21,7 +21,7 @@ class TestLogin(LiveServerTestCase):
         super().setUpClass()
         if 'TRAVIS' in os.environ:
             chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_argument('--no-snadbox')
+            chrome_options.add_argument('--no-sandbox')
             chrome_options.add_argument('--window-size=1420,1080')
             chrome_options.add_argument('--headless')
             chrome_options.add_argument('--disbale-gpu')
@@ -29,7 +29,7 @@ class TestLogin(LiveServerTestCase):
             cls.selenium = webdriver.Chrome(chrome_options=chrome_options, executable_path="/usr/local/bin/chromedriver")
         else:
             chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_argument('--no-snadbox')
+            chrome_options.add_argument('--no-sandbox')
             chrome_options.add_argument('--window-size=1420,1080')
             chrome_options.add_argument('--headless')
             chrome_options.add_argument('--disbale-gpu')
