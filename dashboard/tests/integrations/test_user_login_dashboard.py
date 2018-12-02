@@ -21,14 +21,20 @@ class TestLogin(LiveServerTestCase):
         super().setUpClass()
         if 'TRAVIS' in os.environ:
             chrome_options = webdriver.ChromeOptions()
-            chrome_options.binary_location = "/usr/local/bin/chromedriver"
             chrome_options.add_argument('--no-snadbox')
             chrome_options.add_argument('--window-size=1420,1080')
             chrome_options.add_argument('--headless')
             chrome_options.add_argument('--disbale-gpu')
+            chrome_options.add_argument("--disable-dev-shm-usage")
             cls.selenium = webdriver.Chrome(chrome_options=chrome_options, executable_path="/usr/local/bin/chromedriver")
         else:
-            cls.selenium = WebDriver('/home/ben/path_executable/chromedriver')
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_argument('--no-snadbox')
+            chrome_options.add_argument('--window-size=1420,1080')
+            chrome_options.add_argument('--headless')
+            chrome_options.add_argument('--disbale-gpu')
+            chrome_options.add_argument("--disable-dev-shm-usage")
+            cls.selenium = webdriver.Chrome(chrome_options=chrome_options, executable_path='/home/ben/path_executable/chromedriver')
         cls.selenium.implicitly_wait(10)
         user = UserFactory.create(username='login_user')
         user.set_password('test12345')
