@@ -5,7 +5,8 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-
+from selenium.webdriver import Firefox
+from selenium.webdriver.firefox.options import Options
 from django.shortcuts import get_object_or_404
 from django.test.utils import override_settings
 from ...models import Stock, Trade, Profile, User
@@ -20,14 +21,9 @@ class TestLogin(LiveServerTestCase):
     def setUpClass(cls):
         super().setUpClass()
         if 'TRAVIS' in os.environ:
-            chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_argument('--no-sandbox')
-            chrome_options.add_argument('--window-size=1420,1080')
-            chrome_options.add_argument('--headless')
-            chrome_options.add_argument('--disbale-gpu')
-            chrome_options.add_argument("--disable-dev-shm-usage")
-            chrome_options.binary_location = "/usr/lib/chromium-browser/chromedriver"
-            cls.selenium = webdriver.Chrome(chrome_options=chrome_options, executable_path="/usr/lib/chromium-browser/chromedriver")
+            options = Options()
+            options.add_argument('-headless')
+            cls.selenium = Firefox(firefox_options=options)
         else:
             chrome_options = webdriver.ChromeOptions()
             chrome_options.add_argument('--no-sandbox')
