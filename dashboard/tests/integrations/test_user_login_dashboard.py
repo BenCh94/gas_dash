@@ -21,9 +21,7 @@ class TestLogin(LiveServerTestCase):
     def setUpClass(cls):
         super().setUpClass()
         if 'TRAVIS' in os.environ:
-            options = Options()
-            options.add_argument('-headless')
-            cls.selenium = Firefox(executable_path='geckodriver', options=options)
+            cls.selenium = webdriver.Firefox()
         else:
             chrome_options = webdriver.ChromeOptions()
             chrome_options.add_argument('--no-sandbox')
