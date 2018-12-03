@@ -5,7 +5,8 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-
+from selenium.webdriver import Firefox
+from selenium.webdriver.firefox.options import Options
 from django.shortcuts import get_object_or_404
 from django.test.utils import override_settings
 from ...models import Stock, Trade, Profile, User
@@ -20,19 +21,15 @@ class TestLogin(LiveServerTestCase):
     def setUpClass(cls):
         super().setUpClass()
         if 'TRAVIS' in os.environ:
-            username = os.environ['SAUCE_USERNAME']
-            access_key = os.environ['SAUCE_ACCESS_KEY']
-            capabilities = {}
-            capabilities['browserName'] = "chrome"
-            capabilities['platform'] = "Linux"
-            capabilities['version'] = "48.0"
-            capabilities['tunnel-identifier'] = os.environ["TRAVIS_JOB_NUMBER"]
-            capabilities["build"] = os.environ["TRAVIS_BUILD_NUMBER"]
-            capabilities["tags"] = [os.environ["TRAVIS_PYTHON_VERSION"], "CI"]
-            hub_url = "%s:%s@localhost:4445" % (username, access_key)
-            cls.selenium = webdriver.Remote(desired_capabilities=capabilities, command_executor="http://%s/wd/hub" % hub_url)
+            cls.selenium = webdriver.Firefox()
         else:
-            cls.selenium = WebDriver('/home/ben/path_executable/chromedriver')
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_argument('--no-sandbox')
+            chrome_options.add_argument('--window-size=1420,1080')
+            chrome_options.add_argument('--headless')
+            chrome_options.add_argument('--disbale-gpu')
+            chrome_options.add_argument("--disable-dev-shm-usage")
+            cls.selenium = webdriver.Chrome(chrome_options=chrome_options, executable_path='/home/ben/path_executable/chromedriver')
         cls.selenium.implicitly_wait(10)
         user = UserFactory.create(username='login_user')
         user.set_password('test12345')
