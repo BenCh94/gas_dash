@@ -12,7 +12,6 @@ def percentage(fraction):
 
 @register.filter(name='big_number')
 def big_number(big_num):
-	print(big_num)
 	if big_num < 1000000:
 		return big_num
 	elif big_num < 1000000000:

@@ -117,7 +117,6 @@ function drawGraph(portfolio, metric, benchMetric, symbol){
 // Charts
 $(document).ready(function(){
     portfolioctx.height = ($(window).height())*0.55;
-    console.log(typeof portfolio)
     drawGraph(portfolio, getGain, getBenchmark, '$');
     $('#pct_view').click(function(){
          if(mixedChart){
