@@ -32,7 +32,6 @@ def apply_trades(stock):
 	trade_list = list(stock.trades().values('date', 'amount', 'fees_usd', 'stock_id', 'trade_type', 'avg_price'))
 	trade_list[0]['invested'] = (trade_list[0]['amount']*trade_list[0]['avg_price'])+trade_list[0]['fees_usd']
 	init_trade = buy_benchmark(trade_list[0])
-	print(init_trade)
 	trade_df = pd.DataFrame(init_trade, index=[0])
 	del trade_list[0]
 	for trade in trade_list:

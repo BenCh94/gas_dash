@@ -40,7 +40,6 @@ def add_trade(request):
 			trade.date = d
 			trade.save()
 			messages.success(request, 'Congrats, Your trade was added!')
-			apply_trades(trade.stock)
 			return redirect('dash:dashboard')
 		else:
 			errors = form.errors
