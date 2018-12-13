@@ -1,6 +1,8 @@
 import pandas as pd 
 import numpy as np
 import json
+import ast
+import statistics
 from datetime import datetime
 from django.shortcuts import get_object_or_404
 from .iex_requests import stock_price, batch_price
@@ -32,7 +34,6 @@ def apply_trades(stock):
 	trade_list = list(stock.trades().values('date', 'amount', 'fees_usd', 'stock_id', 'trade_type', 'avg_price'))
 	trade_list[0]['invested'] = (trade_list[0]['amount']*trade_list[0]['avg_price'])+trade_list[0]['fees_usd']
 	init_trade = buy_benchmark(trade_list[0])
-	print(init_trade)
 	trade_df = pd.DataFrame(init_trade, index=[0])
 	del trade_list[0]
 	for trade in trade_list:
@@ -173,7 +174,22 @@ def combine_portfolio(df):
 	return json.dumps(portfolio_dict)
 
 
-
+def get_latest_data(portfolio):
+	if portfolio:
+		data_str = ast.literal_eval(portfolio.data)
+		data = json.loads(data_str)
+		days = len(data)
+		latest = data[-1]
+		latest['days'] = days
+		gains = [d['pct_gain'] for d in data]
+		bench_gains = [d['bench_gain_pct'] for d in data]
+		latest['mean'] = statistics.mean(gains)
+		latest['bench_mean'] = statistics.mean(bench_gains)
+		latest['cv'] = statistics.stdev(gains)/statistics.mean(gains)
+		latest['bench_cv'] = statistics.stdev(bench_gains)/statistics.mean(bench_gains)
+		return latest
+	else:
+		return ''
 
 
 

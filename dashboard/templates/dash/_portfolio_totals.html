@@ -1,0 +1,26 @@
+<table class="table table-dark table-responsive">
+	<thead>
+		<th scope="col"></th>
+		<th scope="col">$</th>
+		<th scope="col">%</th>
+		<th scope="col">Mean %</th>
+		<th scope="col">CV <span  class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-placement="right" title="<h6>Co-Effcient of Variation</h6><p>The coefficient of variation allows investors to determine how much volatility, or risk, is assumed in comparison to the amount of return expected from investments. The lower the ratio of standard deviation to mean return, the better risk-return trade-off. Note that if the expected return in the denominator is negative or zero, the coefficient of variation could be misleading.</p>">?</span></th>
+	</thead>
+	<tbody>
+		<tr class="text-{% if latest.gain < 0 %}danger{% else %}success{% endif %}">
+			<th scope="row">{{ portfolio.name }}</th>
+			<td>{{ latest.gain|floatformat }}</td>
+			<td>{{ latest.pct_gain|floatformat }}</td>
+			<td>{{ latest.mean|floatformat }}</td>
+			<td>{{ latest.cv|floatformat }}</td>
+		</tr>
+		<tr class="text-{% if latest.bench_gain < 0 %}danger{% else %}success{% endif %}">
+			<th scope="row">{{ portfolio.benchmark_name }}</th>
+			<td>{{ latest.bench_gain|floatformat }}</td>
+			<td>{{ latest.bench_gain_pct|floatformat }}</td>
+			<td>{{ latest.bench_mean|floatformat }}</td>
+			<td>{{ latest.bench_cv|floatformat }}</td>
+		</tr>
+	</tbody>
+</table>
+
