@@ -6,4 +6,4 @@ class PortfolioFactory(factory.django.DjangoModelFactory):
 	class Meta:
 		model = Portfolio
 
-	data = '{day1: "test"}'
+	data = '[{day1: "test"}]'

@@ -16,7 +16,7 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 
 
 class TestLogin(LiveServerTestCase):
-    
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -26,7 +26,7 @@ class TestLogin(LiveServerTestCase):
             chrome_options = webdriver.ChromeOptions()
             chrome_options.add_argument('--no-sandbox')
             chrome_options.add_argument('--window-size=1420,1080')
-            chrome_options.add_argument('--headless')
+            # chrome_options.add_argument('--headless')
             chrome_options.add_argument('--disbale-gpu')
             chrome_options.add_argument("--disable-dev-shm-usage")
             cls.selenium = webdriver.Chrome(chrome_options=chrome_options, executable_path='/home/ben/path_executable/chromedriver')
@@ -40,6 +40,7 @@ class TestLogin(LiveServerTestCase):
         cls.selenium.quit()
         super().tearDownClass()
 
+    @override_settings(DEBUG=True)
     def test_login_dashboard(self):
         user = get_object_or_404(User, username='login_user')
         stock = StockFactory.create(user_profile=user.profile)
