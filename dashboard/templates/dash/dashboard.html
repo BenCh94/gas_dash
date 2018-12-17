@@ -23,8 +23,23 @@
 		            <button type="button" class="btn btn-secondary btn-sm" id="settings" data-toggle="modal" data-target="#portfolioSettingsModal"><i class="fas fa-cog"></i></button>
 		        </div>
 			</div>
-			<div class="col-md-3">
-				<ul class="list-group list-group-flush stock_list">
+			<div class="col-md-3 stock_list">
+				<div class="card d-flex flex-row bg-{% if current_value.day_change < 0 %}danger{% else %}success{% endif %}">
+					<div class="d-flex flex-column justify-content-center p-1 flex-fill">
+						<h5 class="text-dark text-center">Day $</h5>
+						<span class="badge badge-dark">
+							<h5 class="text-{% if current_value.day_change < 0 %}danger{% else %}success{% endif %}">{{ current_value.day_change|floatformat }}</h5>
+						</span>
+					</div>
+					<div class="d-flex flex-column justify-content-center p-1 flex-fill">
+						<h5 class="text-dark text-center">Day %</h5>
+						<span class="badge badge-dark">
+							<h5 class="text-{% if current_value.day_change < 0 %}danger{% else %}success{% endif %}">{{ current_value.pct_change|percentage }}</h5>
+						</span>
+					</div>
+				</div>
+				<hr>
+				<ul class="list-group list-group-flush">
 				{% for stock in stocks %}
 			        {% include 'dash/_stock_link.html' %}
 			    {% endfor %}
@@ -40,6 +55,9 @@
 				  </div>
 				  <div class="card-body">
 				  	{% include 'dash/_portfolio_totals.html' %}
+				  </div>
+				  <div class="card-footer">
+				  	<p class="smalll font-italic text-muted">{{ latest.days }} Days <span  class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-placement="right" title="Time In The Market Beats Market Timing">?</span></p>
 				  </div>
 				</div>
 			</div>

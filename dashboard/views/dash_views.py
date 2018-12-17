@@ -6,7 +6,7 @@ from django.contrib import messages
 from dashboard.models import Stock, Trade, Portfolio
 from dashboard.forms import PortfolioForm
 from dashboard.iex_requests import *
-from dashboard.stock_functions import get_current_quotes
+from dashboard.stock_functions import get_current_quotes, get_current_value
 from dashboard.dash_functions import update_portfolio, get_latest_data
 
 
@@ -30,6 +30,7 @@ def index(request):
 	context['symbols'] = list_symbols()
 	context['portfolio'] = portfolio
 	context['portfolio_form'] = portfolio_form
+	context['current_value'] = get_current_value(context['stocks'], context['latest'])
 	return render(request, 'dash/dashboard.html', context)
 
 
