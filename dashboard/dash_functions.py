@@ -7,6 +7,7 @@ from datetime import datetime
 from django.shortcuts import get_object_or_404
 from .iex_requests import stock_price, batch_price
 from .models import Stock, Trade, User, Profile, Portfolio
+from .stock_functions import *
 import pdb
 
 def update_portfolio():
@@ -174,19 +175,12 @@ def combine_portfolio(df):
 	return json.dumps(portfolio_dict)
 
 
-def get_latest_data(portfolio):
+def get_latest_data(portfolio, stocks):
 	if portfolio:
-		data_str = ast.literal_eval(portfolio.data)
-		data = json.loads(data_str)
-		days = len(data)
-		latest = data[-1]
-		latest['days'] = days
-		gains = [d['pct_gain'] for d in data]
-		bench_gains = [d['bench_gain_pct'] for d in data]
-		latest['mean'] = statistics.mean(gains)
-		latest['bench_mean'] = statistics.mean(bench_gains)
-		latest['cv'] = statistics.stdev(gains)/statistics.mean(gains)
-		latest['bench_cv'] = statistics.stdev(bench_gains)/statistics.mean(bench_gains)
+		latest = portfolio.latest_day_data()
+		current_value = get_current_value(stocks, latest)
+		latest = {**latest, **current_value}
+		print(latest)
 		return latest
 	else:
 		return ''

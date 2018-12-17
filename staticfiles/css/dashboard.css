@@ -119,6 +119,7 @@ i {
 
 .stock_list {
     background: transparent;
+    overflow-y: scroll;
 }
 
 .metrics {
