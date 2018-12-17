@@ -15,7 +15,6 @@ def get_current_quotes(stocks):
 def get_current_value(stocks, latest):
 	current_value = 0
 	for stock in stocks:
-		print(stock.quote)
 		current_value += stock.quantity*stock.quote['latestPrice']
 	day_diff = current_value - latest['value']
 	day_pct = (day_diff/latest['value'])

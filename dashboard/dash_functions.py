@@ -178,7 +178,10 @@ def combine_portfolio(df):
 def get_latest_data(portfolio, stocks):
 	if portfolio:
 		latest = portfolio.latest_day_data()
-		return latest.update(get_current_value(stocks, latest))
+		current_value = get_current_value(stocks, latest)
+		latest = {**latest, **current_value}
+		print(latest)
+		return latest
 	else:
 		return ''
 
