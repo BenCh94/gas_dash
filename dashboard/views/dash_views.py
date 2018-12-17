@@ -25,12 +25,11 @@ def index(request):
 			messages.success(request, 'Congrats, Your portfolio was updated!')
 			return redirect('dash:dashboard')
 	portfolio = Portfolio.objects.filter(user_profile=profile).first()
-	context['latest'] = get_latest_data(portfolio)
+	context['latest'] = get_latest_data(portfolio, context['stocks'])
 	portfolio_form = PortfolioForm()
 	context['symbols'] = list_symbols()
 	context['portfolio'] = portfolio
 	context['portfolio_form'] = portfolio_form
-	context['current_value'] = get_current_value(context['stocks'], context['latest'])
 	return render(request, 'dash/dashboard.html', context)
 
 

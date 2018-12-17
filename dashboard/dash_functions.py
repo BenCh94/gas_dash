@@ -7,6 +7,7 @@ from datetime import datetime
 from django.shortcuts import get_object_or_404
 from .iex_requests import stock_price, batch_price
 from .models import Stock, Trade, User, Profile, Portfolio
+from .stock_functions import *
 import pdb
 
 def update_portfolio():
@@ -174,9 +175,10 @@ def combine_portfolio(df):
 	return json.dumps(portfolio_dict)
 
 
-def get_latest_data(portfolio):
+def get_latest_data(portfolio, stocks):
 	if portfolio:
-		return portfolio.latest_day_data()
+		latest = portfolio.latest_day_data()
+		return latest.update(get_current_value(stocks, latest))
 	else:
 		return ''
 
