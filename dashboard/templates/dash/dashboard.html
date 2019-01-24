@@ -14,10 +14,10 @@
 {% block content %}
 	{% if stocks %}
 		<div class="row">
-			<div class="col-md-9">
-				<canvas class="d-none d-sm-block" id="portfolio-chart">
+			<div class="col-md-9 d-none d-sm-block">
+				<canvas id="portfolio-chart">
 				</canvas>
-				<div class="btn-group d-none d-sm-block graph_settings" role="group">
+				<div class="btn-group graph_settings" role="group">
 		            <button type="button" class="btn btn-secondary btn-sm" id="pct_view">%</button>
 		            <button type="button" class="btn btn-secondary btn-sm" id="dollar_view">$</button>
 		            <button type="button" class="btn btn-secondary btn-sm" id="settings" data-toggle="modal" data-target="#portfolioSettingsModal"><i class="fas fa-cog"></i></button>
@@ -48,18 +48,9 @@
 		</div>
 		<hr>
 		<div class="row">
-			<div class="col-md-4">
-				<div class="card metrics">
-				  <div class="card-header">
-				    Totals
-				  </div>
-				  <div class="card-body">
-				  	{% include 'dash/_portfolio_totals.html' %}
-				  </div>
-				  <div class="card-footer">
-				  	<p class="smalll font-italic text-muted">{{ latest.days }} Days <span  class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-placement="right" title="Time In The Market Beats Market Timing">?</span></p>
-				  </div>
-				</div>
+			<div class="col-md-4 metrics">
+				{% include 'dash/_portfolio_totals.html' %}
+				<p class="smalll font-italic text-muted">{{ latest.days }} Days <span  class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-placement="right" title="Time In The Market Beats Market Timing">?</span></p>
 			</div>
 			<div class="col-md-8">
 				<div class="card metrics">

@@ -89,6 +89,11 @@ i {
     #share-price-box {
         padding-bottom: 3px;
     }
+
+    .stock_list {
+        max-height: 100%!important;
+    }
+
 }
 
 @media screen and (min-width: 768px) {
@@ -118,6 +123,7 @@ i {
 }
 
 .stock_list {
+    max-height: 55vh;
     background: transparent;
     overflow-y: scroll;
 }
