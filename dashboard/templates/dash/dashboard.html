@@ -3,8 +3,13 @@
 {% block head_files %}
 {% load static %}
 	<script type="text/javascript">
+		var None = null;
 		var portfolio = JSON.parse({{ portfolio.data|safe }});
+		var quotes = [];
 		var symbols = {{ symbols|safe }};
+		{% for stock in stocks %}
+			quotes.push({{ stock.quote|safe }});
+		{% endfor %}
 	</script>
 	<link href="{% static 'css/forms.css' %}" rel="stylesheet">
 {% endblock head_files %}
@@ -58,6 +63,8 @@
 				    Metrics
 				  </div>
 				  <div class="card-body">
+				  	<canvas id="sector-chart">
+					</canvas>
 				  </div>
 				</div>
 			</div>
@@ -106,6 +113,7 @@
 {% endblock content %}
 {% block footer_files %}
 	<script src="{% static 'js/portfolioChart.js' %}"></script>
+	<script src="{% static 'js/sectorChart.js' %}"></script>
 	<script src="{% static 'js/jquery.autocomplete.js' %}"></script>
 	<script src="{% static 'js/tickerSearch.js' %}"></script>
 {% endblock footer_files %}

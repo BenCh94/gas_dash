@@ -180,7 +180,6 @@ def get_latest_data(portfolio, stocks):
 		latest = portfolio.latest_day_data()
 		current_value = get_current_value(stocks, latest)
 		latest = {**latest, **current_value}
-		print(latest)
 		return latest
 	else:
 		return ''
