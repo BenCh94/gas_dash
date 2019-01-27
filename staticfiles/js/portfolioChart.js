@@ -90,10 +90,16 @@ function drawGraph(portfolio, metric, benchMetric, symbol){
                         quarter: 'MMM YYYY'
                     }
                 },
+                ticks: {
+                    fontColor: 'white'
+                },
                 display: true
             }],
             yAxes: [{
-                id: 'gain'
+                id: 'gain',
+                ticks: {
+                    fontColor: 'white'
+                }
             },
             {
                 id: 'benchmark',
@@ -103,6 +109,9 @@ function drawGraph(portfolio, metric, benchMetric, symbol){
         },
         legend: {
             display: true,
+            labels: {
+                  fontColor: 'white'
+                }
         }
     }
 

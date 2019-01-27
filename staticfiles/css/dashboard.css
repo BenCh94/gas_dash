@@ -6,6 +6,11 @@ body {
 	color: #ffffff;
   	min-height: 100vh;
 }
+input, select {
+    -webkit-box-shadow: inset 10px 10px 5px -10px rgba(0,0,0,0.75);
+    -moz-box-shadow: inset 10px 10px 5px -10px rgba(0,0,0,0.75);
+    box-shadow: inset 10px 10px 5px -10px rgba(0,0,0,0.75);
+}
 
 a {
    color: #ffffff; 
@@ -131,13 +136,10 @@ i {
 .metrics {
     background: transparent;
 }
-/*
-Once graphs have been added set stock list height based off graph height*/
 
-/*.stock_list {
-    height: 85%;
-    overflow-y: scroll;
-}*/
+.dropdown-item:hover {
+    background-color: #797D7C!important;
+}
 
 #time_btns{
     position: absolute;
