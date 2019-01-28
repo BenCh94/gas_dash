@@ -58,7 +58,7 @@ function drawGraph(portfolio, metric, benchMetric, symbol){
         labels: getDailyLabels(portfolio),
         datasets: [{
             label: "Gain "+symbol,
-            backgroundColor: 'rgb(45, 134, 51, 0.2)',
+            backgroundColor: 'rgba(45, 134, 51, 0.2)',
             borderColor: 'rgb(45, 134, 51)',
             data: metric(portfolio),
             type: 'line',
@@ -126,7 +126,7 @@ function drawGraph(portfolio, metric, benchMetric, symbol){
 // Charts
 $(document).ready(function(){
     portfolioctx.height = ($(window).height())*0.55;
-    drawGraph(portfolio, getGain, getBenchmark, '$');
+    drawGraph(portfolio, getGainPct, getBenchmarkPct, '%');
     $('#pct_view').click(function(){
          if(mixedChart){
             mixedChart.destroy();

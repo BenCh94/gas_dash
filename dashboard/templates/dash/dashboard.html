@@ -6,10 +6,13 @@
 		var None = null;
 		var portfolio = JSON.parse({{ portfolio.data|safe }});
 		var quotes = [];
+		var stocks = {};
 		var symbols = {{ symbols|safe }};
 		{% for stock in stocks %}
 			quotes.push({{ stock.quote|safe }});
+			stocks['{{ stock.ticker }}'] = {{ stock.quantity }}*{{ stock.quote.latestPrice }};
 		{% endfor %}
+		console.log(stocks);
 	</script>
 	<link href="{% static 'css/forms.css' %}" rel="stylesheet">
 {% endblock head_files %}
@@ -54,17 +57,22 @@
 		<hr>
 		<div class="row">
 			<div class="col-md-4 metrics">
-				{% include 'dash/_portfolio_totals.html' %}
 				<p class="smalll font-italic text-muted">{{ latest.days }} Days <span  class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-placement="right" title="Time In The Market Beats Market Timing">?</span></p>
+				{% include 'dash/_portfolio_totals.html' %}
 			</div>
 			<div class="col-md-8">
-				<div class="card metrics">
-				  <div class="card-header">
-				    Metrics
-				  </div>
-				  <div class="card-body">
-				  	<canvas id="sector-chart">
-					</canvas>
+				<div class="card metrics p-0 border-0">
+				  <div class="card-body container-fluid">
+				  	<div class="row">
+				  		<div class="col-md-5">
+				  			<canvas id="sector-chart">
+							</canvas>
+				  		</div>
+				  		<div class="col-md-7">
+				  			<canvas id="ticker-chart">
+							</canvas>
+				  		</div>
+				  	</div>
 				  </div>
 				</div>
 			</div>
