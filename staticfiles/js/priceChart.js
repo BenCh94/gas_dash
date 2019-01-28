@@ -63,12 +63,13 @@ function drawGraph(iexdata){
             borderColor: 'rgb(45, 134, 51)',
             data: getClosePrices(iexdata),
             type: 'line',
-            yAxisID: 'price'
+            yAxisID: 'price',
+            xAxisID: 'daily'
         },
         {
             label: "Volume",
             data: getVolumes(iexdata),
-            yAxisID: 'volume'
+            yAxisID: 'volume',
         }],
     };
 
@@ -84,13 +85,30 @@ function drawGraph(iexdata){
         },
         scales: {
             xAxes: [{
+                id: 'quarters',
+                type: 'time',
+                time: {
+                    displayFormats: {
+                        quarter: 'MMM YYYY'
+                    }
+                },
+                ticks: {
+                    fontColor: 'white'
+                },
+                display: true
+            },
+            {
+                id: 'daily',
                 time: {
                     unit: 'day',
                 },
                 display: false,
             }],
             yAxes: [{
-                id: 'price'
+                id: 'price',
+                ticks: {
+                    fontColor: 'white'
+                }
             },
             {
                 id: 'volume',

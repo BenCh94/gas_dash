@@ -10,7 +10,6 @@ function getGain(data){
     data.forEach(function(d){
         dayGains.push(Number(d.gain))
     })
-    console.log(dayGains)
     return dayGains
 }
 
@@ -19,7 +18,6 @@ function getGainPct(data){
     data.forEach(function(d){
         dayGains.push(Number(d.pct_gain))
     })
-    console.log(dayGains)
     return dayGains
 }
 
@@ -28,7 +26,6 @@ function getBenchmark(data){
     data.forEach(function(d){
         benchmarks.push(Number(d.bench_gain))
     })
-    console.log(benchmarks)
     return benchmarks
 }
 
@@ -37,7 +34,6 @@ function getBenchmarkPct(data){
     data.forEach(function(d){
         benchmarks.push(Number(d.bench_gain_pct))
     })
-    console.log(benchmarks)
     return benchmarks
 }
 
@@ -47,7 +43,6 @@ function getDailyLabels(data){
         var day_date = new Date(d.date)
         days.push(day_date.toDateString());
     })
-    console.log(days)
     return days
 }
 
@@ -58,7 +53,7 @@ function drawGraph(portfolio, metric, benchMetric, symbol){
         labels: getDailyLabels(portfolio),
         datasets: [{
             label: "Gain "+symbol,
-            backgroundColor: 'rgb(45, 134, 51, 0.2)',
+            backgroundColor: 'rgba(45, 134, 51, 0.2)',
             borderColor: 'rgb(45, 134, 51)',
             data: metric(portfolio),
             type: 'line',
@@ -90,10 +85,16 @@ function drawGraph(portfolio, metric, benchMetric, symbol){
                         quarter: 'MMM YYYY'
                     }
                 },
+                ticks: {
+                    fontColor: 'white'
+                },
                 display: true
             }],
             yAxes: [{
-                id: 'gain'
+                id: 'gain',
+                ticks: {
+                    fontColor: 'white'
+                }
             },
             {
                 id: 'benchmark',
@@ -103,6 +104,9 @@ function drawGraph(portfolio, metric, benchMetric, symbol){
         },
         legend: {
             display: true,
+            labels: {
+                  fontColor: 'white'
+                }
         }
     }
 
@@ -117,7 +121,7 @@ function drawGraph(portfolio, metric, benchMetric, symbol){
 // Charts
 $(document).ready(function(){
     portfolioctx.height = ($(window).height())*0.55;
-    drawGraph(portfolio, getGain, getBenchmark, '$');
+    drawGraph(portfolio, getGainPct, getBenchmarkPct, '%');
     $('#pct_view').click(function(){
          if(mixedChart){
             mixedChart.destroy();

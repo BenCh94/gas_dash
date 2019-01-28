@@ -5,9 +5,9 @@ from django.http import Http404
 from django.contrib import messages
 from dashboard.models import Stock, Trade, Portfolio
 from dashboard.forms import PortfolioForm
-from dashboard.iex_requests import *
-from dashboard.stock_functions import get_current_quotes, get_current_value
-from dashboard.dash_functions import update_portfolio, get_latest_data
+from dashboard.iex_requests import list_symbols, stock_profile
+from dashboard.stock_functions import get_current_quotes
+from dashboard.dash_functions import get_latest_data
 
 
 @login_required(login_url='/dash/login/')

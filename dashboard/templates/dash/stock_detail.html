@@ -52,19 +52,12 @@
     
         <canvas id="share-price-chart">
         </canvas>
-        <div id="time_btns" class="btn-group" role="group" style="display:none">
-            <button type="button" class="btn btn-outline-success btn-md priceChart" id="1m">1M</button>
-            <button type="button" class="btn btn-outline-success btn-md priceChart active" id="6m">6M</button>
-            <button type="button" class="btn btn-outline-success btn-md priceChart" id="1y">1y</button>
-            <button type="button" class="btn btn-outline-success btn-md priceChart" id="5y">5y</button>
-            <button type="button" class="btn btn-outline-success btn-md" id="timeIn">Time In</button>
-        </div>
     </div>
     <div class="col-md-1 card bg-dark d-none d-sm-block">
         <h3><i class="fas fa-cog w-100"></i></h3>
         <hr>
         <div id="price_charts">
-            <button type="button" class="btn btn-primary w-100" id="graph_timelines"><i class="fa fa-calendar-alt fa-lg"></i></button>
+            
         </div>
     </div>
 </div>
@@ -79,7 +72,7 @@
 </div>
 <hr>
 <div class="row card-deck">
-    <div class="card bg-dark company-details col-md-4">
+    <div class="card bg-dark company-details col-md-4 p-0">
         <div class="card-header d-flex flex-row align-items-center">
             <img src="{{ stock_data.logo.url }}" alt="logo" id="company-logo" class="mr-auto">
             <h5 class="p-2 bd-highlight">{{  stock_data.company.companyName  }}</h5>
@@ -97,7 +90,7 @@
             <a href="{{  stock_data.company.website  }}" target="_blank" class="btn btn-primary">Website</a>
         </div>
     </div>
-    <div class="card bg-dark company-details col-md-8">
+    <div class="card bg-dark company-details col-md-8 p-0">
         <div class="card-header d-flex flex-row align-items-center">
             <ul class="nav nav-tabs bg-dark card-header-tabs" id="stockTab" role="tablist">
               <li class="nav-item">
