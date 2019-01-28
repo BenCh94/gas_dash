@@ -10,7 +10,6 @@ function getGain(data){
     data.forEach(function(d){
         dayGains.push(Number(d.gain))
     })
-    console.log(dayGains)
     return dayGains
 }
 
@@ -19,7 +18,6 @@ function getGainPct(data){
     data.forEach(function(d){
         dayGains.push(Number(d.pct_gain))
     })
-    console.log(dayGains)
     return dayGains
 }
 
@@ -28,7 +26,6 @@ function getBenchmark(data){
     data.forEach(function(d){
         benchmarks.push(Number(d.bench_gain))
     })
-    console.log(benchmarks)
     return benchmarks
 }
 
@@ -37,7 +34,6 @@ function getBenchmarkPct(data){
     data.forEach(function(d){
         benchmarks.push(Number(d.bench_gain_pct))
     })
-    console.log(benchmarks)
     return benchmarks
 }
 
@@ -47,7 +43,6 @@ function getDailyLabels(data){
         var day_date = new Date(d.date)
         days.push(day_date.toDateString());
     })
-    console.log(days)
     return days
 }
 

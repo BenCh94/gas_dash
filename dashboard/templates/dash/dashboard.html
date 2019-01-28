@@ -12,7 +12,6 @@
 			quotes.push({{ stock.quote|safe }});
 			stocks['{{ stock.ticker }}'] = {{ stock.quantity }}*{{ stock.quote.latestPrice }};
 		{% endfor %}
-		console.log(stocks);
 	</script>
 	<link href="{% static 'css/forms.css' %}" rel="stylesheet">
 {% endblock head_files %}
