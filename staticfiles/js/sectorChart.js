@@ -21,63 +21,45 @@ function getSectors(quotes){
     return sectors
 }
 
-function drawGraphs(quotes, stocks){
-    // Chart settings
-    sectorObject = getSectors(quotes);
-    tickerObject = stocks;
-    var bootstrapColors = [
-	            '#17a2b8',
-	            '#ffc107',
-	            '#28a745',
-	            '#dc3545',
-	            '#007bff',
-	            '#ffffff',
-	            '#868e96',
-	            '#'
-        	]
+var Options = {
+   	maintainAspectRatio: false,
+   	legend: {
+        display: true,
+        position: 'right',
+        labels: {
+            fontColor: 'white'
+        }
+    }  		 	
+}
 
-    sectorData =  {
-        labels: Object.keys(sectorObject),
+function createGraph(data, ctx, options, type){
+	var bootstrapColors = [
+	    '#17a2b8',
+	    '#ffc107',
+	    '#28a745',
+	    '#dc3545',
+	    '#007bff',
+	    '#ffffff',
+	    '#868e96',
+        ]
+    var graphData = {
+        labels: Object.keys(data),
         datasets: [{
-            data: Object.values(sectorObject),
+            data: Object.values(data),
             backgroundColor: bootstrapColors
         }],
     };
 
-    tickerData =  {
-        labels: Object.keys(tickerObject),
-        datasets: [{
-            data: Object.values(tickerObject),
-            backgroundColor: bootstrapColors
-        }],
-    };
-
-    graphOptions = {
-   		maintainAspectRatio: false,
-   		legend: {
-            display: true,
-            labels: {
-                  fontColor: 'white'
-                }
-        }  		 	
-    }
-
-    sectorChart = new Chart(sectorctx, {
-        type: 'doughnut',
-        data: sectorData,
-        options: graphOptions
+    var graph = new Chart(ctx, {
+        type: type,
+        data: graphData,
+        options: options
     });
-    tickerChart = new Chart(tickerctx, {
-        type: 'doughnut',
-        data: tickerData,
-        options: graphOptions
-    });
-    $('#loading-gif').hide();
+
 }
 
 // Charts
 $(document).ready(function(){
-    sectorctx.height = ($(window).height())*0.25;
-    tickerctx.height = ($(window).height())*0.25;
-    drawGraphs(quotes, stocks);
+    createGraph(stocks, tickerctx, Options, 'doughnut');
+    createGraph(getSectors(quotes), sectorctx, Options, 'doughnut');
 })
