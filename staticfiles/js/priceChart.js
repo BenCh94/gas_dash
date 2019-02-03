@@ -6,11 +6,11 @@ var pricectx = document.getElementById("share-price-chart");
 
 // Utility Functions
 
-function getChartData(range){
+function getChartData(range, trades){
     $('#loading-gif').show();
     $.get("https://api.iextrading.com/1.0/stock/"+ ticker +"/chart/"+range, 
     function(iexdata, status){
-        drawGraph(iexdata);
+        drawGraph(iexdata, trades);
     })
 }
 
@@ -39,7 +39,7 @@ function getMaxVolume(data){
     })
     var max_val = Math.max.apply(Math, vols)
     console.log(max_val)
-    return max_val*10
+    return max_val*4
 }
 
 function getDailyLabels(data){
@@ -52,7 +52,37 @@ function getDailyLabels(data){
     return days
 }
 
-function drawGraph(iexdata){
+function getTrades(trades, show){
+    var annotations = [];
+    for (var i = trades.length - 1; i >= 0; i--) {
+        annotations.push({
+                type: 'line',
+                mode: 'horizontal',
+                scaleID: 'price',
+                value: trades[i]['price'],
+                borderColor: 'rgb(75, 192, 192)',
+                borderWidth: 1,
+                label: {
+                  enabled: true,
+                  position: 'center',
+                  content: trades[i]['type'] + trades[i]['amount'] + ', ' + trades[i]['date']
+                },
+                onMouseover: function(e){
+                    var element = this;
+                    element.options.label.enabled = true;
+                    element.chartInstance.update();
+                }
+              })         
+    }
+    if (show){
+        return annotations
+    }
+    else{
+        return [];
+    }
+}
+
+function drawGraph(iexdata, showTrades){
     // Chart settings
 
     graphData =  {
@@ -114,10 +144,16 @@ function drawGraph(iexdata){
                 id: 'volume',
                 position: 'right',
                 display: false,
+                ticks: {
+                    max: getMaxVolume(iexdata)
+                }
             }]
         },
         legend: {
             display: false,
+        },
+        annotation: {
+            annotations: getTrades(trades, showTrades)
         }
     }
 
@@ -131,8 +167,8 @@ function drawGraph(iexdata){
 
 // Charts
 $(document).ready(function(){
-    pricectx.height = ($(window).height())*0.45;
-    getChartData("6m");
+    // pricectx.height = ($(window).height())*0.45;
+    getChartData("6m", false);
 
     $(".priceChart").click(function(e){
         $('.priceChart').removeClass('active');
@@ -144,8 +180,21 @@ $(document).ready(function(){
         }
         console.log(time)
         getChartData(time);
-        $('#time_btns').hide()
         $('#graph_timelines').show()
+    })
+    $('#show_trades').click(function(){
+        var time = $('.priceChart.active').attr('id')
+        if(mixedChart){
+            mixedChart.destroy();
+        }
+        if($(this).hasClass('active')){
+            getChartData(time, false);
+            $(this).removeClass('active');
+        }
+        else{
+            getChartData(time, true);
+            $(this).addClass('active');
+        }
     })
     $('#timeIn').click(function(){
         $('.priceChart').removeClass('active');
