@@ -1,9 +1,8 @@
+""" View function for the main dahsboard """
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
 from django.contrib import messages
-from dashboard.models import Stock, Trade, Portfolio
+from dashboard.models import Stock, Portfolio
 from dashboard.forms import PortfolioForm
 from dashboard.iex_requests import list_symbols, stock_profile
 from dashboard.stock_functions import get_current_quotes
@@ -45,10 +44,5 @@ def stock(request, stock_id):
 	return render(request, 'dash/stock_detail.html', {'stock_data': stock_data})
 
 @login_required(login_url='/dash/login/')
-def trades(request, stock_id):
-	return HttpResponse("You're looking at trades for %s." % stock_id)
-
-@login_required(login_url='/dash/login/')
 def trade(request, trade_id):
-	trade = get_object_or_404(Trade, pk=trade_id)
 	return render(request, 'dash/trade.html')

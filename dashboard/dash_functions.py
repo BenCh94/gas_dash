@@ -11,6 +11,7 @@ from .stock_functions import *
 import pdb
 
 def update_portfolio():
+	pdb.set_trace()
 	users = User.objects.all()
 	for user in users:
 		if user.profile.has_stocks():

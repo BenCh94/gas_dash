@@ -1,3 +1,4 @@
+""" Form views for adding and editing objects """
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -45,6 +46,6 @@ def add_trade(request):
 			errors = form.errors
 			trade_form = TradeForm(request, request.POST)
 			messages.warning(request, "There's a problem with the form")
-			return render(request, 'dash/add_trade.html', { 'form': trade_form, 'errors': errors })	
+			return render(request, 'dash/add_trade.html', {'form': trade_form, 'errors': errors})	
 	trade_form = TradeForm(request)
-	return render(request, 'dash/add_trade.html', { 'form': trade_form })
+	return render(request, 'dash/add_trade.html', {'form': trade_form})
