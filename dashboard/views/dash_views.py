@@ -5,18 +5,19 @@ from django.http import Http404
 from django.contrib import messages
 from dashboard.models import Stock, Trade, Portfolio
 from dashboard.forms import PortfolioForm
-from dashboard.iex_requests import *
+from dashboard.iex_requests import list_symbols, stock_profile
 from dashboard.stock_functions import get_current_quotes
-from dashboard.dash_functions import update_portfolio
+from dashboard.dash_functions import get_latest_data
 
 
 @login_required(login_url='/dash/login/')
 def index(request):
 	""" The home dashboards view """
+	context = dict()
 	current_user = request.user
 	profile = current_user.profile
 	stocks = Stock.objects.filter(user_profile=profile, status='a')
-	stocks = get_current_quotes(stocks)
+	context['stocks'] = get_current_quotes(stocks)
 	if request.method == 'POST':
 		form = PortfolioForm(request.POST)
 		if form.is_valid():
@@ -24,9 +25,11 @@ def index(request):
 			messages.success(request, 'Congrats, Your portfolio was updated!')
 			return redirect('dash:dashboard')
 	portfolio = Portfolio.objects.filter(user_profile=profile).first()
+	context['latest'] = get_latest_data(portfolio, context['stocks'])
 	portfolio_form = PortfolioForm()
-	symbols = list_symbols()
-	context = { 'stocks': stocks, 'portfolio': portfolio, 'portfolio_form': portfolio_form, 'symbols': symbols }
+	context['symbols'] = list_symbols()
+	context['portfolio'] = portfolio
+	context['portfolio_form'] = portfolio_form
 	return render(request, 'dash/dashboard.html', context)
 
 

@@ -33,9 +33,34 @@
   <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-toggleable-md navbar-dark bg-dark fixed-top" id="main_nav">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" id="main_nav">
         <a class="navbar-brand" id="dashMenu">GAS Dash <i class="fas fa-stroopwafel"></i></a>
-        <a class="btn btn-secondary" href="{% url 'dash:logout' %}">Logout</a>
+        <div class="collapse navbar-collapse">
+             <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown m-1">
+                    <a class="btn btn-outline-success" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Add <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-menu bg-dark text-light" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item nav-link" href="{% url 'dash:add_stock' %}">
+                            <i class="fas fa-plus"></i>
+                            Add Stock
+                        </a>
+                        <a class="dropdown-item nav-link" href="{% url 'dash:add_trade' %}">
+                            <i class="fas fa-plus"></i>
+                            Add Trade
+                        </a>
+                        <a class="dropdown-item nav-link" href="{% url 'dash:add_trade' %}">
+                            <i class="fas fa-plus"></i>
+                            Add Note
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item m-1">
+                     <a class="btn btn-outline-warning" href="{% url 'dash:logout' %}">Logout</a>   
+                </li>
+            </ul>
+        </div>
     </nav>
 
     <!-- Sidebar and Main Page -->
@@ -79,7 +104,13 @@
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/0.5.7/chartjs-plugin-annotation.min.js"></script>
     <script src="{% static 'js/dashboard.js' %}"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
     {% block footer_files %}
     {% endblock footer_files %}
   </body>

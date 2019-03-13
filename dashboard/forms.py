@@ -87,4 +87,3 @@ class PortfolioForm(ModelForm):
 			'placeholder': 'Start typing a fund name...'})
 		self.fields['benchmark_ticker'].widget = forms.HiddenInput()
 
-

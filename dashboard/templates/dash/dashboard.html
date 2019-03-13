@@ -3,8 +3,15 @@
 {% block head_files %}
 {% load static %}
 	<script type="text/javascript">
+		var None = null;
 		var portfolio = JSON.parse({{ portfolio.data|safe }});
+		var quotes = [];
+		var stocks = {};
 		var symbols = {{ symbols|safe }};
+		{% for stock in stocks %}
+			quotes.push({{ stock.quote|safe }});
+			stocks['{{ stock.ticker }}'] = {{ stock.quantity }}*{{ stock.quote.latestPrice }};
+		{% endfor %}
 	</script>
 	<link href="{% static 'css/forms.css' %}" rel="stylesheet">
 {% endblock head_files %}
@@ -14,17 +21,32 @@
 {% block content %}
 	{% if stocks %}
 		<div class="row">
-			<div class="col-md-9">
-				<canvas class="d-none d-sm-block" id="portfolio-chart">
+			<div class="col-md-9 d-none d-sm-block">
+				<canvas id="portfolio-chart">
 				</canvas>
-				<div class="btn-group d-none d-sm-block graph_settings" role="group">
+				<div class="btn-group graph_settings" role="group">
 		            <button type="button" class="btn btn-secondary btn-sm" id="pct_view">%</button>
 		            <button type="button" class="btn btn-secondary btn-sm" id="dollar_view">$</button>
 		            <button type="button" class="btn btn-secondary btn-sm" id="settings" data-toggle="modal" data-target="#portfolioSettingsModal"><i class="fas fa-cog"></i></button>
 		        </div>
 			</div>
-			<div class="col-md-3">
-				<ul class="list-group list-group-flush stock_list">
+			<div class="col-md-3 stock_list">
+				<div class="card d-flex flex-row bg-{% if latest.day_change < 0 %}danger{% else %}success{% endif %}">
+					<div class="d-flex flex-column justify-content-center p-1 flex-fill">
+						<h5 class="text-dark text-center">Day $</h5>
+						<span class="badge badge-dark">
+							<h5 class="text-{% if latest.day_change < 0 %}danger{% else %}success{% endif %}">{{ latest.day_change|floatformat }}</h5>
+						</span>
+					</div>
+					<div class="d-flex flex-column justify-content-center p-1 flex-fill">
+						<h5 class="text-dark text-center">Day %</h5>
+						<span class="badge badge-dark">
+							<h5 class="text-{% if latest.day_change < 0 %}danger{% else %}success{% endif %}">{{ latest.pct_change|percentage }}</h5>
+						</span>
+					</div>
+				</div>
+				<hr>
+				<ul class="list-group list-group-flush">
 				{% for stock in stocks %}
 			        {% include 'dash/_stock_link.html' %}
 			    {% endfor %}
@@ -33,21 +55,23 @@
 		</div>
 		<hr>
 		<div class="row">
-			<div class="col-md-4">
-				<div class="card metrics">
-				  <div class="card-header">
-				    Totals
-				  </div>
-				  <div class="card-body">
-				  </div>
-				</div>
+			<div class="col-md-4 metrics">
+				<p class="smalll font-italic text-muted">{{ latest.days }} Days <span  class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-placement="right" title="Time In The Market Beats Market Timing">?</span></p>
+				{% include 'dash/_portfolio_totals.html' %}
 			</div>
 			<div class="col-md-8">
-				<div class="card metrics">
-				  <div class="card-header">
-				    Metrics
-				  </div>
-				  <div class="card-body">
+				<div class="card metrics p-0 border-0">
+				  <div class="card-body container-fluid">
+				  	<div class="row">
+				  		<div class="col-md-6">
+				  			<canvas id="sector-chart" class="metric_graph">
+							</canvas>
+				  		</div>
+				  		<div class="col-md-6">
+				  			<canvas id="ticker-chart" class="metric_graph">
+							</canvas>
+				  		</div>
+				  	</div>
 				  </div>
 				</div>
 			</div>
@@ -96,6 +120,7 @@
 {% endblock content %}
 {% block footer_files %}
 	<script src="{% static 'js/portfolioChart.js' %}"></script>
+	<script src="{% static 'js/sectorChart.js' %}"></script>
 	<script src="{% static 'js/jquery.autocomplete.js' %}"></script>
 	<script src="{% static 'js/tickerSearch.js' %}"></script>
 {% endblock footer_files %}
