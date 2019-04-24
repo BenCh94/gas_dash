@@ -15,6 +15,18 @@
     border: none!important;  
 }
 
+.sleek_input {
+    border-radius: 3px;
+    padding: 5px;
+    outline: none;
+}
+
+.sleek_input:focus {
+    -webkit-box-shadow: inset 5px 5px 34px -5px rgba(0,0,0,0.75);
+    -moz-box-shadow: inset 5px 5px 34px -5px rgba(0,0,0,0.75);
+    box-shadow: inset 5px 5px 34px -5px rgba(0,0,0,0.75);
+}
+
 input, select {
     width: 100%;
     background: transparent;

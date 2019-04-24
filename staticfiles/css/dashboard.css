@@ -7,9 +7,9 @@ body {
   	min-height: 100vh;
 }
 input, select {
-    -webkit-box-shadow: inset 10px 10px 5px -10px rgba(0,0,0,0.75);
-    -moz-box-shadow: inset 10px 10px 5px -10px rgba(0,0,0,0.75);
-    box-shadow: inset 10px 10px 5px -10px rgba(0,0,0,0.75);
+    -webkit-box-shadow: inset 4px 4px 25px -5px rgba(0,0,0,0.75);
+    -moz-box-shadow: inset 4px 4px 25px -5px rgba(0,0,0,0.75);
+    box-shadow: inset 4px 4px 25px -5px rgba(0,0,0,0.75);
 }
 
 a {
@@ -160,7 +160,6 @@ i {
 }
 #company-logo {
     width: 10%;
-    height: 10%;
 }
 
 #tickerDrop {
