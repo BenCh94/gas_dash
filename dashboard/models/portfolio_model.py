@@ -1,12 +1,12 @@
-import datetime
+""" Portfolio model for users overall holdings """
 import json
 import ast
 import statistics
 from django.db import models
-from django.utils import timezone
 from django.contrib.postgres.fields import JSONField
 
 class Portfolio(models.Model):
+	""" POrtfolio model defintion for users overall holdings """
 	user_profile = models.ForeignKey('dashboard.Profile', on_delete=models.CASCADE)
 	data = JSONField()
 	name = models.CharField(max_length=200)
@@ -16,6 +16,7 @@ class Portfolio(models.Model):
 		return self.name
 
 	def latest_day_data(self):
+		""" Returns latest data for the given portfolio """
 		data_str = ast.literal_eval(self.data)
 		data = json.loads(data_str)
 		days = len(data)
