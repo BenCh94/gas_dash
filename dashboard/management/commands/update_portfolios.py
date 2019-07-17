@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from dashboard.historical_data import find_all_tickers
+from dashboard.historical_data import update_portfolio_data
 
 class Command(BaseCommand):
 	help = "function to update users portfolios"
@@ -7,6 +7,6 @@ class Command(BaseCommand):
 	def handle(self, *args, **options):
 		self.stdout.write('updating portfolios...')
 		try:
-			find_all_tickers()
+			update_portfolio_data()
 		except ValueError:
 			raise CommandError('Something went wrong')
