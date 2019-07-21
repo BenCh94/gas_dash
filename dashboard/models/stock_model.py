@@ -28,5 +28,5 @@ class Stock(models.Model):
 
 	def get_ticker(self):
 		""" Convenience method to get ticker for given stock """
-		return self.ticker	
+		return self.ticker
 		

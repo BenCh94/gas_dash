@@ -12,7 +12,7 @@ from dashboard.dash_functions import get_latest_data
 
 @login_required(login_url='/dash/login/')
 def index(request):
-	""" The home dashboards view """
+	""" The home dashboard view """
 	context = dict()
 	current_user = request.user
 	profile = current_user.profile

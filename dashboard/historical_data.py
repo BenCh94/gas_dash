@@ -8,11 +8,14 @@ from .models import Stock, Ticker
 # IEX_BASE_URL set in environemnt variables should use 
 # sandbox unless in production version [beta, stable, v1 etc] to be set in env var
 
+# By saving historical data in the ticker object the update function should only need to query most recent close data to update
+# This will reduce message usage to a manageable level.
+
 def update_portfolio_data():
 	""" Function to chain methods in update process """
 	tickers = find_all_tickers()
-	data = request_iex_charts_simple('5y', ','.join(tickers))
-	print(data)
+	chart_data = request_iex_charts_simple('5y', ','.join(tickers))
+	print(chart_data)
 
 def find_all_tickers():
 	""" Function to retrieve all unique tickers in the system """
@@ -28,3 +31,11 @@ def request_iex_charts_simple(date_range, tickers):
 	iex_req = r.get(url)
 	return iex_req.json()
 
+def init_tickers(tickers):
+	""" Initialise ticker historical data in the DB """
+	success = 0
+	historical_data = request_iex_charts_simple('5y', tickers)
+	for ticker in tickers:
+		ticker.historical_data = historical_data[ticker.ticker]
+		if ticker.save():
+			success += 1
