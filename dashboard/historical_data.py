@@ -5,7 +5,7 @@ import requests as r
 import datetime as dt
 from .models import Stock, Ticker
 
-# IEX_BASE_URL set in environemnt variables should use 
+# IEX_BASE_URL set in environemnt variables should use
 # sandbox unless in production version [beta, stable, v1 etc] to be set in env var
 
 # By saving historical data in the ticker object the update function should only need to query most recent close data to update
@@ -14,13 +14,27 @@ from .models import Stock, Ticker
 def update_portfolio_data():
 	""" Function to chain methods in update process """
 	tickers = find_all_tickers()
-	chart_data = request_iex_charts_simple('5y', ','.join(tickers))
-	print(chart_data)
+	print(update_create_tickers(tickers))
 
 def find_all_tickers():
 	""" Function to retrieve all unique tickers in the system """
 	tickers = list(set(Stock.objects.values_list('ticker', flat=True)))
 	return tickers
+
+def update_create_tickers(tickers):
+	""" Function creates or updates tickers with chart data """
+	ticker_objects = [Ticker.objects.update_or_create(ticker=ticker) for ticker in tickers]
+	# Initiate new tickers
+	new = [ticker_object[0].ticker for ticker_object in ticker_objects if ticker_object[1]]
+	full_charts = request_iex_charts_simple('5y', ','.join(new))
+	create_charts = [Ticker.objects.filter(ticker=ticker).update(historical_data=full_charts[ticker]) for ticker in full_charts.keys()]
+	created = len(create_charts) - 1
+	# Add to existing tickers
+	existing = [ticker_object[0].ticker for ticker_object in ticker_objects if not ticker_object[1]]
+	partial_charts = request_iex_charts_simple('5d', ','.join(existing))
+	update_charts = [append_json(Ticker.objects.get(ticker=ticker), partial_charts[ticker]) for ticker in partial_charts.keys()]
+	updated = len(update_charts)
+	return f'Created: {created} new tickers, Updated: {updated} existing tickers'
 
 def request_iex_charts_simple(date_range, tickers):
 	""" Returns open, close, volume data for given time range and tickers """
@@ -31,11 +45,11 @@ def request_iex_charts_simple(date_range, tickers):
 	iex_req = r.get(url)
 	return iex_req.json()
 
-def init_tickers(tickers):
-	""" Initialise ticker historical data in the DB """
-	success = 0
-	historical_data = request_iex_charts_simple('5y', tickers)
-	for ticker in tickers:
-		ticker.historical_data = historical_data[ticker.ticker]
-		if ticker.save():
-			success += 1
+def append_json(ticker, chart_data):
+	""" Function updates historical prices with one day of data """
+	historical = ticker.historical_data
+	last_day = chart_data['chart'][-1]
+	latest_saved = historical['chart'][-1]
+	if last_day['date'] != latest_saved['date']:
+		historical['chart'].append(last_day)
+		ticker.save()
