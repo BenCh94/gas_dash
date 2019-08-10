@@ -8,10 +8,7 @@ var pricectx = document.getElementById("share-price-chart");
 
 function getChartData(range, trades){
     $('#loading-gif').show();
-    $.get("https://api.iextrading.com/1.0/stock/"+ ticker +"/chart/"+range, 
-    function(iexdata, status){
-        drawGraph(iexdata, trades);
-    })
+    drawGraph(price_data, trades)
 }
 
 function getClosePrices(data){
@@ -167,8 +164,9 @@ function drawGraph(iexdata, showTrades){
 
 // Charts
 $(document).ready(function(){
+    console.log(price_data);
     // pricectx.height = ($(window).height())*0.45;
-    getChartData("6m", false);
+    getChartData("5y", false);
 
     $(".priceChart").click(function(e){
         $('.priceChart').removeClass('active');

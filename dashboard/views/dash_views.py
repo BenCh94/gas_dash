@@ -1,18 +1,19 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.contrib import messages
 from dashboard.models import Stock, Trade, Portfolio
 from dashboard.forms import PortfolioForm
 from dashboard.iex_requests import list_symbols, stock_profile
 from dashboard.stock_functions import get_current_quotes
 from dashboard.dash_functions import get_latest_data
+import json
 
 
 @login_required(login_url='/dash/login/')
 def index(request):
-	""" The home dashboards view """
+	""" The home dashboard view """
 	context = dict()
 	current_user = request.user
 	profile = current_user.profile
@@ -37,11 +38,13 @@ def index(request):
 def stock(request, stock_id):
 	""" Stock view """
 	stock = get_object_or_404(Stock, pk=stock_id)
-	stock_data = stock_profile(stock.ticker)
+	stock_data = dict()
 	other_stocks = Stock.objects.filter(user_profile=request.user.profile, status='a').exclude(pk=stock_id)
 	stock_data['stock'] = stock
 	stock_data['trades'] = stock.trades()
 	stock_data['stocks'] = other_stocks
+	stock_data['price_data'] = json.dumps(stock.ticker_data.historical_data['chart'])
+	print(type(stock_data['price_data']))
 	return render(request, 'dash/stock_detail.html', {'stock_data': stock_data})
 
 @login_required(login_url='/dash/login/')

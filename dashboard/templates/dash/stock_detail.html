@@ -8,6 +8,7 @@
     {% for trade in stock_data.trades %}
       trades.push({'price': {{ trade.avg_price }}, 'type': '{{ trade.trade_type }}', 'date': '{{ trade.date }}', 'amount': {{ trade.amount }}})
     {% endfor %}
+    var price_data = {{ stock_data.price_data|safe }};
 </script>
 {% endblock head_files %}
 {% block sidebar_content %}
@@ -68,9 +69,9 @@
 <div class="row d-block">
     <div class="d-flex justify-content-center btn-group" role="group">
         <button type="button" class="flex-fill btn btn-outline-success btn-sm priceChart" id="1m">1M</button>
-        <button type="button" class="flex-fill btn btn-outline-success btn-sm priceChart active" id="6m">6M</button>
+        <button type="button" class="flex-fill btn btn-outline-success btn-sm priceChart" id="6m">6M</button>
         <button type="button" class="flex-fill btn btn-outline-success btn-sm priceChart" id="1y">1y</button>
-        <button type="button" class="flex-fill btn btn-outline-success btn-sm priceChart" id="5y">5y</button>
+        <button type="button" class="flex-fill btn btn-outline-success btn-sm priceChart active" id="5y">5y</button>
         <button type="button" class="flex-fill btn btn-outline-success btn-sm" id="timeIn">Time In</button>
     </div>
 </div>
@@ -108,11 +109,11 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td>${{ stock_data.stats.marketcap|big_number }}</td>
-                      <td>${{ stock_data.stats.cash|big_number }}</td>
-                      <td>${{ stock_data.stats.debt|big_number }}</td>
-                      <td>${{ stock_data.stats.revenue|big_number }}</td>
-                      <td>${{ stock_data.stats.shortInterest|big_number }}</td>
+                      <!-- <td>${{ stock_data.stats.marketcap }}</td>
+                      <td>${{ stock_data.stats.cash }}</td>
+                      <td>${{ stock_data.stats.debt }}</td>
+                      <td>${{ stock_data.stats.revenue }}</td>
+                      <td>${{ stock_data.stats.shortInterest }}</td> -->
                     </tr>
                   </tbody>
                 </table>
@@ -139,11 +140,11 @@
     </div>
     <div class="card bg-dark company-details col-md-4 p-0">
         <div class="card-header d-flex flex-row align-items-center">
-            <img src="{{ stock_data.logo.url }}" alt="logo" id="company-logo" class="mr-auto">
+            <img src="{{ stock_data.stock.ticker_data.logo_url }}" alt="logo" id="company-logo" class="mr-auto">
             <h5 class="p-2 bd-highlight">{{  stock_data.company.companyName  }}</h5>
         </div>
         <div class="card-body">
-            <p class="card-title">
+            <!-- <p class="card-title">
                 CEO:  {{  stock_data.company.CEO  }}
             </p>
             <p class="text-muted small">
@@ -152,7 +153,7 @@
             <p class="card-text">
                 {{  stock_data.company.description  }}
             </p>
-            <a href="{{  stock_data.company.website  }}" target="_blank" class="btn btn-primary">Website</a>
+            <a href="{{  stock_data.company.website  }}" target="_blank" class="btn btn-primary">Website</a> -->
         </div>
     </div>
 </div>

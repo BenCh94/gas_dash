@@ -1,12 +1,12 @@
-import datetime
-import pandas as pd 
+""" The user stock model definition """
 from django.db import models
-from django.utils import timezone
 from .trade_model import Trade
 
 class Stock(models.Model):
+	""" Stock model refers to a stock/share in a users account """
 	StockStatuses = [('a', 'Active'), ('i', 'Inactive')]
 	user_profile = models.ForeignKey('dashboard.Profile', on_delete=models.CASCADE)
+	ticker_data = models.ForeignKey('dashboard.Ticker', on_delete=models.PROTECT, null=True)
 	name = models.CharField(max_length=200)
 	ticker = models.CharField(max_length=10)
 	quantity = models.FloatField(blank=True, null=True)
@@ -18,12 +18,15 @@ class Stock(models.Model):
 		return self.name
 
 	def trades(self):
-		trades = Trade.objects.filter(stock = self)
+		""" Retrieve all trades for a given stock """
+		trades = Trade.objects.filter(stock=self)
 		if trades.count() > 0:
-			return trades.order_by('date')
+			trades = trades.order_by('date')
 		else:
-			return None
+			trades = None
+		return trades
 
 	def get_ticker(self):
-		return self.ticker	
+		""" Convenience method to get ticker for given stock """
+		return self.ticker
 		
