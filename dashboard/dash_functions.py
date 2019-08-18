@@ -7,8 +7,7 @@ from datetime import datetime
 from django.shortcuts import get_object_or_404
 from .iex_requests import stock_price, batch_price
 from .models import Stock, Trade, User, Profile, Portfolio
-from .stock_functions import *
-import pdb
+from .stock_functions import get_current_quotes, get_current_value, assign_ticker
 
 def update_portfolio():
 	users = User.objects.all()
@@ -183,8 +182,3 @@ def get_latest_data(portfolio, stocks):
 		return latest
 	else:
 		return ''
-
-
-
-
-

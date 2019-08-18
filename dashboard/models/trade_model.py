@@ -12,4 +12,4 @@ class Trade(models.Model):
 	fees_usd = models.FloatField()
 	avg_price = models.FloatField()
 	def __str__(self):
-		return self.trade_type
+		return f'{self.trade_type}: {self.stock.ticker}, {self.date}'

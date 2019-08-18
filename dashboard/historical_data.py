@@ -1,20 +1,18 @@
-"""Functions used to retrieve and update historical data from the IEX cloud API"""
+""" Functions used to retrieve and update historical data from the IEX cloud API """
 import os
-import pandas as pd
 import requests as r
-import datetime as dt
 from .models import Stock, Ticker
 
-# IEX_BASE_URL set in environemnt variables should use
+# IEX_BASE_URL set in environemnt variables should use\
 # sandbox unless in production version [beta, stable, v1 etc] to be set in env var
 
-# By saving historical data in the ticker object the update function should only need to query most recent close data to update
-# This will reduce message usage to a manageable level.
+# By saving historical data in the ticker object the update function should only need to query most\
+# recent close data to update. This will reduce message usage to a manageable level.
 
-def update_portfolio_data():
+def update_ticker_data():
 	""" Function to chain methods in update process """
 	tickers = find_all_tickers()
-	print(update_create_tickers(tickers))
+	update_create_tickers(tickers)
 
 def find_all_tickers():
 	""" Function to retrieve all unique tickers in the system """
@@ -24,7 +22,7 @@ def find_all_tickers():
 def update_create_tickers(tickers):
 	""" Function creates or updates tickers with chart data """
 	ticker_objects = [Ticker.objects.update_or_create(ticker=ticker) for ticker in tickers]
-	# Initiate new tickers
+	# Initiate new tickers, update_create returns True/False in tuple index 1 if new record created.
 	new = [ticker_object[0].ticker for ticker_object in ticker_objects if ticker_object[1]]
 	full_charts = request_iex_charts_simple('5y', ','.join(new))
 	create_charts = [Ticker.objects.filter(ticker=ticker).update(historical_data=full_charts[ticker]) for ticker in full_charts.keys()]

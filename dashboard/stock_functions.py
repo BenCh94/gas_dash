@@ -1,3 +1,5 @@
+""" Function for dealing with Stock records """
+
 from django.shortcuts import get_object_or_404
 from .models import Stock, Trade, Ticker
 from .iex_requests import batch_quotes
