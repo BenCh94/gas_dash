@@ -2,6 +2,15 @@
 <nav class="col-md-2 bg-dark sidebar">
   <div class="sidebar-sticky">
     <ul class="nav flex-column">
+      {% if current_user.is_admin %}
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'admin:index' %}">
+            <span data-feather="home"></span>
+            <i class="fas fa-user-shield"></i>
+            Admin Site
+          </a>
+        </li>
+      {% endif %}
       <li class="nav-item">
         <a class="nav-link active" href="{% url 'dash:dashboard' %}">
           <span data-feather="home"></span>

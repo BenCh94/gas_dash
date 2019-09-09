@@ -31,6 +31,7 @@ def index(request):
 	context['symbols'] = list_symbols()
 	context['portfolio'] = portfolio
 	context['portfolio_form'] = portfolio_form
+	context['current_user'] = profile
 	return render(request, 'dash/dashboard.html', context)
 
 
