@@ -5,29 +5,41 @@ from .models import Stock, Trade, User, Profile, Portfolio
 
 def find_all_portfolios():
 	""" init portfolios if user has stocks """
-	[init_portfolio(user.profile) for user in User.objects.all() if user.profile.has_stocks()]
+	[PortfolioUpdate(user.profile) for user in User.objects.all() if user.profile.has_stocks()]
 
-def init_portfolio(profile):
-	""" Initiate portfolio data for charting """
-	portfolio = Portfolio.objects.update_or_create(user_profile=profile, name=profile.user.username, defaults={'data': "{}"})
-	user_stocks = Stock.objects.filter(user_profile=profile)
-	# For each stock combine trades and historical data if the stock has trades present
-	stock_data = [combine_trades(stock, portfolio) for stock in list(user_stocks) if stock.trades()]
 
-def combine_trades(stock, portfolio):
-	""" Combine trade data with historical prices to track performance """
-	trade_list = list(stock.trades().values('date', 'amount', 'fees_usd', 'stock_id', 'trade_type', 'avg_price'))
-	for index, trade in enumerate(trade_list):
-		if not index:
-			trade['invested'] = (trade['amount']*trade['avg_price'])+trade['fees_usd']
-			initial_trade = buy_benchmark(trade, portfolio)
+class PortfolioUpdate():
+	""" Object for updating a users portfolio data """
 
-def buy_benchmark(trade, portfolio):
-	""" Buy an equivalent value of the portfolio benchmark on the day trade was executed """
-	if portfolio[0].benchmark_ticker:
+	def __init__(self, profile):
+		""" Initiate portfolio data for charting """
+		self.portfolio = Portfolio.objects.update_or_create(user_profile=profile, name=profile.user.username, defaults={'data': "{}"})
+		self.stocks = Stock.objects.filter(user_profile=profile)
+		# For each stock combine trades and historical data if the stock has trades present
+		stock_data = [self.combine_trades(stock) for stock in list(self.stocks) if stock.trades()]
+
+	def combine_trades(self, stock):
+		""" Combine trade data with historical prices to track performance """
+		trade_list = list(stock.trades().values('date', 'amount', 'fees_usd', 'stock_id', 'trade_type', 'avg_price'))
+		if self.portfolio[0].benchmark_ticker:
+			self.get_benchmarks(trade_list)
+
+	def get_benchmarks(self, trade_list):
+		""" Get the benchmark trade value onsmae day as trade """
+		trade_data = []
+		for index, trade in enumerate(trade_list):
+			trade['value'] = trade['amount']*trade['avg_price']
+			trade['invested'] = trade['value']+trade['fees_usd']
+			if not index:
+				initial_trade = self.buy_benchmark(trade)
+			else:
+				trade_data.append(self.buy_benchmark(trade))
+
+	def buy_benchmark(self, trade):
+		""" Buy an equivalent value of the portfolio benchmark on the day trade was executed """
 		date = trade['date']
-		print(date)
-		return trade
-	else:
-		trade['benchmark'] = 'None'
+		day_chart = request_chart_on_date(date, self.portfolio[0].benchmark_ticker)
+		avg_unadjusted = (day_chart[0]['uHigh'] + day_chart[0]['uLow'])/2
+		trade['benchmark_amount'] = trade['value']/avg_unadjusted
+		print(trade)
 		return trade
