@@ -15,6 +15,8 @@ class PortfolioUpdate():
 		""" Initiate portfolio data for charting """
 		self.portfolio = Portfolio.objects.update_or_create(user_profile=profile, name=profile.user.username, defaults={'data': "{}"})
 		self.stocks = Stock.objects.filter(user_profile=profile)
+		""" Get the earliest trade date and retrieve benchmark data including that date """
+		
 		# For each stock combine trades and historical data if the stock has trades present
 		stock_data = [self.combine_trades(stock) for stock in list(self.stocks) if stock.trades()]
 
@@ -39,7 +41,7 @@ class PortfolioUpdate():
 		""" Buy an equivalent value of the portfolio benchmark on the day trade was executed """
 		date = trade['date']
 		day_chart = request_chart_on_date(date, self.portfolio[0].benchmark_ticker)
+		print(day_chart)
 		avg_unadjusted = (day_chart[0]['uHigh'] + day_chart[0]['uLow'])/2
 		trade['benchmark_amount'] = trade['value']/avg_unadjusted
-		print(trade)
 		return trade

@@ -3,6 +3,8 @@ import json
 import ast
 import statistics
 from django.db import models
+from .trade_model import Trade
+from .stock_model import Stock
 from django.contrib.postgres.fields import JSONField
 
 class Portfolio(models.Model):
@@ -29,6 +31,12 @@ class Portfolio(models.Model):
 		latest['cv'] = statistics.stdev(gains)/statistics.mean(gains)
 		latest['bench_cv'] = statistics.stdev(bench_gains)/statistics.mean(bench_gains)
 		return latest
+
+	def earliest_trade(self):
+		""" Return the earliest trade in the portfolio """
+		stocks = Stock.objects.filter(user_profile=self.user_profile)
+		trades = [stock.trades() for stock in stocks if stock.trades()]
+		# find earliest trade date in group here
 
 	class Meta:
 		unique_together = ('user_profile', 'name')
