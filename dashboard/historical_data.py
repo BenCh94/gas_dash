@@ -51,16 +51,13 @@ def request_iex_charts_simple(date_range, tickers):
 	iex_req = r.get(url)
 	return iex_req.json()
 
-def request_chart_on_date(date, ticker):
+def request_chart_from_date(date, ticker):
 	""" Returns simple chart for the given date only """
 	token = os.environ.get('IEX_API')
 	base_url = os.environ.get('IEX_BASE_URL')
-	query = f'/stock/{ticker}/chart/date/{date}?token={token}&chartByDay=true'
+	query = f'/stock/{ticker}/chart/{date}?token={token}'
 	url = base_url + query
 	iex_req = r.get(url)
-	print(iex_req.status_code)
-	print(ticker)
-	print(date)
 	return iex_req.json()
 
 def append_json(ticker, chart_data):

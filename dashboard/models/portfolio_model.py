@@ -10,10 +10,11 @@ from django.contrib.postgres.fields import JSONField
 class Portfolio(models.Model):
 	""" POrtfolio model defintion for users overall holdings """
 	user_profile = models.ForeignKey('dashboard.Profile', on_delete=models.CASCADE)
-	data = JSONField()
+	data = JSONField(null=True)
 	name = models.CharField(max_length=200)
-	benchmark_name = models.CharField(max_length=200, null=True)
-	benchmark_ticker = models.CharField(max_length=5, null=True)
+	benchmark_name = models.CharField(max_length=200, default='Vanguard S&P 500')
+	benchmark_ticker = models.CharField(max_length=5, null='voo')
+	benchmark_data = JSONField(null=True)
 	def __str__(self):
 		return self.name
 
@@ -35,8 +36,11 @@ class Portfolio(models.Model):
 	def earliest_trade(self):
 		""" Return the earliest trade in the portfolio """
 		stocks = Stock.objects.filter(user_profile=self.user_profile)
-		trades = [stock.trades() for stock in stocks if stock.trades()]
-		# find earliest trade date in group here
+		stock_ids = [stock.id for stock in stocks if stock.trades()]
+		trades = Trade.objects.filter(stock_id__in=stock_ids)
+		earliest = trades.order_by('date')[0]
+		return earliest
+
 
 	class Meta:
 		unique_together = ('user_profile', 'name')
