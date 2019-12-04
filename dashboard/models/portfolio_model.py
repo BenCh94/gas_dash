@@ -20,8 +20,9 @@ class Portfolio(models.Model):
 
 	def latest_day_data(self):
 		""" Returns latest data for the given portfolio """
+		print(self.data)
 		data_str = ast.literal_eval(self.data)
-		data = json.loads(data_str)
+		data = data_str
 		days = len(data)
 		latest = data[-1]
 		latest['days'] = days

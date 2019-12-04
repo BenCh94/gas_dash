@@ -2,6 +2,8 @@
 from datetime import datetime, date
 from .historical_data import request_iex_charts_simple, request_chart_from_date
 import pandas as pd
+import numpy as np
+import json
 from .models import Stock, Trade, User, Profile, Portfolio
 
 def find_all_portfolios():
@@ -29,28 +31,34 @@ def add_sell(trade, df):
 	return df
 
 def apply_trade_data(df, trade):
-	df['amount'] = trade['amount']
-	df['fees_usd'] = trade['fees_usd']
-	df['invested'] = trade['invested']
-	df['value'] = df['close']*df['amount']
-	df['gain'] = df['value'] - df['invested']
-	df['gain_pct'] = (df['gain']/df['invested'])*100
+	df.loc[:, 'amount'] = trade['amount']
+	df.loc[:, 'fees_usd'] = trade['fees_usd']
+	df.loc[:, 'invested'] = trade['invested']
+	df.loc[:, 'value'] = df['close']*df['amount']
+	df.loc[:, 'gain'] = df['value'] - df['invested']
+	df.loc[:, 'gain_pct'] = (df['gain']/df['invested'])*100
+	return df
+
+def assign_bench_columns(df, trade, bench_prices):
+	df = df.assign(
+		bench_value=bench_prices['close']*trade['benchmark_amount'],
+		bench_gain=lambda x: x['bench_value']-x['invested'],
+		bench_gain_pct=lambda x: (x['bench_gain']/x['invested'])*100
+		)
 	return df
 
 def apply_benchmark(df, bench_chart, trade, end_date):
 	if end_date != '':
 		bench_chart['date'] = pd.to_datetime(bench_chart['date'])
-		mask = (bench_chart['date'] >= trade['date']) & (bench_chart['date'] < end_date)
+		mask = (bench_chart['date'] >= pd.Timestamp(trade['date'])) & (bench_chart['date'] < pd.Timestamp(end_date))
 		bench_prices = bench_chart.loc[mask]
-		df['bench_value'] = bench_prices['close'].apply(lambda x: x*0.3)
-		df['bench_gain'] = df['bench_value'] - df['invested']
-		df['bench_gain_pct'] = (df['bench_gain']/df['invested'])*100
+		bench_prices = bench_prices.set_index(df.index)
+		df = assign_bench_columns(df, trade, bench_prices)
 	else:
 		bench_chart['date'] = pd.to_datetime(bench_chart['date'])
-		bench_prices = bench_chart[bench_chart['date'] >= trade['date']]
-		df['bench_value'] = bench_prices['close']*trade['benchmark_amount']
-		df['bench_gain'] = df['bench_value'] - df['invested']
-		df['bench_gain_pct'] = (df['bench_gain']/df['invested'])*100
+		bench_prices = bench_chart[bench_chart['date'] >= pd.Timestamp(trade['date'])]
+		bench_prices = bench_prices.set_index(df.index)
+		df = assign_bench_columns(df, trade, bench_prices)
 	return df
 
 
@@ -66,6 +74,10 @@ class PortfolioUpdate():
 
 		# For each stock combine trades and historical data if the stock has trades present
 		stock_data = [self.combine_trades(stock) for stock in list(self.stocks) if stock.trades()]
+		portfolio_data = self.combine_portfolio(pd.concat(stock_data))
+		self.portfolio.data = portfolio_data
+		self.portfolio.save()
+		print(self.portfolio.data)
 
 	def get_benchmark(self):
 		""" Get price chart for benchmark from earliest trade date """
@@ -112,22 +124,32 @@ class PortfolioUpdate():
 		""" Apply trades to historical prices for performance data """
 		price_data = pd.DataFrame(stock.ticker_data.historical_data['chart'])
 		price_data['date'] = pd.to_datetime(price_data['date'])
+		price_data = price_data.sort_values(by='date')
 		bench_chart = pd.DataFrame(self.portfolio.benchmark_data)
 		bench_chart['date'] = pd.to_datetime(bench_chart['date'])
 		frames = []
 		for index, row in trade_df.iterrows():
 			if index < trade_df.index.max():
 				end_date = trade_df['date'].iloc[index+1]
-				mask = (price_data['date'] >= row['date']) & (price_data['date'] < end_date)
+				mask = (price_data['date'] >= pd.Timestamp(row['date'])) & (price_data['date'] < pd.Timestamp(end_date))
 				price_df = price_data.loc[mask]
 				gain_df = apply_trade_data(price_df, row)
 				gain_df = apply_benchmark(gain_df, bench_chart, row, end_date)
 				frames.append(gain_df)
 			else:
-				price_df = price_data[price_data['date'] >= row['date']]
+				price_df = price_data[price_data['date'] >= pd.Timestamp(row['date'])]
 				gain_df = apply_trade_data(price_df, row)
 				gain_df = apply_benchmark(gain_df, bench_chart, row, '')
 				frames.append(gain_df)
 		full_df = pd.concat(frames)
-		print(full_df[['gain', 'gain_pct', 'value', 'bench_value', 'bench_gain', 'bench_gain_pct']])
 		return full_df
+
+	def combine_portfolio(self, df):
+		portfolio = df.groupby('date', as_index=False).agg({'gain': np.sum, 'value': np.sum, 'amount': np.sum, 'fees_usd': np.sum, 'invested': np.sum, 'bench_gain': np.sum })
+		portfolio.apply(lambda x: x.to_json(orient='records'))
+		portfolio_dict = portfolio.to_dict(orient='records')
+		for d in portfolio_dict:
+			d['date'] =  d['date'].strftime('%Y-%m-%d')
+			d['pct_gain'] = (d['gain']/d['invested']) * 100
+			d['bench_gain_pct'] = (d['bench_gain']/d['invested']) * 100
+		return json.dumps(portfolio_dict)

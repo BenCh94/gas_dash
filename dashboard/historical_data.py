@@ -35,7 +35,7 @@ def update_create_tickers(tickers):
 	# Add to existing tickers
 	existing = [ticker_object[0].ticker for ticker_object in ticker_objects if check_updates(ticker_object)]
 	if existing:
-		partial_charts = request_iex_charts_simple('5d', ','.join(existing))
+		partial_charts = request_iex_charts_simple('6m', ','.join(existing))
 		update_charts = [append_json(Ticker.objects.get(ticker=ticker), partial_charts[ticker]) for ticker in partial_charts.keys()]
 		updated = len(update_charts)
 	else:
@@ -71,4 +71,4 @@ def append_json(ticker, chart_data):
 
 def check_updates(ticker):
 	""" Check last update of ticker and skip if within 24 hours """
-	return not ticker[1] and ticker[0].updated_at + datetime.timedelta(hours=24) < timezone.now()
+	return not ticker[1] and ticker[0].updated_at < timezone.now() - datetime.timedelta(hours=24)
