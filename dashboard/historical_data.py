@@ -16,10 +16,22 @@ def update_ticker_data():
 	tickers = find_all_tickers()
 	print(update_create_tickers(tickers))
 
+def hard_update_ticker_data():
+	tickers = find_all_tickers()
+	print(fill_tickers(tickers))
+
 def find_all_tickers():
 	""" Function to retrieve all unique tickers in the system """
 	tickers = list(set(Stock.objects.values_list('ticker', flat=True)))
 	return tickers
+
+def fill_tickers(tickers):
+	""" Function creates tickers with chart data """
+	ticker_objects = [Ticker.objects.update_or_create(ticker=ticker) for ticker in tickers]
+	# Initiate new tickers, update_create returns True/False in tuple index 1 if new record created.
+	full_charts = request_iex_charts_simple('5y', ','.join([ticker_object[0].ticker for ticker_object in ticker_objects]))
+	create_charts = [Ticker.objects.filter(ticker=ticker).update(historical_data=full_charts[ticker]) for ticker in full_charts.keys()]
+	return f'Force Updated: {len(create_charts)-1} tickers'
 
 def update_create_tickers(tickers):
 	""" Function creates or updates tickers with chart data """

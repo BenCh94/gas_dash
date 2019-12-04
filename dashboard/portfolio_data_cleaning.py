@@ -8,7 +8,7 @@ from .models import Stock, Trade, User, Profile, Portfolio
 
 def find_all_portfolios():
 	""" init portfolios if user has stocks """
-	[PortfolioUpdate(user.profile) for user in User.objects.all() if user.profile.has_stocks()]
+	return [PortfolioUpdate(user.profile) for user in User.objects.all() if user.profile.has_stocks()]
 
 def add_buy(trade, df):
 	""" Add trade buy data to overall trade df """
@@ -76,8 +76,8 @@ class PortfolioUpdate():
 		stock_data = [self.combine_trades(stock) for stock in list(self.stocks) if stock.trades()]
 		portfolio_data = self.combine_portfolio(pd.concat(stock_data))
 		self.portfolio.data = portfolio_data
-		self.portfolio.save()
-		print(self.portfolio.data)
+		if self.portfolio.save():
+			return self.portfolio.name
 
 	def get_benchmark(self):
 		""" Get price chart for benchmark from earliest trade date """
