@@ -15,6 +15,9 @@ class Command(BaseCommand):
 			raise CommandError('Something went wrong updating the ticker objects...')
 
 		try:
-			print(f'Updated: {find_all_portfolios()}')
+			portfolios = find_all_portfolios()
+			print(portfolios)
+			errors = portfolios.count('Error')
+			print(f'Updated: {len(portfolios) - errors}, Errors: {errors}')
 		except ValueError:
 			raise CommandError('Something went wrong cleaning portfolio data..')

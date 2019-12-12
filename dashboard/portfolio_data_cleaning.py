@@ -8,7 +8,7 @@ from .models import Stock, Trade, User, Profile, Portfolio
 
 def find_all_portfolios():
 	""" init portfolios if user has stocks """
-	return [PortfolioUpdate(user.profile) for user in User.objects.all() if user.profile.has_stocks()]
+	return [PortfolioUpdate(user.profile).update() for user in User.objects.all() if user.profile.has_stocks()]
 
 def add_buy(trade, df):
 	""" Add trade buy data to overall trade df """
@@ -40,6 +40,7 @@ def apply_trade_data(df, trade):
 	return df
 
 def assign_bench_columns(df, trade, bench_prices):
+	""" Create benchmark columns in the dataframe and populate """
 	df = df.assign(
 		bench_value=bench_prices['close']*trade['benchmark_amount'],
 		bench_gain=lambda x: x['bench_value']-x['invested'],
@@ -48,6 +49,7 @@ def assign_bench_columns(df, trade, bench_prices):
 	return df
 
 def apply_benchmark(df, bench_chart, trade, end_date):
+	""" Apply benchmark price data """
 	if end_date != '':
 		bench_chart['date'] = pd.to_datetime(bench_chart['date'])
 		mask = (bench_chart['date'] >= pd.Timestamp(trade['date'])) & (bench_chart['date'] < pd.Timestamp(end_date))
@@ -72,12 +74,15 @@ class PortfolioUpdate():
 		""" Get the earliest trade date and retrieve benchmark data including that date """
 		self.benchmark = self.get_benchmark()
 
-		# For each stock combine trades and historical data if the stock has trades present
+	def update(self):
+		""" For each stock combine trades and historical data if the stock has trades present """
 		stock_data = [self.combine_trades(stock) for stock in list(self.stocks) if stock.trades()]
 		portfolio_data = self.combine_portfolio(pd.concat(stock_data))
 		self.portfolio.data = portfolio_data
-		if self.portfolio.save():
+		if len(portfolio_data) > 2:
+			self.portfolio.save()
 			return self.portfolio.name
+		return 'Error'
 
 	def get_benchmark(self):
 		""" Get price chart for benchmark from earliest trade date """
@@ -145,6 +150,7 @@ class PortfolioUpdate():
 		return full_df
 
 	def combine_portfolio(self, df):
+		""" combine stock tables into single portfolio data dump """
 		portfolio = df.groupby('date', as_index=False).agg({'gain': np.sum, 'value': np.sum, 'amount': np.sum, 'fees_usd': np.sum, 'invested': np.sum, 'bench_gain': np.sum })
 		portfolio.apply(lambda x: x.to_json(orient='records'))
 		portfolio_dict = portfolio.to_dict(orient='records')
