@@ -1,14 +1,10 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
-from django.http import Http404
-from django.contrib import messages
+""" Views for the sites forms """
 from datetime import datetime
-from ..models import Stock, Trade
-from ..forms import SignUpForm, StockForm, TradeForm
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from ..forms import StockForm, TradeForm
 from ..iex_requests import list_symbols
-from ..dash_functions import apply_trades
-
 
 @login_required(login_url='/dash/login/')
 def add_stock(request):
@@ -41,10 +37,9 @@ def add_trade(request):
 			trade.save()
 			messages.success(request, 'Congrats, Your trade was added!')
 			return redirect('dash:dashboard')
-		else:
-			errors = form.errors
-			trade_form = TradeForm(request, request.POST)
-			messages.warning(request, "There's a problem with the form")
-			return render(request, 'dash/add_trade.html', { 'form': trade_form, 'errors': errors })	
+		errors = form.errors
+		trade_form = TradeForm(request, request.POST)
+		messages.warning(request, "There's a problem with the form")
+		return render(request, 'dash/add_trade.html', {'form': trade_form, 'errors': errors})
 	trade_form = TradeForm(request)
-	return render(request, 'dash/add_trade.html', { 'form': trade_form })
+	return render(request, 'dash/add_trade.html', {'form': trade_form})

@@ -4,7 +4,7 @@
 {% load static %}
 	<script type="text/javascript">
 		var None = null;
-		var portfolio = JSON.parse({{ portfolio.data|safe }});
+		var portfolio = {{ portfolio.data|safe }};
 		var quotes = [];
 		var stocks = {};
 		var symbols = {{ symbols|safe }};

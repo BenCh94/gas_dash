@@ -6,10 +6,10 @@
 			<span data-toggle="tooltip" class="badge badge-{% if stock.quote.changePercent < 0 %}danger{% else %}success{% endif %}">
 				<div class="container-fluid">
 					<div class="row">
-						${{ stock.quote.latestPrice }} ({{ stock.quote.changePercent|percentage }})
+						${{ stock.quote.latestPrice }} ({{ stock.quote.changePercent }})
 					</div>
 					<div class="row">
-						<small>ytd: {{ stock.quote.ytdChange|percentage }}</small>
+						<small>ytd: {{ stock.quote.ytdChange }}</small>
 					</div>
 				</div>
 			</span>

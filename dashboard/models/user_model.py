@@ -22,6 +22,12 @@ class Profile(models.Model):
     	else:
     		return False
 
+    def is_admin(self):
+        if self.user.is_staff:
+            return True
+        else:
+            return False
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
 	if created:
