@@ -19,4 +19,4 @@ selenium==3.14.1
 six==1.11.0
 text-unidecode==1.2
 urllib3==1.24.2
-whitenoise==4.0
+whitenoise==5.0.1
