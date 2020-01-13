@@ -37,8 +37,13 @@ LOGGING = {
     'disable_existing_loggers': False,
     'handlers': {
         'console': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/dashboard/log/portfolio_update.log',
         },
         'mail_admins': {
             'level': 'ERROR',
@@ -51,9 +56,10 @@ LOGGING = {
             'handlers': ['console'],
             'propagate': True,
         },
-        'dashboard.portfolio_update': {
-            'handlers': ['console', 'mail_admins'],
+        'portfolio_update': {
+            'handlers': ['console', 'mail_admins', 'file'],
             'level': 'DEBUG',
+            'propagate': True,
         },
     },
 }
