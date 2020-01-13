@@ -1,15 +1,17 @@
+""" View function for the main portfolio dashbaord app """
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 from django.contrib import messages
 from dashboard.models import Stock, Trade, Portfolio
 from dashboard.forms import PortfolioForm
-from dashboard.iex_requests import list_symbols, stock_profile
+from dashboard.iex_requests import list_symbols
 from dashboard.stock_functions import get_current_quotes
 from dashboard.dash_functions import get_latest_data
 import json
+import logging
 
+logger = logging.getLogger(__name__)
 
 @login_required(login_url='/dash/login/')
 def index(request):
@@ -17,6 +19,7 @@ def index(request):
 	context = dict()
 	current_user = request.user
 	profile = current_user.profile
+	logger.info('loading portfolio index %{user.username}')
 	stocks = Stock.objects.filter(user_profile=profile, status='a')
 	context['stocks'] = get_current_quotes(stocks)
 	if request.method == 'POST':

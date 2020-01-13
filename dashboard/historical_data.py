@@ -3,6 +3,7 @@ import os
 import datetime
 from django.utils import timezone
 import requests as r
+import pandas as pd
 from .models import Stock, Ticker
 
 # IEX_BASE_URL set in environemnt variables should use\
@@ -75,12 +76,16 @@ def request_chart_from_date(date, ticker):
 def append_json(ticker, chart_data):
 	""" Function updates historical prices with one day of data """
 	historical = ticker.historical_data
-	last_day = chart_data['chart'][-1]
+	chart = pd.DataFrame(chart_data['chart'])
+	chart['date'] = pd.to_datetime(chart['date'])
 	latest_saved = historical['chart'][-1]
-	if last_day['date'] != latest_saved['date']:
-		historical['chart'].append(last_day)
-		ticker.save()
+	update_date = pd.to_datetime(latest_saved['date'])
+	updates = len(chart[chart['date'] > update_date])
+	historical['chart'].extend(chart_data['chart'][-updates:])
+	ticker.save()
 
 def check_updates(ticker):
 	""" Check last update of ticker and skip if within 24 hours """
-	return not ticker[1] and ticker[0].updated_at < timezone.now() - datetime.timedelta(hours=24)
+	chart_data = pd.DataFrame(ticker[0].historical_data['chart'])
+	chart_data['date'] = pd.to_datetime(chart_data['date'])
+	return not ticker[1] and max(chart_data['date']) < datetime.datetime.today()
