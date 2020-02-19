@@ -53,14 +53,16 @@ function drawGraph(portfolio, metric, benchMetric, symbol){
         labels: getDailyLabels(portfolio),
         datasets: [{
             label: "Gain "+symbol,
-            backgroundColor: 'rgba(45, 134, 51, 0.2)',
-            borderColor: 'rgb(45, 134, 51)',
+            backgroundColor: 'rgba(83, 221, 108, 0.2)',
+            borderColor: 'rgb(83, 221, 108)',
             data: metric(portfolio),
             type: 'line',
             yAxisID: 'gain'
         },
         {
             label: "Benchmark",
+            backgroundColor: 'rgb(17, 157, 164, 0.2)',
+            border: 'rgb(17, 157, 164)',
             data: benchMetric(portfolio),
             yAxisID: 'gain',
             type: 'line',

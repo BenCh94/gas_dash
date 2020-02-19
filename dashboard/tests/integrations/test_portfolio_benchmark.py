@@ -19,3 +19,6 @@ class PortfolioUpdateTest(TestCase):
 		trade_2 = TradeFactory.create(stock=stock_2, date=datetime.strptime('2018-07-27', '%Y-%m-%d'), amount=5, avg_price=34.75)
 		trade_3 = TradeFactory.create(stock=stock_3, date=datetime.strptime('2018-02-09', '%Y-%m-%d'), amount=5, avg_price=34.98)
 		trade_4 = TradeFactory.create(stock=stock_1, date=datetime.strptime('2018-04-05', '%Y-%m-%d'), amount=2, avg_price=101.48)
+
+	# def test_portfolio_update_return_trade_df(self)
+

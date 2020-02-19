@@ -31,16 +31,16 @@
 		        </div>
 			</div>
 			<div class="col-md-3 stock_list">
-				<div class="card d-flex flex-row bg-{% if latest.day_change < 0 %}danger{% else %}success{% endif %}">
+				<div class="card d-flex flex-row bg_{% if latest.day_change < 0 %}red{% else %}green{% endif %}">
 					<div class="d-flex flex-column justify-content-center p-1 flex-fill">
-						<h5 class="text-dark text-center">Day $</h5>
-						<span class="badge badge-dark">
+						<h5 class="black_text text-center">Day $</h5>
+						<span class="badge bg_black">
 							<h5 class="text-{% if latest.day_change < 0 %}danger{% else %}success{% endif %}">{{ latest.day_change|floatformat }}</h5>
 						</span>
 					</div>
 					<div class="d-flex flex-column justify-content-center p-1 flex-fill">
-						<h5 class="text-dark text-center">Day %</h5>
-						<span class="badge badge-dark">
+						<h5 class="black_text text-center">Day %</h5>
+						<span class="badge bg_black">
 							<h5 class="text-{% if latest.day_change < 0 %}danger{% else %}success{% endif %}">{{ latest.pct_change|percentage }}</h5>
 						</span>
 					</div>
