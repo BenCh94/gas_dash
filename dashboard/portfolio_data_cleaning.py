@@ -60,14 +60,7 @@ def apply_benchmark(df, bench_chart, trade, end_date):
 	else:
 		bench_chart['date'] = pd.to_datetime(bench_chart['date'])
 		bench_prices = bench_chart[bench_chart['date'] >= pd.Timestamp(trade['date'])]
-		print(max(bench_prices['date']))
-		print(max(df['date']))
-		# Assignment fails here
-		print(len(bench_prices['close']*trade['benchmark_amount']))
-		print(len(df))
-		df['bench_value'] = (bench_prices['close']*trade['benchmark_amount']).array
-		print(df)
-		# print(bench_prices)
+		# bench_prices = bench_prices.set_index(df.index)
 		df = assign_bench_columns(df, trade, bench_prices)
 	return df
 
@@ -88,7 +81,6 @@ class PortfolioUpdate():
 
 	def __init__(self, profile):
 		""" Initiate portfolio data for charting """
-		self.logger = logging.getLogger('dashboard.portfolio_update')
 		print(f'initialising portfolio update object {profile.user.username}...')
 		self.portfolio = Portfolio.objects.update_or_create(user_profile=profile, name=profile.user.username, defaults={'data': "{}"})[0]
 		self.stocks = Stock.objects.filter(user_profile=profile)
@@ -155,8 +147,9 @@ class PortfolioUpdate():
 		price_data = pd.DataFrame(stock.ticker_data.historical_data['chart'])
 		price_data['date'] = pd.to_datetime(price_data['date'])
 		price_data = price_data.sort_values(by='date')
-		bench_chart = pd.DataFrame(self.portfolio.benchmark_data)
+		bench_chart = pd.DataFrame(self.benchmark)
 		bench_chart['date'] = pd.to_datetime(bench_chart['date'])
+		bench_chart = bench_chart.sort_values(by='date')
 		frames = []
 		print(f'Got stock and benchmark data for {stock.ticker_data.ticker}')
 		for index, row in trade_df.iterrows():
@@ -172,5 +165,5 @@ class PortfolioUpdate():
 				gain_df = apply_trade_data(price_df, row)
 				gain_df = apply_benchmark(gain_df, bench_chart, row, '')
 				frames.append(gain_df)
-		full_df = pd.concat(frames)
+		full_df = pd.concat(frames, sort=True)
 		return full_df

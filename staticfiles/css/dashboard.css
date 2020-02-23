@@ -2,7 +2,9 @@ html, body {
   height: 100%;
 }
 body {
-	background-color: #4F575E;
+	background: -webkit-linear-gradient(rgba(36,40,48,1) 25%, rgba(40,44,53,1) 55%, rgba(43,48,58,1) 100%);
+    background: -o-linear-gradient(rgba(36,40,48,1) 25%, rgba(40,44,53,1) 55%, rgba(43,48,58,1) 100%);
+    background: linear-gradient(rgba(36,40,48,1) 25%, rgba(40,44,53,1) 55%, rgba(43,48,58,1) 100%);
 	color: #ffffff;
   	min-height: 100vh;
 }
@@ -41,8 +43,53 @@ i {
     z-index: 1; /* Stay on top */
     left: 0;
     overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 3%;
-    font-size: large;
+    padding-top: 3.5%;
+    font-size: medium;
+    width: 12vw;
+}
+
+.main {
+    width: 85vw;
+    margin-left: 13vw;
+}
+
+.badge {
+    color: #000;
+}
+
+.bg_red {
+    background-color: #EF233C;
+}
+
+.bg_green {
+    background-color: #53dd6c;
+}
+
+.black_text {
+    color: #101118;
+}
+
+.text_green {
+    color: #53dd6c;
+}
+
+.text_red {
+    color: #EF233C;
+}
+
+.bg_black {
+    background-color: #101118;
+    color: #c2f970;   
+}
+
+.stock-link {
+   background-color: #101118;
+   color: #c2f970;
+}
+
+.stock-link:hover {
+   background-color: #181924;
+   color: #c2f970;
 }
 
 .graph_settings{
@@ -63,6 +110,8 @@ i {
 @media screen and (max-width: 768px) {
     main {
         padding-top: 20%;
+        margin-left: 0!important;
+        width: 100vw!important;
     }
 
     .sidebar {

@@ -65,7 +65,7 @@
 
     <!-- Sidebar and Main Page -->
     <div class="container-fluid">
-      <div class="row">
+      <div class="row d-flex">
         {% include 'dash/_sidebar.html' %}
         {% block sidebar_content %}
         {% endblock sidebar_content %}
@@ -75,9 +75,9 @@
                     </div>
                 </ul>
             </div>
-            <p class="text-muted float-bottom" id="iex_attr"><i class="fa fa-info-circle"></i> Data provided for free by <a href="https://iextrading.com/developer/" target="_blank">IEX</a></p>
+            <p class="ml-2 small text-muted float-bottom" id="iex_attr"><i class="fa fa-info-circle"></i> Data provided by <a href="https://iexcloud.io/" target="_blank">IEX</a></p>
         </nav>
-            <main role="main" class="col-md-10 offset-md-2">
+            <main role="main" class="main">
               <div class="container-fluid">
                 {% if messages %}
                 <div class="messages col-md-4">
