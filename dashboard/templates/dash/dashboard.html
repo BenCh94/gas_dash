@@ -22,13 +22,17 @@
 	{% if stocks %}
 		<div class="row">
 			<div class="col-md-9 d-none d-sm-block">
-				<canvas id="portfolio-chart">
-				</canvas>
-				<div class="btn-group graph_settings" role="group">
-		            <button type="button" class="btn btn-secondary btn-sm" id="pct_view">%</button>
-		            <button type="button" class="btn btn-secondary btn-sm" id="dollar_view">$</button>
-		            <button type="button" class="btn btn-secondary btn-sm" id="settings" data-toggle="modal" data-target="#portfolioSettingsModal"><i class="fas fa-cog"></i></button>
-		        </div>
+				{% if latest == 'Portfolio error, please refresh your data.' %}
+					<p>{{ latest }}</p>
+				{% else %}
+					<canvas id="portfolio-chart">
+					</canvas>
+					<div class="btn-group graph_settings" role="group">
+			            <button type="button" class="btn btn-secondary btn-sm" id="pct_view">%</button>
+			            <button type="button" class="btn btn-secondary btn-sm" id="dollar_view">$</button>
+			            <button type="button" class="btn btn-secondary btn-sm" id="settings" data-toggle="modal" data-target="#portfolioSettingsModal"><i class="fas fa-cog"></i></button>
+			        </div>
+			    {% endif %}
 			</div>
 			<div class="col-md-3 stock_list">
 				<div class="card d-flex flex-row bg_{% if latest.day_change < 0 %}red{% else %}green{% endif %}">
