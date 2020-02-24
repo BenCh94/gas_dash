@@ -21,7 +21,6 @@ class PortfolioUpdate():
 	def update(self):
 		""" For each stock update using price charts if the stock has trades present """
 		stock_data = [StockUpdate(self.benchmark, stock.ticker_data.historical_data, stock.trades()).get_update() for stock in list(self.stocks) if stock.trades()]
-		print(len(stock_data))
 		print(f'got individual stock data {self.portfolio.name}')
 		portfolio_data = pd.concat(stock_data)
 		print(f'combined portfolio data {self.portfolio.name}')

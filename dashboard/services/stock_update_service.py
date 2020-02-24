@@ -1,14 +1,6 @@
 """ Service class used in portfolio updates """
 import pandas as pd
 
-# benchmark = pd.read_csv('benchmark.csv')
-# benchmark['date'] = pd.to_datetime(benchmark['date'])
-# price_chart = pd.read_csv('TWTR_chart.csv')
-# price_chart['date'] = pd.to_datetime(price_chart['date'])
-# trade_1 = {'date': '2018-01-16', 'ticker': 'TWTR', 'amount': 5, 'avg_price': 24.50, 'fees_usd': 2.99, 'trade_type': 'b'}
-# trade_2 = {'date': '2018-07-27', 'ticker': 'TWTR', 'amount': 5, 'avg_price': 34.75, 'fees_usd': 2.99, 'trade_type': 'b'}
-# trade_3 = {'date': '2019-07-12', 'ticker': 'TWTR', 'amount': 5, 'avg_price': 41.75, 'fees_usd': 2.99, 'trade_type': 's'}
-
 class StockUpdate():
     """ Class updates a stock gain/loss given hitorical prices and trades """
     def __init__(self, benchmark, prices, trades):
