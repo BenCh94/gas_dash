@@ -31,7 +31,7 @@ def fill_tickers(tickers):
 	ticker_objects = [Ticker.objects.update_or_create(ticker=ticker) for ticker in tickers]
 	# Initiate new tickers, update_create returns True/False in tuple index 1 if new record created.
 	full_charts = request_iex_charts_simple('5y', ','.join([ticker_object[0].ticker for ticker_object in ticker_objects]))
-	create_charts = [Ticker.objects.filter(ticker=ticker).update(historical_data=full_charts[ticker]['chart']) for ticker in full_charts.keys()]
+	create_charts = [Ticker.objects.filter(ticker=ticker).update(historical_data=pd.DataFrame(full_charts[ticker]['chart']).to_json(orient='records')) for ticker in full_charts.keys()]
 	return f'Force Updated: {len(create_charts)-1} tickers'
 
 def update_create_tickers(tickers):

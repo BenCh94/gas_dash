@@ -2,6 +2,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from dashboard.historical_data import hard_update_ticker_data
 from dashboard.services import PortfolioUpdate
+from dashboard.models import User
 
 class Command(BaseCommand):
 	""" Command code for update stocks/portfolios function """
