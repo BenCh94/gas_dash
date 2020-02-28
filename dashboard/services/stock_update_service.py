@@ -6,7 +6,7 @@ class StockUpdate():
     def __init__(self, benchmark, prices, trades):
         self.benchmark_df = pd.DataFrame(benchmark)
         self.benchmark_df['date'] = pd.to_datetime(self.benchmark_df['date'])
-        self.price_chart = pd.DataFrame(prices['chart'])
+        self.price_chart = pd.read_json(prices)
         self.price_chart['date'] = pd.to_datetime(self.price_chart['date'])
         self.trades = trades
 

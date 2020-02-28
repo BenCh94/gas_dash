@@ -25,11 +25,11 @@ class PortfolioUpdate():
 		portfolio_data = pd.concat(stock_data)
 		print(f'combined portfolio data {self.portfolio.name}')
 		print(portfolio_data.sort_values(by='date'))
-		# self.portfolio.data = portfolio_data
-		# if len(portfolio_data) > 2:
-		# 	self.portfolio.save()
-		# 	return self.portfolio.name
-		# return 'Error'
+		self.portfolio.data = portfolio_data.to_json(orient='records')
+		if len(portfolio_data) > 2:
+			self.portfolio.save()
+			return self.portfolio.name
+		return 'Error'
 
 	def get_benchmark(self):
 		""" Get price chart for benchmark from earliest trade date """

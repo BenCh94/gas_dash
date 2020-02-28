@@ -31,7 +31,7 @@ def fill_tickers(tickers):
 	ticker_objects = [Ticker.objects.update_or_create(ticker=ticker) for ticker in tickers]
 	# Initiate new tickers, update_create returns True/False in tuple index 1 if new record created.
 	full_charts = request_iex_charts_simple('5y', ','.join([ticker_object[0].ticker for ticker_object in ticker_objects]))
-	create_charts = [Ticker.objects.filter(ticker=ticker).update(historical_data=full_charts[ticker]) for ticker in full_charts.keys()]
+	create_charts = [Ticker.objects.filter(ticker=ticker).update(historical_data=full_charts[ticker]['chart']) for ticker in full_charts.keys()]
 	return f'Force Updated: {len(create_charts)-1} tickers'
 
 def update_create_tickers(tickers):
@@ -46,14 +46,8 @@ def update_create_tickers(tickers):
 	else:
 		created = 0
 	# Add to existing tickers
-	existing = [ticker_object[0].ticker for ticker_object in ticker_objects if check_updates(ticker_object)]
-	if existing:
-		partial_charts = request_iex_charts_simple('6m', ','.join(existing))
-		update_charts = [append_json(Ticker.objects.get(ticker=ticker), partial_charts[ticker]) for ticker in partial_charts.keys()]
-		updated = len(update_charts)
-	else:
-		updated = 0
-	return f'Created: {created} new tickers, Updated: {updated} existing tickers'
+	existing = [check_updates(ticker_object[0]) for ticker_object in ticker_objects if not ticker_object[1]]
+	return f'Created: {created} new tickers, Updated: {len(existing)} existing tickers'
 
 def request_iex_charts_simple(date_range, tickers):
 	""" Returns open, close, volume data for given time range and tickers """
@@ -73,19 +67,44 @@ def request_chart_from_date(date, ticker):
 	iex_req = r.get(url)
 	return iex_req.json()
 
-def append_json(ticker, chart_data):
-	""" Function updates historical prices with one day of data """
-	historical = ticker.historical_data
-	chart = pd.DataFrame(chart_data['chart'])
+def append_json(ticker, chart_data, historical, latest_saved):
+	""" Function updates historical prices with missing data """
+	chart = pd.DataFrame(chart_data)
 	chart['date'] = pd.to_datetime(chart['date'])
-	latest_saved = historical['chart'][-1]
-	update_date = pd.to_datetime(latest_saved['date'])
-	updates = len(chart[chart['date'] > update_date])
-	historical['chart'].extend(chart_data['chart'][-updates:])
+	chart.sort_values(by='date')
+	updates_df = chart[chart['date'] > latest_saved]
+	new_data = pd.concat([historical, updates_df])
+	ticker.historical_data = new_data.to_json(orient='records')
 	ticker.save()
 
 def check_updates(ticker):
 	""" Check last update of ticker and skip if within 24 hours """
-	chart_data = pd.DataFrame(ticker[0].historical_data['chart'])
-	chart_data['date'] = pd.to_datetime(chart_data['date'])
-	return not ticker[1] and max(chart_data['date']) < datetime.datetime.today()
+	historical = pd.read_json(ticker.historical_data)
+	historical['date'] = pd.to_datetime(historical['date'])
+	historical.sort_values(by='date')
+	latest_saved = historical.iloc[-1, historical.columns.get_loc("date")]
+	if latest_saved < pd.to_datetime(datetime.datetime.today()):
+		time_diff = pd.to_datetime(datetime.datetime.today()) - latest_saved
+		days = int(time_diff.days)
+		if days > 1:
+			date_range = '5d'
+		elif days > 4:
+			date_range = '1m'
+		elif days > 28:
+			date_range = '3m'
+		elif days > 90:
+			date_range = '6m'
+		elif days > 180:
+			date_range = '1y'
+		elif days > 364:
+			date_range = '2y'
+		elif days > 720:
+			date_range = '5y'
+		elif days > 1825:
+			date_range = 'max'
+		else:
+			date_range = '5d'
+
+		chart = request_chart_from_date(date_range, ticker.ticker)
+		append_json(ticker, chart, historical, latest_saved)
+		return 'Updated'

@@ -144,7 +144,7 @@ class PortfolioUpdate():
 
 	def apply_historical_prices(self, trade_df, stock):
 		""" Apply trades to historical prices for performance data """
-		price_data = pd.DataFrame(stock.ticker_data.historical_data['chart'])
+		price_data = pd.DataFrame(stock.ticker_data.historical_data)
 		price_data['date'] = pd.to_datetime(price_data['date'])
 		price_data = price_data.sort_values(by='date')
 		bench_chart = pd.DataFrame(self.benchmark)

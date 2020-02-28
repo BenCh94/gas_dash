@@ -21,18 +21,19 @@ class Portfolio(models.Model):
 	def latest_day_data(self):
 		""" Returns latest data for the given portfolio """
 		data = ast.literal_eval(self.data)
+		print(data)
 		if not data:
 			return 'Empty portfolio response'
 		else:
 			days = len(data)
 			latest = data[-1]
 			latest['days'] = days
-			gains = [d['pct_gain'] for d in data]
-			bench_gains = [d['bench_gain_pct'] for d in data]
-			latest['mean'] = statistics.mean(gains)
-			latest['bench_mean'] = statistics.mean(bench_gains)
-			latest['cv'] = statistics.stdev(gains)/statistics.mean(gains)
-			latest['bench_cv'] = statistics.stdev(bench_gains)/statistics.mean(bench_gains)
+			# gains = [d['pct_gain'] for d in data]
+			# bench_gains = [d['bench_gain_pct'] for d in data]
+			# latest['mean'] = statistics.mean(gains)
+			# latest['bench_mean'] = statistics.mean(bench_gains)
+			# latest['cv'] = statistics.stdev(gains)/statistics.mean(gains)
+			# latest['bench_cv'] = statistics.stdev(bench_gains)/statistics.mean(bench_gains)
 		return latest
 
 	def earliest_trade(self):
