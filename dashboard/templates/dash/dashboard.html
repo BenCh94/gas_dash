@@ -13,7 +13,9 @@
 			stocks['{{ stock.ticker }}'] = {{ stock.quantity }}*{{ stock.quote.latestPrice }};
 		{% endfor %}
 	</script>
+	<link href="{% static 'vendor/dc-4.0.0/css/dc.css' %}" rel="stylesheet">
 	<link href="{% static 'css/forms.css' %}" rel="stylesheet">
+
 {% endblock head_files %}
 {% block sidebar_content %}
 	
@@ -25,8 +27,9 @@
 				{% if latest == 'Portfolio error, please refresh your data.' %}
 					<p>{{ latest }}</p>
 				{% else %}
-					<canvas id="portfolio-chart">
-					</canvas>
+					<div id="portfolio-chart">
+					</div>
+					<div id="monthly-volume-chart"></div>
 					<div class="btn-group graph_settings" role="group">
 			            <button type="button" class="btn btn-secondary btn-sm" id="pct_view">%</button>
 			            <button type="button" class="btn btn-secondary btn-sm" id="dollar_view">$</button>
@@ -123,7 +126,10 @@
 </div>
 {% endblock content %}
 {% block footer_files %}
-	<script src="{% static 'js/portfolioChart.js' %}"></script>
+	<script src="{% static 'vendor/d3/d3.js' %}"></script>
+	<script src="{% static 'vendor/crossfilter-1.5.2/crossfilter.js' %}"></script>
+	<script src="{% static 'vendor/dc-4.0.0/js/dc.js' %}"></script>
+	<script src="{% static 'js/portfolioCrossFilter.js' %}"></script>
 	<script src="{% static 'js/sectorChart.js' %}"></script>
 	<script src="{% static 'js/jquery.autocomplete.js' %}"></script>
 	<script src="{% static 'js/tickerSearch.js' %}"></script>
