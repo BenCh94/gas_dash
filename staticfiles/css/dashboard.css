@@ -107,6 +107,12 @@ i {
     height: 45vh;
 }
 
+#daily-volume-chart svg g g.axis.y { display: none; }
+
+.dc-legend-item text{
+    color: #c2f970;
+}
+
 @media screen and (max-width: 768px) {
     main {
         padding-top: 20%;

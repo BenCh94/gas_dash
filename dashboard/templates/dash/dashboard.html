@@ -27,13 +27,13 @@
 				{% if latest == 'Portfolio error, please refresh your data.' %}
 					<p>{{ latest }}</p>
 				{% else %}
-					<div id="portfolio-chart">
+					<div id="portfolio-chart" style="height: 50vh;width:100%;">
 					</div>
-					<div id="monthly-volume-chart"></div>
+					<div id="daily-volume-chart" style="height: 8vh;width:100%;"></div>
 					<div class="btn-group graph_settings" role="group">
-			            <button type="button" class="btn btn-secondary btn-sm" id="pct_view">%</button>
-			            <button type="button" class="btn btn-secondary btn-sm" id="dollar_view">$</button>
-			            <button type="button" class="btn btn-secondary btn-sm" id="settings" data-toggle="modal" data-target="#portfolioSettingsModal"><i class="fas fa-cog"></i></button>
+			            <button type="button" class="btn btn-dark btn-sm portfolio_filters active" id="pct_view">%</button>
+			            <button type="button" class="btn btn-dark btn-sm portfolio_filters" id="dollar_view">$</button>
+			            <button type="button" class="btn btn-dark btn-sm" id="settings" data-toggle="modal" data-target="#portfolioSettingsModal"><i class="fas fa-cog"></i></button>
 			        </div>
 			    {% endif %}
 			</div>
