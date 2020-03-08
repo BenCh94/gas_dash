@@ -133,6 +133,10 @@ i {
         z-index: 999;
     }
 
+    #closeMenu {
+        display: none;
+    }
+
     .overlay {
         display: none;
         position: fixed;

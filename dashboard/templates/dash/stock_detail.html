@@ -8,7 +8,7 @@
     {% for trade in stock_data.trades %}
       trades.push({'price': {{ trade.avg_price }}, 'type': '{{ trade.trade_type }}', 'date': '{{ trade.date }}', 'amount': {{ trade.amount }}})
     {% endfor %}
-    var price_data = {{ stock_data.price_data|safe }};
+    var price_data = JSON.parse({{ stock_data.price_data|safe }});
 </script>
 {% endblock head_files %}
 {% block sidebar_content %}
@@ -41,13 +41,6 @@
         <span data-feather="home"></span>
             <i class="fas fa-globe-americas"></i>
             ESG
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'dash:add_stock' %}">
-        <span data-feather="home"></span>
-            <i class="fas fa-comments"></i>
-            Forum
         </a>
     </li>
 {% endblock sidebar_content %}
