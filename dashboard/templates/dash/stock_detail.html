@@ -10,6 +10,7 @@
     {% endfor %}
     var price_data = JSON.parse({{ stock_data.price_data|safe }});
 </script>
+<link href="{% static 'css/stock-chart.css' %}" rel="stylesheet">
 {% endblock head_files %}
 {% block sidebar_content %}
 	<hr>
@@ -48,14 +49,17 @@
 <div class="row">
     <div class="col-md-11 p-0" id="share-price-box">
     
-        <canvas id="share-price-chart">
-        </canvas>
+        <div id="share-price-chart">
+        </div>
     </div>
     <div class="col-md-1 card bg-dark d-none d-sm-block">
         <h3><i class="fas fa-cog w-100"></i></h3>
         <hr>
-        <div class="btn btn-sm btn-outline-info w-100" id="show_trades">
-          <i class="fas fa-chart-line"></i> Trades
+        <div class="btn btn-sm btn-outline-info w-100 mb-2" id="show_trades">
+          <i class="fas fa-dollar"></i> Trades
+        </div>
+        <div class="btn btn-sm btn-outline-warning w-100" id="show_trend">
+          <i class="fas fa-chart-line"></i> Trend Line
         </div>
     </div>
 </div>
@@ -152,5 +156,6 @@
 </div>
 {% endblock content %}
 {% block footer_files %}
-    <script src="{% static 'js/priceChart.js' %}"></script>
+  <script src="{% static 'vendor/d3/d3.js' %}"></script>
+  <script src="{% static 'js/priceLineChart.js' %}"></script>
 {% endblock footer_files %}
