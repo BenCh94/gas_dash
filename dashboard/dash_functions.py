@@ -1,5 +1,6 @@
 """ Function for the home dashboard """
 from .stock_functions import get_current_value
+import datetime
 
 
 def get_latest_data(portfolio, stocks):
@@ -8,5 +9,6 @@ def get_latest_data(portfolio, stocks):
 		latest = portfolio.latest_day_data()
 		current_value = get_current_value(stocks, latest)
 		latest = {**latest, **current_value}
+		latest['date'] = datetime.datetime.fromtimestamp(int(latest['date'])/1000).strftime('%Y-%m-%d')
 		return latest
 	return 'Portfolio error, please refresh your data.'

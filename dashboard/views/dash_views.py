@@ -47,7 +47,7 @@ def stock(request, stock_id):
 	stock_data['stock'] = stock
 	stock_data['trades'] = stock.trades()
 	stock_data['stocks'] = other_stocks
-	stock_data['price_data'] = json.dumps(stock.ticker_data.historical_data['chart'])
+	stock_data['price_data'] = json.dumps(stock.ticker_data.historical_data)
 	print(type(stock_data['price_data']))
 	return render(request, 'dash/stock_detail.html', {'stock_data': stock_data})
 
