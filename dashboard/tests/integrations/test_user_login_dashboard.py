@@ -10,7 +10,7 @@ from selenium.webdriver.firefox.options import Options
 from django.shortcuts import get_object_or_404
 from django.test.utils import override_settings
 from ...models import Stock, Trade, Profile, User
-from ..factories import UserFactory, StockFactory, TradeFactory
+from ..factories import UserFactory, StockFactory, TradeFactory, PortfolioFactory
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase, LiveServerTestCase
 from selenium.webdriver.chrome.webdriver import WebDriver
 
@@ -32,6 +32,7 @@ class TestLogin(LiveServerTestCase):
             cls.selenium = webdriver.Chrome(chrome_options=chrome_options, executable_path='/home/ben/path_executable/chromedriver')
         cls.selenium.implicitly_wait(10)
         user = UserFactory.create(username='login_user')
+        portfolio = PortfolioFactory.create(user_profile=user.profile)
         user.set_password('test12345')
         user.save()
 
