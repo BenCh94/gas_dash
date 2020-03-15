@@ -7,7 +7,6 @@ from dashboard.models import Stock, Trade, Portfolio
 from dashboard.forms import PortfolioForm
 from dashboard.iex_requests import list_symbols
 from dashboard.stock_functions import get_current_quotes
-from dashboard.dash_functions import get_latest_data
 import json
 import logging
 
@@ -29,7 +28,8 @@ def index(request):
 			messages.success(request, 'Congrats, Your portfolio was updated!')
 			return redirect('dash:dashboard')
 	portfolio = Portfolio.objects.filter(user_profile=profile).first()
-	context['latest'] = get_latest_data(portfolio, context['stocks'])
+	context['latest'] = portfolio.latest_day_data(context['stocks'])
+	print(context['latest'])
 	portfolio_form = PortfolioForm()
 	context['symbols'] = list_symbols()
 	context['portfolio'] = portfolio
@@ -41,13 +41,13 @@ def index(request):
 @login_required(login_url='/dash/login/')
 def stock(request, stock_id):
 	""" Stock view """
-	stock = get_object_or_404(Stock, pk=stock_id)
+	stock_object = get_object_or_404(Stock, pk=stock_id)
 	stock_data = dict()
 	other_stocks = Stock.objects.filter(user_profile=request.user.profile, status='a').exclude(pk=stock_id)
-	stock_data['stock'] = stock
-	stock_data['trades'] = stock.trades()
+	stock_data['stock'] = stock_object
+	stock_data['trades'] = stock_object.trades()
 	stock_data['stocks'] = other_stocks
-	stock_data['price_data'] = json.dumps(stock.ticker_data.historical_data)
+	stock_data['price_data'] = json.dumps(stock_object.ticker_data.historical_data)
 	print(type(stock_data['price_data']))
 	return render(request, 'dash/stock_detail.html', {'stock_data': stock_data})
 

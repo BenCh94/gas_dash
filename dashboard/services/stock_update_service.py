@@ -12,7 +12,9 @@ class StockUpdate():
 
     def get_update(self):
         """ Call update methods """
+        print(f"updating stock...")
         trades_chart = self.trade_charts()
+        print(f"formatted trades...")
         return self.apply_price_chart(trades_chart)
 
     def trade_charts(self):
@@ -70,6 +72,7 @@ class StockUpdate():
         mask = (self.benchmark_df['date'] >= min_date) & (self.benchmark_df['date'] <= max_date)
         benchmark_prices = self.benchmark_df.loc[mask]['close']
         trades_chart = trades_chart.assign(bench_close=benchmark_prices.array)
+        print(f"assigned benchmark column...")
         trades_chart['bench_value'] = trades_chart['bench_amount'] * trades_chart['bench_close']
         trades_chart['value'] = trades_chart['amount'] * trades_chart['close']
         trades_chart['gain'] = trades_chart['value'] - trades_chart['invested']

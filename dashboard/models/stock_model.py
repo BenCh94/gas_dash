@@ -2,6 +2,7 @@
 """ users stock. Ticker model contains overall company data """
 from django.db import models
 from .trade_model import Trade
+from .ticker_model import Ticker
 
 class Stock(models.Model):
 	""" Stock model refers to a stock/share in a users account """
@@ -30,4 +31,11 @@ class Stock(models.Model):
 	def get_ticker(self):
 		""" Convenience method to get ticker for given stock """
 		return self.ticker
+
+	def assign_ticker(self):
+		""" Assign or create the relevant ticker object for a stock """
+		if Ticker.objects.filter(ticker=self.get_ticker()).exists():
+			self.ticker_data = Ticker.objects.get(ticker=self.get_ticker())
+		else:
+			Ticker.objects.new(ticker=self.get_ticker())
 		

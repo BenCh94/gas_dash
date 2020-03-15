@@ -118,7 +118,7 @@ function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
         .centerBar(true)
         .gap(1)
         .ordinalColors(['#FFED65'])
-        .x(d3.scaleTime().domain([d3.min(portfolio, d => d.dd), d3.max(portfolio, d => d.dd)]))
+        .x(d3.scaleTime().domain(d3.extent(portfolio, d => d.dd)))
         .round(d3.timeMonth.round)
         .alwaysUseRounding(true)
         .title(d => {

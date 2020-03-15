@@ -14,7 +14,7 @@ def get_current_quotes(stocks):
 		stock.quote = quotes[stock.ticker]['quote']
 	return stocks
 
-def get_current_value(stocks, latest):
+def get_live_value(stocks, latest):
 	""" Get todays difference when trading session is live """
 	current_value = 0
 	for stock in stocks:
@@ -22,11 +22,4 @@ def get_current_value(stocks, latest):
 	day_diff = current_value - latest['value']
 	day_pct = (day_diff/latest['value'])
 	return {'day_change': day_diff, 'pct_change': day_pct}
-
-def assign_ticker(stock):
-	""" Assign or create the relevant ticker object for a stock """
-	if Ticker.objects.filter(ticker=stock.get_ticker()).exists():
-		stock.ticker_data = Ticker.objects.get(ticker=stock.get_ticker())
-	else:
-		Ticker.objects.new(ticker=stock.get_ticker())
 		
