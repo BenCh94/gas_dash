@@ -1,14 +1,13 @@
 """ View function for the main portfolio dashbaord app """
+import json
+import logging
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import Http404, HttpResponse
+from django.http import HttpResponse
 from django.contrib import messages
 from dashboard.models import Stock, Trade, Portfolio
 from dashboard.forms import PortfolioForm
 from dashboard.iex_requests import list_symbols
-from dashboard.stock_functions import get_current_quotes
-import json
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -19,8 +18,6 @@ def index(request):
 	current_user = request.user
 	profile = current_user.profile
 	logger.info('loading portfolio index %{user.username}')
-	stocks = Stock.objects.filter(user_profile=profile, status='a')
-	context['stocks'] = get_current_quotes(stocks)
 	if request.method == 'POST':
 		form = PortfolioForm(request.POST)
 		if form.is_valid():
@@ -28,8 +25,8 @@ def index(request):
 			messages.success(request, 'Congrats, Your portfolio was updated!')
 			return redirect('dash:dashboard')
 	portfolio = Portfolio.objects.filter(user_profile=profile).first()
+	context['stocks'] = portfolio.get_current_quotes()
 	context['latest'] = portfolio.latest_day_data(context['stocks'])
-	print(context['latest'])
 	portfolio_form = PortfolioForm()
 	context['symbols'] = list_symbols()
 	context['portfolio'] = portfolio
@@ -57,5 +54,5 @@ def trades(request, stock_id):
 
 @login_required(login_url='/dash/login/')
 def trade(request, trade_id):
-	trade = get_object_or_404(Trade, pk=trade_id)
+	trade_object = get_object_or_404(Trade, pk=trade_id)
 	return render(request, 'dash/trade.html')
