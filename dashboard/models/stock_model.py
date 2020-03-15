@@ -1,4 +1,5 @@
-""" The user stock model definition """
+""" The user stock model definition refers to a specific """
+""" users stock. Ticker model contains overall company data """
 from django.db import models
 from .trade_model import Trade
 
