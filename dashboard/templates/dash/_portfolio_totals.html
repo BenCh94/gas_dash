@@ -10,7 +10,7 @@
 		<tr class="text_{% if latest.gain < 0 %}red{% else %}green{% endif %}">
 			<th scope="row">{{ portfolio.name }}</th>
 			<td>{{ latest.gain|floatformat }}</td>
-			<td>{{ latest.pct_gain|floatformat }}</td>
+			<td>{{ latest.gain_pct|floatformat }}</td>
 			<td>{{ latest.mean|floatformat }}</td>
 			<td>{{ latest.cv|floatformat }}</td>
 		</tr>
