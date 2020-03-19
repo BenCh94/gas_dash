@@ -201,5 +201,10 @@ STATICFILES_DIRS = (
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# Fixtures for testing
+FIXTURE_DIRS = (
+    '/dashboard/fixtures/',
+)
+
 # Activate Django-Heroku.
 django_heroku.settings(locals())

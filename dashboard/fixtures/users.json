@@ -1,0 +1,20 @@
+[
+{
+    "model": "auth.user",
+    "pk": 100,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$jBzLVnxTFngi$HiDSasNn0nHfaqX66f66vNrts1u9MJyomUj+sh8t+pU=",
+        "last_login": "2020-03-19T21:59:32.736Z",
+        "is_superuser": true,
+        "username": "rootadminbc",
+        "first_name": "",
+        "last_name": "",
+        "email": "bchadwick94@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2018-08-19T12:01:59.362Z",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]
