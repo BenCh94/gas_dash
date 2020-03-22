@@ -119,7 +119,7 @@ function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
         .gap(1)
         .ordinalColors(['#FFED65'])
         .x(d3.scaleTime().domain(d3.extent(portfolio, d => d.dd)))
-        .round(d3.timeMonth.round)
+        .round(d3.timeDay.round)
         .alwaysUseRounding(true)
         .title(d => {
         	return `Volume: ${numberFormat(d.value)}`
@@ -142,4 +142,14 @@ $(document).ready(function(){
 		$(this).addClass('active')
 	})
 	drawGraphs(dailyGainPctGroup, dailyGainPctGroup, function(x){return x.value.gain_percentage}, function(x){return x.value.bench_gain_percentage});
+    $('#openMenu').click(function(){
+        setTimeout(function(){
+            drawGraphs(dailyGainPctGroup, dailyGainPctGroup, function(x){return x.value.gain_percentage}, function(x){return x.value.bench_gain_percentage});
+        }, 100);
+    })
+    $('#closeMenu').click(function(){
+        setTimeout(function(){
+            drawGraphs(dailyGainPctGroup, dailyGainPctGroup, function(x){return x.value.gain_percentage}, function(x){return x.value.bench_gain_percentage});
+        }, 100);
+    })
 })

@@ -35,7 +35,8 @@ class Portfolio(models.Model):
             days = len(portfolio_by_day)
             latest_day = portfolio_by_day.get_group(latest_date)
             latest = dict()
-            latest['date'] = datetime.datetime.fromtimestamp(int(latest_date)/1000).strftime('%Y-%m-%d')
+            date_object = datetime.datetime.fromtimestamp(int(latest_date)/1000)
+            latest['date'] = date_object.strftime('%Y-%m-%d')
             latest['days'] = days
             latest['value'] = sum(latest_day['value'])
             latest['gain'] = sum(latest_day['gain'])
@@ -50,8 +51,17 @@ class Portfolio(models.Model):
             current_value = 0
             for stock in quotes:
                 current_value += stock.quantity*stock.quote['latestPrice']
-            latest['day_change'] = current_value - latest['value']
-            latest['pct_change'] = (latest['day_change']/latest['value'])
+            if stock.quote['isUSMarketOpen']:
+                latest['marketOpen'] = True
+                latest['day_change'] = current_value - latest['value']
+                latest['pct_change'] = (latest['day_change']/latest['value'])
+            else:
+                latest['marketOpen'] = False
+                second_last_day = date_object - datetime.timedelta(days=1)
+                group_label = int(datetime.datetime.timestamp(second_last_day))*1000
+                second_day = portfolio_by_day.get_group(group_label)
+                latest['day_change'] = latest['value'] - sum(second_day['value'])
+                latest['pct_change'] = (latest['day_change']/sum(second_day['value']))
             return latest
 
     def earliest_trade(self):

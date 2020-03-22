@@ -13,7 +13,7 @@ class PortfolioUpdate():
 	def __init__(self, profile):
 		""" Initiate portfolio data for charting """
 		print(f'initialising portfolio update object {profile.user.username}...')
-		self.portfolio = Portfolio.objects.update_or_create(user_profile=profile, name=profile.user.username, defaults={'data': "{}"})[0]
+		self.portfolio = Portfolio.objects.update_or_create(user_profile=profile, name=profile.user.username)[0]
 		self.stocks = Stock.objects.filter(user_profile=profile)
 		""" Get the earliest trade date and retrieve benchmark data including that date """
 		self.benchmark = pd.DataFrame(self.get_benchmark())

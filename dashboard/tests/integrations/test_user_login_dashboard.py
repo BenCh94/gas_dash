@@ -9,14 +9,15 @@ from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
 from django.shortcuts import get_object_or_404
 from django.test.utils import override_settings
-from ...models import Stock, Trade, Profile, User
+from ...models import Stock, Trade, Profile
+from django.contrib.auth.models import User
 from ..factories import UserFactory, StockFactory, TradeFactory, PortfolioFactory
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase, LiveServerTestCase
 from selenium.webdriver.chrome.webdriver import WebDriver
 
 
 class TestLogin(LiveServerTestCase):
-
+    fixtures = ['dashboard/fixtures/users.json', 'dashboard/fixtures/initial_data.json']
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -31,10 +32,6 @@ class TestLogin(LiveServerTestCase):
             chrome_options.add_argument("--disable-dev-shm-usage")
             cls.selenium = webdriver.Chrome(chrome_options=chrome_options, executable_path='/home/ben/path_executable/chromedriver')
         cls.selenium.implicitly_wait(10)
-        user = UserFactory.create(username='login_user')
-        portfolio = PortfolioFactory.create(user_profile=user.profile)
-        user.set_password('test12345')
-        user.save()
 
     @classmethod
     def tearDownClass(cls):
@@ -43,7 +40,7 @@ class TestLogin(LiveServerTestCase):
 
     @override_settings(DEBUG=True)
     def test_login_dashboard(self):
-        user = get_object_or_404(User, username='login_user')
+        user = get_object_or_404(User, username='rootadminbc')
         stock = StockFactory.create(user_profile=user.profile)
         stock2 = StockFactory.create(user_profile=user.profile, name='testnotrades')
         # Test landing page and click login

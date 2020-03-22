@@ -25,6 +25,7 @@ $(document).ready(function(){
 	$("#closeMenu").click(function(){
 		$('.sidebar').css('width', '3vw');
 		$('.main').css('width', '95vw');
+		$('.main').css('margin-left', '4vw');
 		$('#sidebar_nav').hide();
 		$('#sidebar_icons').show();
 		$('#iex_attr').hide();
@@ -34,6 +35,7 @@ $(document).ready(function(){
 	$('#openMenu').click(function(){
 		$('.sidebar').css('width', '12vw');
 		$('.main').css('width', '85vw');
+		$('.main').css('margin-left', '13vw');
 		$('#sidebar_nav').show();
 		$('#sidebar_icons').hide();
 		$('#iex_attr').show();

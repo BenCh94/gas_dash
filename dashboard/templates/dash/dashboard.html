@@ -38,6 +38,15 @@
 			    {% endif %}
 			</div>
 			<div class="col-md-3 stock_list">
+                <div class="card marketOpen d-flex justify-content-center mb-3 {% if latest.marketOpen %}bg_green{% else %}card-secondary{% endif %}">
+                    <span class="badge bg_black">
+                        {% if latest.marketOpen %}
+                            <p>Market Open</p>
+                        {% else %}
+                            <p>Market Closed - latest data: {{latest.date}}</p>
+                        {% endif %}
+                    </span>
+                </div>
 				<div class="card d-flex flex-row bg_{% if latest.day_change < 0 %}red{% else %}green{% endif %}">
 					<div class="d-flex flex-column justify-content-center p-1 flex-fill">
 						<h5 class="black_text text-center">Day $</h5>
