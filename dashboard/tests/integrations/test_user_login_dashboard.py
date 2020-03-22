@@ -3,6 +3,9 @@ import os
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from selenium import webdriver
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver import Firefox
@@ -30,29 +33,32 @@ class TestLogin(LiveServerTestCase):
             # chrome_options.add_argument('--headless')
             chrome_options.add_argument('--disbale-gpu')
             chrome_options.add_argument("--disable-dev-shm-usage")
+            chrome_options.add_argument("--disable-extensions")
             cls.selenium = webdriver.Chrome(chrome_options=chrome_options, executable_path='/home/ben/path_executable/chromedriver')
         cls.selenium.implicitly_wait(10)
 
     @classmethod
     def tearDownClass(cls):
+        cls.selenium.stop_client()
         cls.selenium.quit()
         super().tearDownClass()
 
     @override_settings(DEBUG=True)
     def test_login_dashboard(self):
         user = get_object_or_404(User, username='rootadminbc')
-        stock = StockFactory.create(user_profile=user.profile)
-        stock2 = StockFactory.create(user_profile=user.profile, name='testnotrades')
+        stocks = Stock.objects.filter(user_profile=user.profile, status='a')
         # Test landing page and click login
         self.selenium.get(self.live_server_url)
         self.selenium.find_element_by_id('sign_in').click()
         self.assertIn('%s%s' % (self.live_server_url, '/dash/login/'), self.selenium.current_url)
+        WebDriverWait(self.selenium, 10000).until(EC.element_to_be_clickable((By.ID, 'login_submit')))
         # Test filling in form with users credentials
-        self.selenium.find_element_by_id('login_username').send_keys(user.username)
-        self.selenium.find_element_by_id('login_password').send_keys('test12345')
-        self.selenium.find_element_by_id('login_submit').click()
+        self.selenium.execute_script(f"document.getElementById('login_username').value='{user.username}'")
+        self.selenium.execute_script(f"document.getElementById('login_password').value='{os.environ.get('test_password')}'")
+        self.selenium.execute_script("document.getElementById('login_submit').click()")
         # Test dashboard shows correctly
-        self.assertIn('%s%s' % (self.live_server_url, '/dash/'), self.selenium.current_url)
-        stock_card = self.selenium.find_element_by_id(stock.ticker)
+        self.assertNotIn('%s%s' % (self.live_server_url, '/dash/login/?next=/dash/'), self.selenium.current_url)
+        stock_card = self.selenium.find_element_by_id(stocks.first().ticker)
         card_name = stock_card.find_element_by_class_name('stock_name').text
-        self.assertIn(stock.name, card_name)
+        self.assertIn(stocks.first().name, card_name)
+        self.selenium.close()

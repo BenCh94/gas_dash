@@ -2,6 +2,7 @@
 // Initialise chart objects
 const portfolioChart = new dc.LineChart('#portfolio-chart');
 const volumeChart = new dc.BarChart('#daily-volume-chart');
+const stockPie = new dc.PieChart('#ticker-chart')
 
 // Convert portfolio dates fro d3
 const dateFormatSpecifier = '%Q';
@@ -51,6 +52,7 @@ const dailyGainPctGroup = gainDays.group().reduce(
 );
 const volumeByDayGroup = gainDays.group().reduceSum(d => d.volume);
 const dailyBenchGainGroup = gainDays.group().reduceSum(d => d.bench_gain);
+const tickerValueGroup = stockDimension.group().reduceSum(d => d.value)
 
 function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
 	//#### Stacked Area Chart
@@ -69,7 +71,7 @@ function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
         .transitionDuration(2000)
         .margins({top: 50, right: 20, bottom: 25, left: 40})
         .dimension(gainDays)
-        .mouseZoomable(true)
+        .mouseZoomable(false)
     // Specify a "range chart" to link its brush extent with the zoom of the current "focus chart".
         .rangeChart(volumeChart)
         .x(d3.scaleTime().domain([d3.min(portfolio, d => d.dd), d3.max(portfolio, d => d.dd)]))
@@ -125,6 +127,19 @@ function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
         	return `Volume: ${numberFormat(d.value)}`
         })
         .xUnits(d3.timeMonths);
+
+    // A pie chart showing overall value of each ticker in portfolio
+    stockPie.width(350)
+        .height(160)
+        .slicesCap(4)
+        .innerRadius(20)
+        .dimension(stockDimension)
+        .group(tickerValueGroup)
+        .on('pretransition', function(chart) {
+            chart.selectAll('text.pie-slice').text(function(d) {
+                return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
+            })
+        });
 
     // Render the charts
     dc.renderAll();
