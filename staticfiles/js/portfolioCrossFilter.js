@@ -53,6 +53,7 @@ const dailyGainPctGroup = gainDays.group().reduce(
 const volumeByDayGroup = gainDays.group().reduceSum(d => d.volume);
 const dailyBenchGainGroup = gainDays.group().reduceSum(d => d.bench_gain);
 const tickerValueGroup = stockDimension.group().reduceSum(d => d.value)
+const colorScale = d3.scaleOrdinal().range(['#71f79f', '#39a0ed', '#3dd6d0', '#13c4a3', '#15b097']);
 
 function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
 	//#### Stacked Area Chart
@@ -60,6 +61,7 @@ function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
 	var portfolioWidth = $('#portfolio-chart').width();
 	var portfolioHeight = $('#portfolio-chart').height();
 	var volumeHeight = $('#daily-volume-chart').height();
+    var piesHeight = $('#ticker-chart').height();
 
     //Specify an area chart by using a line chart with `.renderArea(true)`.
     // <br>API: [Stack Mixin](https://dc-js.github.io/dc.js/docs/html/StackMixin.html),
@@ -130,11 +132,12 @@ function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
 
     // A pie chart showing overall value of each ticker in portfolio
     stockPie.width(350)
-        .height(160)
+        .height(piesHeight*0.8)
         .slicesCap(4)
-        .innerRadius(20)
+        .innerRadius(piesHeight*0.2)
         .dimension(stockDimension)
         .group(tickerValueGroup)
+        .colors(colorScale)
         .on('pretransition', function(chart) {
             chart.selectAll('text.pie-slice').text(function(d) {
                 return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
@@ -160,11 +163,11 @@ $(document).ready(function(){
     $('#openMenu').click(function(){
         setTimeout(function(){
             drawGraphs(dailyGainPctGroup, dailyGainPctGroup, function(x){return x.value.gain_percentage}, function(x){return x.value.bench_gain_percentage});
-        }, 100);
+        }, 25);
     })
     $('#closeMenu').click(function(){
         setTimeout(function(){
             drawGraphs(dailyGainPctGroup, dailyGainPctGroup, function(x){return x.value.gain_percentage}, function(x){return x.value.bench_gain_percentage});
-        }, 100);
+        }, 25);
     })
 })

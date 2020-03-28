@@ -232,8 +232,3 @@ i {
     background-color: #343a40!important;
     color: #007bff;
 }
-
-#show_trades:hover{
-    color: #17a2b8;
-    background-color: transparent;
-}

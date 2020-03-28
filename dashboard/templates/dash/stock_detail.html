@@ -52,10 +52,12 @@
         <div id="share-price-chart">
         </div>
     </div>
-    <div class="col-md-1 card bg-dark d-none d-sm-block">
+    <div class="col-md-1 bg_black mb-2 pt-2 d-flex flex-column justify-content-around">
         <h3><i class="fas fa-cog w-100"></i></h3>
-        <hr>
-        <div class="btn btn-sm btn-outline-info w-100 mb-2" id="show_trades">
+        <div class="btn btn-sm btn-outline-success w-100 mb-2" id="reset_chart">
+          <i class="fas fa-redo-alt"></i> Reset
+        </div>
+        <div class="btn btn-sm btn-outline-primary w-100 mb-2" id="show_trades">
           <i class="fas fa-dollar"></i> Trades
         </div>
         <div class="btn btn-sm btn-outline-warning w-100" id="show_trend">
@@ -65,16 +67,17 @@
 </div>
 <div class="row d-block">
     <div class="d-flex justify-content-center btn-group" role="group">
-        <button type="button" class="flex-fill btn btn-outline-success btn-sm priceChart" id="1m">1M</button>
-        <button type="button" class="flex-fill btn btn-outline-success btn-sm priceChart" id="6m">6M</button>
-        <button type="button" class="flex-fill btn btn-outline-success btn-sm priceChart" id="1y">1y</button>
-        <button type="button" class="flex-fill btn btn-outline-success btn-sm priceChart active" id="5y">5y</button>
+        <button type="button" class="flex-fill btn btn-outline-success btn-sm priceChart" id="1">1M</button>
+        <button type="button" class="flex-fill btn btn-outline-success btn-sm priceChart" id="6">6M</button>
+        <button type="button" class="flex-fill btn btn-outline-success btn-sm priceChart" id="12">1y</button>
+        <button type="button" class="flex-fill btn btn-outline-success btn-sm priceChart" id="60">5y</button>
+        <button type="button" class="flex-fill btn btn-outline-success btn-sm priceChart active" id="10000">MAX</button>
         <button type="button" class="flex-fill btn btn-outline-success btn-sm" id="timeIn">Time In</button>
     </div>
 </div>
 <hr>
 <div class="row card-deck">
-    <div class="card bg-dark company-details col-md-8 p-0">
+    <div class="card bg_black company-details col-md-8 p-0">
         <div class="card-header d-flex flex-row align-items-center">
             <ul class="nav nav-tabs bg-dark card-header-tabs" id="stockTab" role="tablist">
               <li class="nav-item">
@@ -135,7 +138,7 @@
             </div>
         </div>
     </div>
-    <div class="card bg-dark company-details col-md-4 p-0">
+    <div class="card bg_black company-details col-md-4 p-0">
         <div class="card-header d-flex flex-row align-items-center">
             <img src="{{ stock_data.stock.ticker_data.logo_url }}" alt="logo" id="company-logo" class="mr-auto">
             <h5 class="p-2 bd-highlight">{{  stock_data.company.companyName  }}</h5>
