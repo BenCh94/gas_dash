@@ -2,6 +2,8 @@
 // Initialise chart objects
 const portfolioChart = new dc.LineChart('#portfolio-chart');
 const volumeChart = new dc.BarChart('#daily-volume-chart');
+const stockPie = new dc.PieChart('#ticker-chart');
+const heldBar = new dc.RowChart('#held-chart');
 
 // Convert portfolio dates fro d3
 const dateFormatSpecifier = '%Q';
@@ -28,6 +30,7 @@ const dailyGainPctGroup = gainDays.group().reduce(
 	function (p, v){
 		++p.count;
 		p.invested += v.invested
+        p.value -= v.value
 		p.gain += v.gain
 		p.gain_percentage = (p.gain/p.invested)*100
 		p.bench_gain += v.bench_gain
@@ -38,6 +41,7 @@ const dailyGainPctGroup = gainDays.group().reduce(
 	function (p, v){
 		--p.count;
 		p.invested -= v.invested
+        p.value -= v.value
 		p.gain -= v.gain
 		p.gain_percentage = (p.gain/p.invested)*100
 		p.bench_gain -= v.bench_gain
@@ -46,11 +50,42 @@ const dailyGainPctGroup = gainDays.group().reduce(
 	},
 	// Init
 	function(){
-		return {bench_gain: 0, bench_gain_percentage: 0, gain: 0, invested: 0, gain_percentage: 0, count: 0};
+		return {bench_gain: 0, bench_gain_percentage: 0, gain: 0, invested: 0, gain_percentage: 0, count: 0, value: 0};
 	}
 );
 const volumeByDayGroup = gainDays.group().reduceSum(d => d.volume);
 const dailyBenchGainGroup = gainDays.group().reduceSum(d => d.bench_gain);
+const tickerHeldGroup = stockDimension.group();
+const tickerValueGroup = stockDimension.group().reduce(
+    // add
+    function (p, v){
+        ++p.count;
+        if(v.date > p.date){
+            p.date = v.date
+            p.value = v.value
+            p.invested = v.invested
+        }
+        return p
+    },
+    // remove
+    function (p, v){
+        --p.count;
+        if(v.date < p.date){
+            p.date = v.date
+            p.value = v.value
+            p.invested = v.invested
+        }
+        console.log(p)
+        return p
+    },
+    // Init
+    function(){
+        return {count: 0, value: 0, invested: 0, date: 0};
+    }
+);
+// const colors = ["#d53e4f","#f46d43","#fdae61","#fee08b","#e6f598","#abdda4","#66c2a5","#3288bd"]
+const colors = ["#6e40aa","#bf3caf","#fe4b83","#ff7847","#e2b72f","#aff05b","#52f667","#1ddfa3","#23abd8","#4c6edb","#6e40aa"]
+const colorScale = d3.scaleOrdinal().range(colors);
 
 function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
 	//#### Stacked Area Chart
@@ -58,6 +93,9 @@ function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
 	var portfolioWidth = $('#portfolio-chart').width();
 	var portfolioHeight = $('#portfolio-chart').height();
 	var volumeHeight = $('#daily-volume-chart').height();
+    var piesHeight = $('#ticker-chart').height();
+    var piesWidth = $('#ticker-chart').width();
+    var heldWidth = $('#held-chart').width();
 
     //Specify an area chart by using a line chart with `.renderArea(true)`.
     // <br>API: [Stack Mixin](https://dc-js.github.io/dc.js/docs/html/StackMixin.html),
@@ -69,7 +107,7 @@ function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
         .transitionDuration(2000)
         .margins({top: 50, right: 20, bottom: 25, left: 40})
         .dimension(gainDays)
-        .mouseZoomable(true)
+        .mouseZoomable(false)
     // Specify a "range chart" to link its brush extent with the zoom of the current "focus chart".
         .rangeChart(volumeChart)
         .x(d3.scaleTime().domain([d3.min(portfolio, d => d.dd), d3.max(portfolio, d => d.dd)]))
@@ -126,6 +164,33 @@ function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
         })
         .xUnits(d3.timeMonths);
 
+    // A pie chart showing current value of each ticker in portfolio
+    stockPie.width(piesHeight*0.9)
+        .height(piesHeight*0.9)
+        .slicesCap(100)
+        .innerRadius(piesHeight*0.2)
+        .dimension(stockDimension)
+        .group(tickerValueGroup)
+        .valueAccessor(d => d.value.value)
+        .colors(colorScale)
+        .on('pretransition', function(chart) {
+            chart.selectAll('text.pie-slice').text(function(d) {
+                return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
+            })
+        });
+
+    // A row chart showing odays tciker held for
+    heldBar.width(heldWidth*0.98)
+        .height(piesHeight*0.9)
+        .dimension(stockDimension)
+        .group(tickerHeldGroup)
+        .elasticX(true)
+        .gap(15)
+        .title(d => {
+            return `Days Held: ${numberFormat(d.value)}`
+        })
+        .ordinalColors(colors)
+
     // Render the charts
     dc.renderAll();
 }
@@ -145,11 +210,11 @@ $(document).ready(function(){
     $('#openMenu').click(function(){
         setTimeout(function(){
             drawGraphs(dailyGainPctGroup, dailyGainPctGroup, function(x){return x.value.gain_percentage}, function(x){return x.value.bench_gain_percentage});
-        }, 100);
+        }, 25);
     })
     $('#closeMenu').click(function(){
         setTimeout(function(){
             drawGraphs(dailyGainPctGroup, dailyGainPctGroup, function(x){return x.value.gain_percentage}, function(x){return x.value.bench_gain_percentage});
-        }, 100);
+        }, 25);
     })
 })

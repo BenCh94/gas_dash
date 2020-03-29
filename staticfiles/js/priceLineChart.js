@@ -1,19 +1,21 @@
-function drawChart(data, trendLine){
+function drawChart(data, trendLine, update){
+    if(update){
+        d3.select("svg").remove();
+    }
     // 1. Access the data
-    const dateParser = d3.timeParse('%Q')
-    const xAccessor = d => dateParser(d.date)
+    const xAccessor = d => d.date
     const yAccessor = d => d.close
 
     // 2. Create Dimensions
     var container = $('#share-price-box')
     let dimensions = {
-        width: window.innerWidth *0.75,
-        height: window.innerHeight *0.45,
+        width: container.width()*0.99,
+        height: container.height(),
         margin: {
             top: 15,
-            right: 15,
+            right: 5,
             bottom: 40,
-            left: 60,
+            left: 40,
         }
     }
     dimensions.boundedWidth = dimensions.width
@@ -96,10 +98,55 @@ function drawChart(data, trendLine){
     // 7. Set up interactions 
 }
 
-$(document).ready(function(){
-    drawChart(price_data, 'none');
+function filterData(data, months){
+    var startDate = new Date().setMonth(new Date().getMonth() - months)
+    var data = data.filter(function(d){
+        return d.date > startDate
+    })
+    return data
+}
 
-    // $('#show_trend').click(function(){
-    //     drawChart(price_data, 'true')
-    // })
+function parseDate(data){
+    var dateParser = d3.timeParse('%Q')
+    data.forEach(function(d){
+        d.date = dateParser(d.date)
+    })
+    return data
+}
+
+$(document).ready(function(){
+    current_data = parseDate(price_data);
+    trend = 'none'
+    drawChart(current_data, trend, false);
+
+    $('#show_trend').click(function(){
+        if($(this).hasClass('active')){
+            trend = 'none';
+            $(this).removeClass('active')
+        }
+        else{
+            trend = 'true';
+            $(this).addClass('active')
+        }
+        drawChart(current_data, trend, true)
+    })
+
+
+    $('.priceChart').click(function(){
+        months = $(this).attr('id');
+        $('.priceChart').removeClass('active');
+        $(this).addClass('active');
+        current_data = filterData(price_data, parseInt(months))
+        drawChart(current_data, trend, true)
+    })
+    $('#openMenu').click(function(){
+        setTimeout(function(){
+            drawChart(current_data, trend, true);
+        }, 50);
+    })
+    $('#closeMenu').click(function(){
+        setTimeout(function(){
+            drawChart(current_data, trend, true);
+        }, 50);
+    })
 })

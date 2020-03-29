@@ -12,6 +12,8 @@ class LandingPage(BasePage):
     """Home page action methods come here. I.e. Python.org"""
 
     def has_sign_in(self):
+        # some stuff here
+        one = 1
     	 
 
 

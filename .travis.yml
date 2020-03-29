@@ -1,26 +1,25 @@
-env:
-  - MOZ_HEADLESS=1
 language: python
 python:
-- '3.7'
+  - '3.7'
+dist: xenial
 services:
-- postgresql
-sudo: required
+  - postgresql
 addons:
-  firefox: latest
+  chrome: stable
   postgresql: '9.4'
 before_script:
-- psql -c 'create database travis_ci_test;' -U postgres
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - wget https://chromedriver.storage.googleapis.com/80.0.3987.106/chromedriver_linux64.zip
+  - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python3.7/bin/
+  - export CHROME_BIN=chromium-browser
+  - export LOCAL_CHROME=/home/travis/virtualenv/python3.7/bin/chromedriver
+  - sudo apt-get install -y chromium-browser
 before_install:
-  - wget https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz
-  - mkdir geckodriver
-  - tar -xzf geckodriver-v0.23.0-linux64.tar.gz -C geckodriver
-  - export PATH=$PATH:$PWD/geckodriver
-  - geckodriver --version
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 install:
-- pip install -r requirements.txt
+  - pip install -r requirements.txt
 script:
-- python manage.py test
+  - python manage.py test
 notifications:
   slack:
     secure: ccWJaX2Y8iFVA/rS3pmQ9EXg92Ag4UA+ttmQd3Q7NYhW3GB/Ckw/SZcUYt5++7fJipQ9iH/2fvek/8rLK/kUSXVSqXDfrvsvcbcFhdCMLUFWphw40DpnmeeG1YsFZXKf2PUEGj/q9p635Ft0n8pAqcWdLGLufJPr7IUonLa5iHqq49FLVJQejQ7aY1xmf/4VTOd+DyR+mvpxRzaKD2SkxERNOukg0mgIrQcUhb6p7tJD2r+Cg4BzrO1z+vWhyQigPaqoasVh9H0GV3zZOy+0zJHnUKEIN1lWVi5N00SZuxWY+JgqAGiyl/lyu83A2TjBQgfCqiR957n8N0ClAIbY1No/TL3PuJqoxCnuiEte+F4yau2knM8UvsW0jrHLzzRmJ6po0A6zLooLRGRQdBNOJ5dPvbL3INNDXjyYWZ1Fwcq1rjPQ/5PAOL37hz3PnG0+qrNllr7ibLA9hM2GohhTHSxeDJRZFjtCovNClgZcskcXVIkPw/+26119ZvJJ+t9xh1SkrvSXpBFbQStd8En5nc9JIizPzc+Mei8Z8rqcbPZqLMR9C//OwNOCASpYgEpTcaIjfXmpxdtEVRIf/roElBpoRBHPb3yCxHm6HwyKc4eivEKHJc1SynA+LlII8Z3fWYeRaUWh8X28A9HjXg/pEaHPONBDtgGkU8QIIeSij80=

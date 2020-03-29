@@ -1,3 +1,10 @@
+:root {
+    --text-color: #c2f970;
+    --dark: #101118;
+    --positive: #53dd6c;
+    --negative: #EF233C;
+}
+
 html, body {
   height: 100%;
 }
@@ -58,38 +65,43 @@ i {
 }
 
 .bg_red {
-    background-color: #EF233C;
+    background-color: var(--negative);
 }
 
 .bg_green {
-    background-color: #53dd6c;
+    background-color: var(--positive);
 }
 
 .black_text {
-    color: #101118;
+    color: var(--dark);
 }
 
 .text_green {
-    color: #53dd6c;
+    color: var(--positive);
 }
 
 .text_red {
-    color: #EF233C;
+    color: var(--negative);
 }
 
 .bg_black {
-    background-color: #101118;
-    color: #c2f970;   
+    background-color: var(--dark);
+    color: var(--text-color); /* yellowish font color */  
+}
+
+.bg_black_gradient {
+    background: linear-gradient(90deg, rgba(16,17,24,1) 25%, rgba(40,44,53,1) 65%, rgba(43,48,58,1) 100%);
+    color: var(--text-color);
 }
 
 .stock-link {
-   background-color: #101118;
-   color: #c2f970;
+   background-color: var(--dark);
+   color: var(--text-color);
 }
 
 .stock-link:hover {
    background-color: #181924;
-   color: #c2f970;
+   color: var(--text-color);
 }
 
 .graph_settings{
@@ -101,6 +113,8 @@ i {
 
 .metric_graph{
     height: 25vh;
+    align-items: center!important;
+    padding-top: 2vh;
 }
 
 #share-price-box{
@@ -205,6 +219,7 @@ i {
 
 .metrics {
     background: transparent;
+    padding-bottom: none;
 }
 
 .dropdown-item:hover {
@@ -233,7 +248,22 @@ i {
     color: #007bff;
 }
 
-#show_trades:hover{
-    color: #17a2b8;
-    background-color: transparent;
+#held-chart {
+    pointer-events: none;
+}
+
+#held-chart .grid-line {
+    stroke: none;
+}
+
+#ticker-chart {
+    margin: auto;
+}
+
+.metrics_deck {
+    margin-top: 2vh;
+}
+
+.dc-chart text, .pie-label {
+    fill: var(--text-color)!important;
 }
