@@ -48,14 +48,15 @@ class TestLogin(LiveServerTestCase):
         self.selenium.get(self.live_server_url)
         self.selenium.find_element_by_id('sign_in').click()
         self.assertIn('%s%s' % (self.live_server_url, '/dash/login/'), self.selenium.current_url)
-        WebDriverWait(self.selenium, 10000).until(EC.element_to_be_clickable((By.ID, 'login_submit')))
+        WebDriverWait(self.selenium, 100).until(EC.element_to_be_clickable((By.ID, 'login_submit')))
         # Test filling in form with users credentials
         self.selenium.execute_script(f"document.getElementById('login_username').value='{user.username}'")
         self.selenium.execute_script(f"document.getElementById('login_password').value='{os.environ.get('test_password')}'")
         self.selenium.execute_script("document.getElementById('login_submit').click()")
         # Test dashboard shows correctly
         self.assertNotIn('%s%s' % (self.live_server_url, '/dash/login/?next=/dash/'), self.selenium.current_url)
-        WebDriverWait(self.selenium, 10000).until(EC.element_to_be_clickable((By.ID, 'closeMenu')))
+        WebDriverWait(self.selenium, 100).until(EC.element_to_be_clickable((By.ID, 'closeMenu')))
+        print(self.selenium.page_source.encode("utf-8"))
         stock_card = self.selenium.find_element_by_id(stocks.first().ticker)
         card_name = stock_card.find_element_by_class_name('stock_name').text
         self.assertIn(stocks.first().name, card_name)
