@@ -31,10 +31,7 @@ class TestLogin(LiveServerTestCase):
         chrome_options.add_argument('--disbale-gpu')
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--disable-extensions")
-        if 'TRAVIS' in os.environ:
-            cls.selenium = webdriver.Chrome(chrome_options=chrome_options)
-        else:
-            cls.selenium = webdriver.Chrome(chrome_options=chrome_options, executable_path=os.environ.get('LOCAL_CHROME'))
+        cls.selenium = webdriver.Chrome(chrome_options=chrome_options, executable_path=os.environ.get('LOCAL_CHROME'))
         cls.selenium.implicitly_wait(10)
 
     @classmethod
