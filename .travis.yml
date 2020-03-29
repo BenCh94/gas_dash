@@ -9,10 +9,14 @@ addons:
   postgresql: '9.4'
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
+  - wget http://chromedriver.storage.googleapis.com/2.24/chromedriver_linux64.zip
+  - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python3.7/bin/
+  - export CHROME_BIN=chromium-browser
 before_install:
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 install:
   - pip install -r requirements.txt
+  - chromedriver
 script:
   - whereis chromedriver
   - python manage.py test
