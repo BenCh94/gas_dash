@@ -56,6 +56,7 @@ class TestLogin(LiveServerTestCase):
         self.selenium.execute_script(f"document.getElementById('login_username').value='{user.username}'")
         self.selenium.execute_script(f"document.getElementById('login_password').value='{os.environ.get('test_password')}'")
         self.selenium.execute_script("document.getElementById('login_submit').click()")
+        WebDriverWait(self.selenium, 10000)
         # Test dashboard shows correctly
         self.assertNotIn('%s%s' % (self.live_server_url, '/dash/login/?next=/dash/'), self.selenium.current_url)
         stock_card = self.selenium.find_element_by_id(stocks.first().ticker)

@@ -6,7 +6,6 @@ python:
 dist: xenial
 services:
 - postgresql
-- xvfb
 addons:
   firefox: latest
   postgresql: '9.4'
@@ -21,7 +20,6 @@ before_install:
 install:
 - pip install -r requirements.txt
 script:
-- xvfb-run make test
 - python manage.py test
 notifications:
   slack:
