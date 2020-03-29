@@ -55,6 +55,7 @@ class TestLogin(LiveServerTestCase):
         self.selenium.execute_script("document.getElementById('login_submit').click()")
         # Test dashboard shows correctly
         self.assertNotIn('%s%s' % (self.live_server_url, '/dash/login/?next=/dash/'), self.selenium.current_url)
+        WebDriverWait(self.selenium, 10000).until(EC.element_to_be_clickable((By.ID, 'closeMenu')))
         stock_card = self.selenium.find_element_by_id(stocks.first().ticker)
         card_name = stock_card.find_element_by_class_name('stock_name').text
         self.assertIn(stocks.first().name, card_name)
