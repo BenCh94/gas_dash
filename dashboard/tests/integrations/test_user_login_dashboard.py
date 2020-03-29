@@ -24,17 +24,17 @@ class TestLogin(LiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--window-size=1420,1080')
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--disbale-gpu')
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--disable-extensions")
         if 'TRAVIS' in os.environ:
-            cls.selenium = webdriver.Firefox()
+            cls.selenium = webdriver.Chrome(chrome_options=chrome_options)
         else:
-            chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_argument('--no-sandbox')
-            chrome_options.add_argument('--window-size=1420,1080')
-            # chrome_options.add_argument('--headless')
-            chrome_options.add_argument('--disbale-gpu')
-            chrome_options.add_argument("--disable-dev-shm-usage")
-            chrome_options.add_argument("--disable-extensions")
-            cls.selenium = webdriver.Chrome(chrome_options=chrome_options, executable_path='/home/ben/path_executable/chromedriver')
+            cls.selenium = webdriver.Chrome(chrome_options=chrome_options, executable_path=os.environ.get('LOCAL_CHROME'))
         cls.selenium.implicitly_wait(10)
 
     @classmethod
@@ -56,7 +56,6 @@ class TestLogin(LiveServerTestCase):
         self.selenium.execute_script(f"document.getElementById('login_username').value='{user.username}'")
         self.selenium.execute_script(f"document.getElementById('login_password').value='{os.environ.get('test_password')}'")
         self.selenium.execute_script("document.getElementById('login_submit').click()")
-        WebDriverWait(self.selenium, 10000)
         # Test dashboard shows correctly
         self.assertNotIn('%s%s' % (self.live_server_url, '/dash/login/?next=/dash/'), self.selenium.current_url)
         stock_card = self.selenium.find_element_by_id(stocks.first().ticker)
