@@ -13,6 +13,7 @@ before_script:
   - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python3.7/bin/
   - export CHROME_BIN=chromium-browser
   - export LOCAL_CHROME=/home/travis/virtualenv/python3.7/bin/chromedriver
+  - apt-get install -y chromium-browser
 before_install:
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 install:
