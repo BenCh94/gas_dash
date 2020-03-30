@@ -17,6 +17,12 @@
         </li>
       {% endif %}
       <li class="nav-item">
+        <a class="nav-link" href="{% url 'dash:dashboard' %}">
+          <span data-feather="profile"></span>
+          <i class="fas fa-user-cog"></i>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link active" href="{% url 'dash:dashboard' %}">
           <span data-feather="home"></span>
           <i class="fas fa-home"></i>
@@ -24,7 +30,7 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'dash:add_stock' %}">
-        <span data-feather="home"></span>
+        <span data-feather="content"></span>
             <i class="far fa-newspaper"></i>
         </a>
       </li>
@@ -39,6 +45,13 @@
           </a>
         </li>
       {% endif %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'dash:profile' profile_id=current_user.id %}">
+          <span data-feather="profile"></span>
+          <i class="fas fa-user-cog"></i>
+          Profile
+        </a>
+      </li>
       <li class="nav-item">
         <a class="nav-link active" href="{% url 'dash:dashboard' %}">
           <span data-feather="home"></span>
