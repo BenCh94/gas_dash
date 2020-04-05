@@ -8,44 +8,41 @@ from django.contrib import messages
 from dashboard.models import Stock, Trade, Portfolio
 from dashboard.forms import PortfolioForm
 from dashboard.iex_requests import list_symbols
+from dashboard.utils import context_assign_user
 
 logger = logging.getLogger(__name__)
 
 @login_required(login_url='/dash/login/')
 def index(request):
 	""" The home dashboard view """
-	context = dict()
-	current_user = request.user
-	profile = current_user.profile
+	context = context_assign_user(request.user)
 	logger.info('loading portfolio index %{user.username}')
 	if request.method == 'POST':
 		form = PortfolioForm(request.POST)
 		if form.is_valid():
-			Portfolio.objects.filter(user_profile=profile).update(name=request.POST['name'], benchmark_name=request.POST['benchmark_name'], benchmark_ticker=request.POST['benchmark_ticker'])
+			Portfolio.objects.filter(user_profile=context['current_user']).update(name=request.POST['name'], benchmark_name=request.POST['benchmark_name'], benchmark_ticker=request.POST['benchmark_ticker'])
 			messages.success(request, 'Congrats, Your portfolio was updated!')
 			return redirect('dash:dashboard')
-	portfolio = Portfolio.objects.filter(user_profile=profile).first()
+	portfolio = Portfolio.objects.filter(user_profile=context['current_user']).first()
 	context['stocks'] = portfolio.get_current_quotes()
 	context['latest'] = portfolio.latest_day_data(context['stocks'])
 	context['symbols'] = list_symbols()
 	context['portfolio'] = portfolio
 	context['portfolio_form'] = PortfolioForm()
-	context['current_user'] = profile
 	return render(request, 'dash/dashboard.html', context)
 
 
 @login_required(login_url='/dash/login/')
 def stock(request, stock_id):
 	""" Stock view """
+	context = context_assign_user(request.user)
 	stock_object = get_object_or_404(Stock, pk=stock_id)
-	stock_data = dict()
-	other_stocks = Stock.objects.filter(user_profile=request.user.profile, status='a').exclude(pk=stock_id)
-	stock_data['stock'] = stock_object
-	stock_data['trades'] = stock_object.trades()
-	stock_data['stocks'] = other_stocks
-	stock_data['price_data'] = json.dumps(stock_object.ticker_data.historical_data)
-	print(type(stock_data['price_data']))
-	return render(request, 'dash/stock_detail.html', {'stock_data': stock_data})
+	other_stocks = Stock.objects.filter(user_profile=context['current_user'], status='a').exclude(pk=stock_id)
+	context['stock'] = stock_object
+	context['trades'] = stock_object.trades()
+	context['stocks'] = other_stocks
+	context['price_data'] = json.dumps(stock_object.ticker_data.historical_data)
+	return render(request, 'dash/stock_detail.html', context)
 
 @login_required(login_url='/dash/login/')
 def trades(request, stock_id):

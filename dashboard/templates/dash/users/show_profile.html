@@ -1,0 +1,15 @@
+{% extends 'dash/base.html' %}
+{% load dashboard_extras %}
+{% block head_files %}
+{% load static %}
+{% endblock head_files %}
+{% block sidebar_content %}
+{% endblock sidebar_content %}
+{% block content %}
+    <h4>Hi There {{ current_user }},</h4>
+    <p class="text-muted">This is your profile section. You can update your settings and details below</p>
+    <hr>
+    
+{% endblock content %}
+{% block footer_files %}
+{% endblock footer_files %}
