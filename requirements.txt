@@ -1,8 +1,12 @@
 certifi==2018.8.13
+cffi==1.14.0
 chardet==3.0.4
 coverage==4.5.1
+cryptography==2.8
 dj-database-url==0.5.0
 Django==2.2.10
+django-appconf==1.0.3
+django-cryptography==1.0
 django-heroku==0.3.1
 factory-boy==2.11.1
 Faker==0.9.1
@@ -12,6 +16,7 @@ numpy==1.15.0
 pandas==1.0.1
 psycopg2==2.7.5
 psycopg2-binary==2.7.5
+pycparser==2.20
 python-dateutil==2.7.3
 pytz==2018.5
 requests==2.20.0
