@@ -12,7 +12,6 @@ logger = logging.getLogger(__name__)
 
 @login_required(login_url='/dash/login/')
 def show_profile(request, profile_id):
-    print(request.session['menuSetting'])
     """ Show user profile details and allow update settings and details """
     context = context_assign_user(request.user)
     # profile_object = get_object_or_404(Profile, pk=profile_id)
