@@ -1,1 +1,1 @@
-from .show_profile import *
+from .profile_views import *

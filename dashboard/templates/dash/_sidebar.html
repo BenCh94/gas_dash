@@ -1,12 +1,14 @@
 {% load static %}
-<nav class="bg-dark sidebar">
-  <div class="sidebar-sticky">
+<nav class="bg-dark sidebar {% if request.session.menuSetting == 'open' %}open{% else %}closed{% endif %}">
+  <div class="sidebar-sticky pt-2">
     <div class="float-right mr-2">
       <i class="fa fa-caret-square-left btn" id="closeMenu"></i>
     </div>
-    <ul class="nav flex-column align-items-center" id="sidebar_icons" style="display:none;">
-      <li class="nav-item btn" id="openMenu">
-        <i class="fas fa-bars"></i>
+    <ul class="nav flex-column align-items-center" id="sidebar_icons">
+      <li class="nav-item" id="openMenu" style="cursor: pointer;">
+        <div class="nav-link">
+          <i class="fas fa-bars"></i>
+        </div>
       </li>
       {% if current_user.is_admin %}
         <li class="nav-item">
@@ -17,7 +19,7 @@
         </li>
       {% endif %}
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'dash:dashboard' %}">
+        <a class="nav-link" href="{% url 'dash:profile' profile_id=current_user.id %}">
           <span data-feather="profile"></span>
           <i class="fas fa-user-cog"></i>
         </a>

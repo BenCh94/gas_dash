@@ -52,10 +52,58 @@ i {
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 3.5%;
     font-size: medium;
-    width: 12vw;
 }
 
-.main {
+#openMenu:hover {
+    color: #797D7C;
+}
+
+.sidebar.open {
+    width:12vw;
+}
+
+.sidebar.open #sidebar_nav {
+    display: block;
+}
+
+.sidebar.open #iex_attr {
+    display: block;
+}
+
+.sidebar.open #closeMenu {
+    display: block;
+}
+
+.sidebar.open #sidebar_icons {
+    display: none;
+}
+
+.sidebar.closed {
+    width: 3vw;
+}
+
+.sidebar.closed #sidebar_nav {
+    display: none;
+}
+
+.sidebar.closed #iex_attr {
+    display: none;
+}
+
+.sidebar.closed #closeMenu {
+    display: none;
+}
+
+.sidebar.closed #sidebar_icons {
+    display: block;
+}
+
+.main.wide {
+    width: 95vw;
+    margin-left: 4vw;
+}
+
+.main.narrow {
     width: 85vw;
     margin-left: 13vw;
 }

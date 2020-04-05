@@ -1,4 +1,9 @@
+function setSidebarStatus(status){
+	$.get(`/dash/set_menu_status_${status}`, function(response){
+		console.log(response);
+	})
 
+}
 
 $(document).ready(function(){
 	$('[data-toggle="tooltip"]').tooltip()
@@ -23,22 +28,18 @@ $(document).ready(function(){
 	})
 
 	$("#closeMenu").click(function(){
-		$('.sidebar').css('width', '3vw');
-		$('.main').css('width', '95vw');
-		$('.main').css('margin-left', '4vw');
-		$('#sidebar_nav').hide();
-		$('#sidebar_icons').show();
-		$('#iex_attr').hide();
-		$(this).hide();
+		$('.sidebar').removeClass('open');
+		$('.main').removeClass('narrow');
+		$('.sidebar').addClass('closed');
+		$('.main').addClass('wide');
+		setSidebarStatus('closed');
 	})
 
 	$('#openMenu').click(function(){
-		$('.sidebar').css('width', '12vw');
-		$('.main').css('width', '85vw');
-		$('.main').css('margin-left', '13vw');
-		$('#sidebar_nav').show();
-		$('#sidebar_icons').hide();
-		$('#iex_attr').show();
-		$('#closeMenu').show();
+		$('.sidebar').removeClass('closed');
+		$('.main').removeClass('wide');
+		$('.sidebar').addClass('open');
+		$('.main').addClass('narrow');
+		setSidebarStatus('open');
 	})
 })
