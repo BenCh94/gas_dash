@@ -149,4 +149,8 @@ $(document).ready(function(){
             drawChart(current_data, trend, true);
         }, 50);
     })
+
+    $('#chart_settings').click(function(){
+        $('.chart_setting').toggleClass('visible');
+    })
 })

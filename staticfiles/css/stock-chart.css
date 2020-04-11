@@ -7,3 +7,13 @@
 .grid path {
   stroke-width: 0;
 }
+
+@media screen and (max-width: 768px) {
+    .chart_setting {
+        display: none;
+    }
+
+    .chart_setting.visible {
+        display: block;
+    }
+}

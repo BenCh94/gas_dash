@@ -58,56 +58,6 @@ i {
     color: #797D7C;
 }
 
-.sidebar.open {
-    width:12vw;
-}
-
-.sidebar.open #sidebar_nav {
-    display: block;
-}
-
-.sidebar.open #iex_attr {
-    display: block;
-}
-
-.sidebar.open #closeMenu {
-    display: block;
-}
-
-.sidebar.open #sidebar_icons {
-    display: none;
-}
-
-.sidebar.closed {
-    width: 3vw;
-}
-
-.sidebar.closed #sidebar_nav {
-    display: none;
-}
-
-.sidebar.closed #iex_attr {
-    display: none;
-}
-
-.sidebar.closed #closeMenu {
-    display: none;
-}
-
-.sidebar.closed #sidebar_icons {
-    display: block;
-}
-
-.main.wide {
-    width: 95vw;
-    margin-left: 4vw;
-}
-
-.main.narrow {
-    width: 85vw;
-    margin-left: 13vw;
-}
-
 .badge {
     color: #000;
 }
@@ -175,6 +125,60 @@ i {
     color: #c2f970;
 }
 
+/*Sidebar styling for desktop devices not mobile*/
+@media screen and (min-width: 768px) {
+    .sidebar.open {
+        width:12vw;
+    }
+
+    .sidebar.open #sidebar_nav {
+        display: block;
+    }
+
+    .sidebar.open #iex_attr {
+        display: block;
+    }
+
+    .sidebar.open #closeMenu {
+        display: block;
+    }
+
+    .sidebar.open #sidebar_icons {
+        display: none;
+    }
+
+    .sidebar.closed {
+        width: 3vw;
+    }
+
+    .sidebar.closed #sidebar_nav {
+        display: none;
+    }
+
+    .sidebar.closed #iex_attr {
+        display: none;
+    }
+
+    .sidebar.closed #closeMenu {
+        display: none;
+    }
+
+    .sidebar.closed #sidebar_icons {
+        display: block;
+    }
+
+    .main.wide {
+        width: 95vw;
+        margin-left: 4vw;
+    }
+
+    .main.narrow {
+        width: 85vw;
+        margin-left: 13vw;
+    }
+
+}
+
 @media screen and (max-width: 768px) {
     main {
         padding-top: 20%;
@@ -183,9 +187,9 @@ i {
     }
 
     .sidebar {
-        padding-top: 20%;
+        padding-top: 10%;
         margin-left: -100%;
-        width: 50%;
+        width: 40%;
         font-size: medium;
         transition: all 0.4s ease-in-out;
     }
@@ -196,6 +200,10 @@ i {
     }
 
     #closeMenu {
+        display: none;
+    }
+
+    #sidebar_icons {
         display: none;
     }
 

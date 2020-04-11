@@ -85,7 +85,7 @@ const tickerValueGroup = stockDimension.group().reduce(
 );
 // const colors = ["#d53e4f","#f46d43","#fdae61","#fee08b","#e6f598","#abdda4","#66c2a5","#3288bd"]
 const colors = ["#6e40aa","#bf3caf","#fe4b83","#ff7847","#e2b72f","#aff05b","#52f667","#1ddfa3","#23abd8","#4c6edb","#6e40aa"]
-const colorScale = d3.scaleOrdinal().range(colors);
+const colorScale = d3.scaleOrdinal(d3.schemeSet2)
 
 function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
 	//#### Stacked Area Chart
@@ -189,7 +189,7 @@ function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
         .title(d => {
             return `Days Held: ${numberFormat(d.value)}`
         })
-        .ordinalColors(colors)
+        .ordinalColors(d3.schemeSet2)
 
     // Render the charts
     dc.renderAll();
