@@ -5,10 +5,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from ..forms import StockForm, TradeForm
 from ..iex_requests import list_symbols
+from dashboard.utils import context_assign_user
 
 @login_required(login_url='/dash/login/')
 def add_stock(request):
 	""" Function for adding a new stock to the dashboard: limited to stocks on IEX """
+	context = context_assign_user(request.user)
 	if request.method == 'POST':
 		# Create form instance and populate with data from request
 		form = StockForm(request.POST)
@@ -18,15 +20,14 @@ def add_stock(request):
 			stock.save()
 			messages.success(request, 'Congrats, Your stock was added!')
 			return redirect('dash:dashboard')
-	symbols = list_symbols()
-	current_user = request.user
-	profile = current_user.profile
-	stock_form = StockForm()
-	return render(request, 'dash/add_stock.html', {'form': stock_form, 'symbols': symbols})
+	context['symbols'] = list_symbols()
+	context['stock_form'] = StockForm()
+	return render(request, 'dash/add_stock.html', context)
 
 @login_required(login_url='/dash/login/')
 def add_trade(request):
 	""" Function adds a trade for a users stock to the db """
+	context = context_assign_user(request.user)
 	if request.method == 'POST':
 		# Create form instance and populate with data from reqquest
 		form = TradeForm(request, request.POST)
@@ -41,5 +42,5 @@ def add_trade(request):
 		trade_form = TradeForm(request, request.POST)
 		messages.warning(request, "There's a problem with the form")
 		return render(request, 'dash/add_trade.html', {'form': trade_form, 'errors': errors})
-	trade_form = TradeForm(request)
-	return render(request, 'dash/add_trade.html', {'form': trade_form})
+	context['trade_form'] = TradeForm(request)
+	return render(request, 'dash/add_trade.html', context)

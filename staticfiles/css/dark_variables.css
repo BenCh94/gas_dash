@@ -1,0 +1,10 @@
+:root {
+    --default-font: #fff;
+    --text-color: #c2f970;
+    --dark: #101118;
+    --positive: #53dd6c;
+    --negative: #EF233C;
+    --main-gradient: -webkit-linear-gradient(rgba(36,40,48,1) 25%, rgba(40,44,53,1) 55%, rgba(43,48,58,1) 100%);
+    --main-gradient1: -o-linear-gradient(rgba(36,40,48,1) 25%, rgba(40,44,53,1) 55%, rgba(43,48,58,1) 100%);
+    --main-gradient2: linear-gradient(rgba(36,40,48,1) 25%, rgba(40,44,53,1) 55%, rgba(43,48,58,1) 100%);
+}

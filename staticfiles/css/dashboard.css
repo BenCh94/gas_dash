@@ -1,18 +1,11 @@
-:root {
-    --text-color: #c2f970;
-    --dark: #101118;
-    --positive: #53dd6c;
-    --negative: #EF233C;
-}
-
 html, body {
   height: 100%;
 }
 body {
-	background: -webkit-linear-gradient(rgba(36,40,48,1) 25%, rgba(40,44,53,1) 55%, rgba(43,48,58,1) 100%);
-    background: -o-linear-gradient(rgba(36,40,48,1) 25%, rgba(40,44,53,1) 55%, rgba(43,48,58,1) 100%);
-    background: linear-gradient(rgba(36,40,48,1) 25%, rgba(40,44,53,1) 55%, rgba(43,48,58,1) 100%);
-	color: #ffffff;
+	background: var(--main-gradient);
+    background: var(--main-gradient1);
+    background: var(--main-gradient2);
+	color: var(--default-font);
   	min-height: 100vh;
 }
 input, select {
