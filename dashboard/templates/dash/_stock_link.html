@@ -6,7 +6,7 @@
 			<span data-toggle="tooltip" class="badge bg_{% if stock.quote.changePercent < 0 %}red{% else %}green{% endif %}">
 				<div class="container-fluid">
 					<div class="row">
-						${{ stock.quote.latestPrice|percentage }} ({{ stock.quote.changePercent|percentage }})
+						${{ stock.quote.latestPrice }} ({{ stock.quote.changePercent|percentage }})
 					</div>
 					<div class="row">
 						<small>ytd: {{ stock.quote.ytdChange|percentage }}</small>
