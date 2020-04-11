@@ -125,6 +125,10 @@ i {
     color: #c2f970;
 }
 
+#ticker-chart.pct {
+    pointer-events: none;
+}
+
 /*Sidebar styling for desktop devices not mobile*/
 @media screen and (min-width: 768px) {
     .sidebar.open {

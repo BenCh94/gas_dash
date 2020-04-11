@@ -65,6 +65,7 @@ const tickerValueGroup = stockDimension.group().reduce(
             p.value = v.value
             p.invested = v.invested
         }
+        console.log(p)
         return p
     },
     // remove
@@ -200,11 +201,13 @@ $(document).ready(function(){
 		drawGraphs(dailyGainPctGroup, dailyGainPctGroup, function(x){return x.value.gain_percentage}, function(x){return x.value.bench_gain_percentage});
 		$('.portfolio_filters').removeClass('active');
 		$(this).addClass('active')
+        $('#ticker-chart').addClass('pct')
 	})
 	$('#dollar_view').click(function(){
 		drawGraphs(dailyGainGroup, dailyBenchGainGroup, function(x){return x.value}, function(x){return x.value});
 		$('.portfolio_filters').removeClass('active');
 		$(this).addClass('active')
+        $('#ticker-chart').removeClass('pct')
 	})
 	drawGraphs(dailyGainPctGroup, dailyGainPctGroup, function(x){return x.value.gain_percentage}, function(x){return x.value.bench_gain_percentage});
     $('#openMenu').click(function(){
