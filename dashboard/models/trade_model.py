@@ -1,11 +1,11 @@
 import datetime
-from django.contrib.postgres.functions import RandomUUID
+import uuid
 from django.db import models
 from django.utils import timezone
 
 class Trade(models.Model):
     TradeTypes = [('b', 'Buy'), ('s','Sell')]
-    uuid = models.UUIDField(default=RandomUUID(), unique=True)
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     stock = models.ForeignKey('dashboard.Stock', on_delete=models.CASCADE)
     date = models.DateField()
     trade_type = models.CharField(max_length=2, choices=TradeTypes)

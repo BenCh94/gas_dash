@@ -1,11 +1,11 @@
-""" Command to set UUIDS for all objects """
+""" Command to change refrence column to uuid """
 from django.contrib.postgres.functions import RandomUUID
 from django.core.management.base import BaseCommand, CommandError
 from dashboard.models import Ticker, Stock, Trade, Portfolio, Profile
 
 class Command(BaseCommand):
-    """ Pull symbols from iex and update or create ticker objects """
-    help = "Function sets uuid in postgres db"
+    """ modify foreign key to use uuid """
+    help = "Function sets uuid in foreign key columns"
 
     def handle(self , *args, **options):
         self.stdout.write('Initialising UUID task')

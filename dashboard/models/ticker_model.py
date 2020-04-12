@@ -1,12 +1,12 @@
 """ The ticker model definition """
+import uuid
 from django.db import models
-from django.contrib.postgres.functions import RandomUUID
 from django.contrib.postgres.fields import JSONField
 
 
 class Ticker(models.Model):
     """ Ticker model for the underlying stock/company referenced by users stocks """
-    uuid = models.UUIDField(default=RandomUUID(), unique=True)
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     historical_data = JSONField(null=True)
     ticker = models.CharField(max_length=10)
     name = models.CharField(max_length=200, null=True)

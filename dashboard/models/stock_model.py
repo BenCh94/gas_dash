@@ -1,5 +1,6 @@
 """ The user stock model definition refers to a specific """
 """ users stock. Ticker model contains overall company data """
+import uuid
 from django.db import models
 from django.contrib.postgres.functions import RandomUUID
 from .trade_model import Trade
@@ -8,7 +9,7 @@ from .ticker_model import Ticker
 class Stock(models.Model):
     """ Stock model refers to a stock/share in a users account """
     StockStatuses = [('a', 'Active'), ('i', 'Inactive')]
-    uuid = models.UUIDField(default=RandomUUID(), unique=True)
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     user_profile = models.ForeignKey('dashboard.Profile', on_delete=models.CASCADE)
     ticker_data = models.ForeignKey('dashboard.Ticker', on_delete=models.PROTECT, null=True)
     name = models.CharField(max_length=200)

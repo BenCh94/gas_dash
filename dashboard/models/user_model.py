@@ -2,7 +2,6 @@
 import uuid
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.postgres.functions import RandomUUID
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django_cryptography.fields import encrypt
@@ -12,7 +11,7 @@ from .stock_model import Stock
 
 class Profile(models.Model):
     """ The profile for user model """
-    uuid = models.UUIDField(default=RandomUUID(), unique=True)
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, blank=True)
     dark_mode = models.BooleanField(default=True)
