@@ -13,6 +13,7 @@ class Profile(models.Model):
     """ The profile for user model """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, blank=True)
+    dark_mode = models.BooleanField(default=True)
     iex_api_key = encrypt(models.CharField(max_length=100, null=True))
 
     def __str__(self):
@@ -20,17 +21,11 @@ class Profile(models.Model):
 
     def has_stocks(self):
         """ Check if the user has added any stocks """
-        if Stock.objects.filter(user_profile=self).count() > 0:
-            return True
-        else:
-            return False
+        return bool(Stock.objects.filter(user_profile=self).count() > 0)
 
     def is_admin(self):
         """ Is the user an admin """
-        if self.user.is_staff:
-            return True
-        else:
-            return False
+        return bool(self.user.is_staff)
 
 
 @receiver(post_save, sender=User)

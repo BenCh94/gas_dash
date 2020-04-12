@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.contrib.auth.models import User
 from dashboard.models import Profile
+from dashboard.forms import ProfileForm
 from dashboard.utils import context_assign_user
 
 
@@ -14,12 +15,13 @@ logger = logging.getLogger(__name__)
 def show_profile(request, profile_id):
     """ Show user profile details and allow update settings and details """
     context = context_assign_user(request.user)
+    context['profile_form'] = ProfileForm(instance=context['current_user'])
     # profile_object = get_object_or_404(Profile, pk=profile_id)
     return render(request, 'dash/users/show_profile.html', context)
 
 def update_menu_session(request):
     """ Sets menu open or close in user session """
-    print('setting menu sesson variable')
+    print('setting menu sesson variable...')
     if not request.is_ajax() or not request.method == 'GET':
         return HttpResponseNotAllowed(['GET'])
 
