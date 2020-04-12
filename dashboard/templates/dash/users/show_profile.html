@@ -1,7 +1,9 @@
 {% extends 'dash/base.html' %}
 {% load dashboard_extras %}
 {% block head_files %}
-{% load static %}
+    {% load static %}
+    <link href="{% static 'css/forms.css' %}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
 {% endblock head_files %}
 {% block sidebar_content %}
 {% endblock sidebar_content %}
