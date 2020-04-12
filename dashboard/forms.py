@@ -4,7 +4,6 @@ from django.forms import ModelForm, TextInput, DateInput, PasswordInput, Checkbo
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from dashboard.models import Stock, Trade, Portfolio, Profile
-from gas_dash import settings
 
 
 class SignUpForm(UserCreationForm):

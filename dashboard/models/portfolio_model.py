@@ -6,6 +6,7 @@ import datetime
 import pandas as pd
 from django.db import models
 from django.contrib.postgres.fields import JSONField
+from django.contrib.postgres.functions import RandomUUID
 from .trade_model import Trade
 from .stock_model import Stock
 from .ticker_model import Ticker
@@ -13,6 +14,7 @@ from ..iex_requests import batch_quotes
 
 class Portfolio(models.Model):
     """ Portfolio model defintion for users overall holdings """
+    uuid = models.UUIDField(default=RandomUUID(), unique=True)
     user_profile = models.ForeignKey('dashboard.Profile', on_delete=models.CASCADE)
     data = JSONField(null=True)
     name = models.CharField(max_length=200)
@@ -28,41 +30,40 @@ class Portfolio(models.Model):
         data = ast.literal_eval(self.data)
         if not data:
             return 'Empty portfolio response'
+        portfolio_df = pd.DataFrame(data)
+        portfolio_by_day = portfolio_df.groupby('date')
+        latest_date = max(portfolio_df['date'])
+        days = len(portfolio_by_day)
+        latest_day = portfolio_by_day.get_group(latest_date)
+        latest = dict()
+        date_object = datetime.datetime.fromtimestamp(int(latest_date)/1000)
+        latest['date'] = date_object.strftime('%Y-%m-%d')
+        latest['days'] = days
+        latest['value'] = sum(latest_day['value'])
+        latest['gain'] = sum(latest_day['gain'])
+        latest['bench_gain'] = sum(latest_day['bench_gain'])
+        latest['gain_pct'] = (sum(latest_day['gain'])/sum(latest_day['invested']))*100
+        latest['bench_gain_pct'] = (sum(latest_day['bench_gain'])/sum(latest_day['invested']))*100
+        latest['bench_gain'] = sum(latest_day['bench_gain'])
+        latest['mean'] = statistics.mean(portfolio_df['gain_pct'])
+        latest['bench_mean'] = statistics.mean(portfolio_df['bench_gain_pct'])
+        latest['cv'] = statistics.stdev(portfolio_df['gain_pct'])/statistics.mean(portfolio_df['gain_pct'])
+        latest['bench_cv'] = statistics.stdev(portfolio_df['bench_gain_pct'])/statistics.mean(portfolio_df['bench_gain_pct'])
+        current_value = 0
+        for stock in quotes:
+            current_value += stock.quantity*stock.quote['latestPrice']
+        if stock.quote['isUSMarketOpen']:
+            latest['marketOpen'] = True
+            latest['day_change'] = current_value - latest['value']
+            latest['pct_change'] = (latest['day_change']/latest['value'])
         else:
-            portfolio_df = pd.DataFrame(data)
-            portfolio_by_day = portfolio_df.groupby('date')
-            latest_date = max(portfolio_df['date'])
-            days = len(portfolio_by_day)
-            latest_day = portfolio_by_day.get_group(latest_date)
-            latest = dict()
-            date_object = datetime.datetime.fromtimestamp(int(latest_date)/1000)
-            latest['date'] = date_object.strftime('%Y-%m-%d')
-            latest['days'] = days
-            latest['value'] = sum(latest_day['value'])
-            latest['gain'] = sum(latest_day['gain'])
-            latest['bench_gain'] = sum(latest_day['bench_gain'])
-            latest['gain_pct'] = (sum(latest_day['gain'])/sum(latest_day['invested']))*100
-            latest['bench_gain_pct'] = (sum(latest_day['bench_gain'])/sum(latest_day['invested']))*100
-            latest['bench_gain'] = sum(latest_day['bench_gain'])
-            latest['mean'] = statistics.mean(portfolio_df['gain_pct'])
-            latest['bench_mean'] = statistics.mean(portfolio_df['bench_gain_pct'])
-            latest['cv'] = statistics.stdev(portfolio_df['gain_pct'])/statistics.mean(portfolio_df['gain_pct'])
-            latest['bench_cv'] = statistics.stdev(portfolio_df['bench_gain_pct'])/statistics.mean(portfolio_df['bench_gain_pct'])
-            current_value = 0
-            for stock in quotes:
-                current_value += stock.quantity*stock.quote['latestPrice']
-            if stock.quote['isUSMarketOpen']:
-                latest['marketOpen'] = True
-                latest['day_change'] = current_value - latest['value']
-                latest['pct_change'] = (latest['day_change']/latest['value'])
-            else:
-                latest['marketOpen'] = False
-                second_last_day = date_object - datetime.timedelta(days=1)
-                group_label = int(datetime.datetime.timestamp(second_last_day))*1000
-                second_day = portfolio_by_day.get_group(group_label)
-                latest['day_change'] = latest['value'] - sum(second_day['value'])
-                latest['pct_change'] = (latest['day_change']/sum(second_day['value']))
-            return latest
+            latest['marketOpen'] = False
+            second_last_day = date_object - datetime.timedelta(days=1)
+            group_label = int(datetime.datetime.timestamp(second_last_day))*1000
+            second_day = portfolio_by_day.get_group(group_label)
+            latest['day_change'] = latest['value'] - sum(second_day['value'])
+            latest['pct_change'] = (latest['day_change']/sum(second_day['value']))
+        return latest
 
     def earliest_trade(self):
         """ Return the earliest trade in the portfolio """
