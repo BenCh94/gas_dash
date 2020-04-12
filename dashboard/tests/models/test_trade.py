@@ -13,4 +13,4 @@ class TradeTestCase(TestCase):
 	def test_trade_string(self):
 		trade = Trade.objects.first()
 
-		self.assertEqual(str(trade), f'{trade.trade_type}: {trade.stock.ticker}, {trade.date}')
+		self.assertEqual(str(trade), f'{trade.trade_type}: {trade.amount} @ {trade.avg_price} - {trade.date}')
