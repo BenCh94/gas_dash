@@ -20,7 +20,7 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 
 
 class TestLogin(LiveServerTestCase):
-    fixtures = ['dashboard/fixtures/users.json', 'dashboard/fixtures/initial_data.json']
+    fixtures = ['dashboard/fixtures/users.json', 'dashboard/fixtures/initialdata2.json']
     @classmethod
     def setUpClass(cls):
         super().setUpClass()

@@ -16,13 +16,13 @@
 	<hr>
 	<li class="nav-item">
         <select class="form-control" id="tickerDrop" ONCHANGE="location = this.options[this.selectedIndex].value;">
-            <option selected class="tickerOption" value="{% url 'dash:stock' stock_id=stock.id %}">
+            <option selected class="tickerOption" value="{% url 'dash:stock' stock_uuid=stock.uuid %}">
                 <h5>
                 {{ stock.ticker }}
                 </h5>
             </option>
             {% for item in stocks %}
-            <option class="tickerOption" value="{% url 'dash:stock' stock_id=item.id %}">
+            <option class="tickerOption" value="{% url 'dash:stock' stock_uuid=item.uuid %}">
                 <h5>
                 {{ item.ticker }}
                 </h5>
@@ -125,7 +125,7 @@
                 <ul class="list-group tradeList">
                     {% if trades %}
                         {% for trade in trades %}
-                          <a href="{% url 'dash:trade' trade.id %}" class="list-group-item {% if trade.type == 'b' %}list-group-item-danger{% else %}list-group-item-success{%endif%}">
+                          <a href="{% url 'dash:trade' trade.uuid %}" class="list-group-item {% if trade.type == 'b' %}list-group-item-danger{% else %}list-group-item-success{%endif%}">
                               {{ trade.date }}: {{ trade.trade_type }},{{ trade.amount }} @ ${{ trade.avg_price }}
                           </a>
                         {% endfor %}

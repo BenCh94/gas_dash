@@ -12,7 +12,7 @@ from dashboard.utils import context_assign_user
 logger = logging.getLogger(__name__)
 
 @login_required(login_url='/dash/login/')
-def show_profile(request, profile_id):
+def show_profile(request, profile_uuid):
     """ Show user profile details and allow update settings and details """
     context = context_assign_user(request.user)
     context['profile_form'] = ProfileForm(instance=context['current_user'])
