@@ -6,7 +6,7 @@ body {
     background: var(--main-gradient1);
     background: var(--main-gradient2);
 	color: var(--default-font);
-  	min-height: 100vh;
+  	height: 100vh;
 }
 input, select {
     -webkit-box-shadow: inset 4px 4px 25px -5px rgba(0,0,0,0.75);
@@ -120,6 +120,20 @@ i {
 
 #ticker-chart.pct {
     pointer-events: none;
+}
+/* Reduced font sizes for smaller desktop screens */
+@media screen and (max-width: 1250px) {
+    body {
+        font-size: 0.75rem;
+    }
+
+    h5, .h5 {
+        font-size: 1.15rem!important;
+    }
+
+    h6, .h6 {
+        font-size: 0.85rem!important;
+    }
 }
 
 /*Sidebar styling for desktop devices not mobile*/

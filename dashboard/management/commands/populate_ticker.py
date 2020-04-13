@@ -1,6 +1,8 @@
 """ Command to populate ticker table with refrence data """
 import os
 import json
+import datetime
+from django.db.utils import IntegrityError
 from django.core.management.base import BaseCommand, CommandError
 from dashboard.services import IexCloudService
 from dashboard.models import Ticker
@@ -16,5 +18,45 @@ class Command(BaseCommand):
         except ValueError as e:
             raise CommandError(f'Call to IEX failed: {e}')
 
-        for symbol in json.load(symbols):
-            print(symbol)
+        for symbol in symbols:
+            ticker = Ticker.create_from_iex(symbol)
+            try:
+                ticker.save()
+                print(f"Successfully created ticker {ticker.ticker}")
+            except IntegrityError as e:
+                print('Violates constraints...')
+                exsisting = Ticker.objects.filter(region=ticker.region, ticker=ticker.ticker)
+                if exsisting.count() == 1:
+                    if str(exsisting.first().reference_date) == ticker.reference_date:
+                        print(f"Already up to date {ticker.ticker}")
+                        continue
+                    else:
+                        exsisting.first().update(
+                            name=ticker.name,
+                            reference_date=ticker.reference_date,
+                            active=ticker.active,
+                            figi=ticker.figi,
+                            cik=ticker.cik)
+                        print(f"Updated: {ticker.ticker}")
+                        continue
+                elif exsisting.count() > 1:
+                    exsisting = Ticker.objects.filter(provider_id=ticker.provider_id)
+                    if exsisting.count() == 1:
+                        exsisting.first().update(
+                            name=ticker.name,
+                            reference_date=ticker.reference_date,
+                            active=ticker.active,
+                            figi=ticker.figi,
+                            cik=ticker.cik)
+                        print(f"Updated: {ticker.ticker}")
+                        continue
+                    else:
+                        print("Couldn't find exsisting record Error...")
+                        continue
+                else:
+                    print(f'Unknown Error: ticker={ticker.ticker}, region={ticker.region}, name={ticker.name}')
+                    continue
+            except Exception as e:
+                print(e)
+                print(type(e))
+                continue

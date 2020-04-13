@@ -3,9 +3,9 @@ from datetime import datetime
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from ..forms import StockForm, TradeForm
-from ..iex_requests import list_symbols
 from dashboard.utils import context_assign_user
+from dashboard.forms import StockForm, TradeForm
+from dashboard.models import Ticker
 
 @login_required(login_url='/dash/login/')
 def add_stock(request):
@@ -20,7 +20,7 @@ def add_stock(request):
 			stock.save()
 			messages.success(request, 'Congrats, Your stock was added!')
 			return redirect('dash:dashboard')
-	context['symbols'] = list_symbols()
+	context['symbols'] = [{'data': stock.ticker, 'value': stock.name} for stock in Ticker.objects.all()]
 	context['stock_form'] = StockForm()
 	return render(request, 'dash/add_stock.html', context)
 

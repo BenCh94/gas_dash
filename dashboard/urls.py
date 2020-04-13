@@ -1,7 +1,8 @@
+""" URL management for dashboard app """
 from django.urls import path, re_path
-from .views import form_views, dash_views, registration_views
-from .views.users import profile_views
-from django.contrib.auth import views as auth_views 
+from django.contrib.auth import views as auth_views
+from dashboard.views import form_views, dash_views, registration_views
+from dashboard.views.users import profile_views
 from gas_dash import settings
 
 app_name = 'dash'
