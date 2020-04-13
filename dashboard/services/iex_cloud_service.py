@@ -13,7 +13,7 @@ class IexCloudService():
         """ Function gets all available symbols from IEX API """
         req = r.get(f"{self.base_url}/ref-data/symbols?token={self.token}")
         symbols = req.json()
-        symbol_list = [{'data':stock['symbol'], 'value':stock['name']} for stock in symbols]
+        symbol_list = [stock for stock in symbols]
         return symbol_list
 
     def batch_quotes(self, tickers):

@@ -5,9 +5,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.contrib import messages
-from dashboard.models import Stock, Trade, Portfolio
+from dashboard.models import Stock, Trade, Portfolio, Ticker
 from dashboard.forms import PortfolioForm
-from dashboard.iex_requests import list_symbols
 from dashboard.utils import context_assign_user
 
 logger = logging.getLogger(__name__)
@@ -26,7 +25,7 @@ def index(request):
 	portfolio = Portfolio.objects.filter(user_profile=context['current_user']).first()
 	context['stocks'] = portfolio.get_current_quotes()
 	context['latest'] = portfolio.latest_day_data(context['stocks'])
-	context['symbols'] = list_symbols()
+	context['symbols'] = [{'data':stock.ticker, 'value':stock.name} for stock in Ticker.objects.all()]
 	context['portfolio'] = portfolio
 	context['portfolio_form'] = PortfolioForm()
 	return render(request, 'dash/dashboard.html', context)
