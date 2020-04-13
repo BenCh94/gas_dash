@@ -1,4 +1,4 @@
-""" Command to populate ticker table with refrence data """
+""" Command to set UUIDS for all objects """
 from django.contrib.postgres.functions import RandomUUID
 from django.core.management.base import BaseCommand, CommandError
 from dashboard.models import Ticker, Stock, Trade, Portfolio, Profile

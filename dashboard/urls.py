@@ -24,11 +24,11 @@ urlpatterns = [
     # Add a trade
     path('trade/add', form_views.add_trade, name='add_trade'),
     # This is a stock page '/gas_dash/<stock_id>'
-    re_path(r'^stocks/(?P<stock_id>[0-9]+)$', dash_views.stock, name='stock'),
+    path('stocks/<uuid:stock_uuid>', dash_views.stock, name='stock'),
     # This is a stock trades page '/gas_dash/<stock_id>/trades'
-    path('stocks/<int:stock_id>/trades', dash_views.trades, name='trades'),
+    path('stocks/<uuid:stock_uuid>/trades', dash_views.trades, name='trades'),
     # This is a trade page '/gas_dash/<trade_id>'
-    path('trade/<int:trade_id>', dash_views.trade, name='trade'),
+    path('trade/<uuid:trade_uuid>', dash_views.trade, name='trade'),
     ### User URLs ###
-    path('show_profile/<int:profile_id>', profile_views.show_profile, name='profile')
+    path('show_profile/<uuid:profile_uuid>', profile_views.show_profile, name='profile')
 ]

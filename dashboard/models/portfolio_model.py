@@ -3,6 +3,7 @@ import json
 import ast
 import statistics
 import datetime
+import uuid
 import pandas as pd
 from django.db import models
 from django.contrib.postgres.fields import JSONField
@@ -14,7 +15,7 @@ from ..iex_requests import batch_quotes
 
 class Portfolio(models.Model):
     """ Portfolio model defintion for users overall holdings """
-    uuid = models.UUIDField(default=RandomUUID(), unique=True)
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     user_profile = models.ForeignKey('dashboard.Profile', on_delete=models.CASCADE)
     data = JSONField(null=True)
     name = models.CharField(max_length=200)
