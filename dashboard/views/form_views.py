@@ -23,7 +23,7 @@ def add_stock(request):
 			return redirect('dash:dashboard')
 		errors = form.errors
 		form = StockForm(request, request.POST)
-		messages.warning(request, "There's a problem with the form")
+		messages.warning(request, f"There's a problem with the form: {errors}")
 	context['symbols'] = [{'data': stock.id, 'value': stock.name} for stock in Ticker.objects.all()]
 	context['stock_form'] = StockForm()
 	return render(request, 'dash/add_stock.html', context)

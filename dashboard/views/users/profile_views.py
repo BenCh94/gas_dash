@@ -23,6 +23,9 @@ def show_profile(request, profile_uuid):
             Profile.objects.filter(pk=context['current_user'].id).update(bio=request.POST['bio'], dark_mode=dark_mode, iex_api_key=request.POST['iex_api_key'])
             messages.success(request, 'Your settings have been saved.')
             return redirect('dash:dashboard')
+        errors = form.errors
+        form = ProfileForm(request, request.POST)
+        messages.warning(request, f"There's a problem with the form: {errors}")
     return render(request, 'dash/users/show_profile.html', context)
 
 def update_menu_session(request):
