@@ -88,7 +88,7 @@
                 <div class="messages col-md-4">
                     {% for message in messages %}
                     <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %} alert-dismissible fade show">
-                      <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                      <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</p>
                       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
