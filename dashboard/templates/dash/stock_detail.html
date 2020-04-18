@@ -4,6 +4,7 @@
 {% load static %}
 <script type="text/javascript">
     var ticker = "{{ stock.ticker}}";
+    var tickerUuid = "{{stock.ticker_data.uuid}}";
     var trades = [];
     {% for trade in trades %}
       trades.push({'price': {{ trade.avg_price }}, 'type': '{{ trade.trade_type }}', 'date': '{{ trade.date }}', 'amount': {{ trade.amount }}})
@@ -163,4 +164,5 @@
 {% block footer_files %}
   <script src="{% static 'vendor/d3/d3.js' %}"></script>
   <script src="{% static 'js/priceLineChart.js' %}"></script>
+  <script src="{% static 'js/ajax_calls/update_ticker_chart.js' %}"></script>
 {% endblock footer_files %}

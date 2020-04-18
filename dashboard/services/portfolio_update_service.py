@@ -2,10 +2,11 @@
 import pandas as pd
 import numpy as np
 import json
+import os
 import logging
 from datetime import date
-from ..historical_data import request_chart_from_date
-from ..models import Stock, User, Portfolio
+from .iex_cloud_service import IexCloudService
+from dashboard.models import Stock, User, Portfolio
 from .stock_update_service import StockUpdate
 
 class PortfolioUpdate():
@@ -40,6 +41,6 @@ class PortfolioUpdate():
 		else:
 			time_queries = {0: '6m', 1: '2y', 2: '5y', 3: '5y'}
 			date_range = time_queries[int(time_diff.days/365)]
-		day_chart = request_chart_from_date(date_range, self.portfolio.benchmark_ticker)
+		day_chart = IexCloudService(os.environ.get('IEX_API')).chart_from_date(self.portfolio.benchmark_ticker, date_range)
 		self.portfolio.benchmark_data = day_chart
 		return day_chart

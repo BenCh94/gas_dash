@@ -24,8 +24,10 @@ urlpatterns = [
     path('stocks/add', form_views.add_stock, name='add_stock'),
     # Add a trade
     path('trade/add', form_views.add_trade, name='add_trade'),
-    # This is a stock page '/gas_dash/<stock_id>'
+    # This is a stock page '/dash/<stock_id>'
     path('stocks/<uuid:stock_uuid>', dash_views.stock, name='stock'),
+    # AJAX request ticker update
+    path('ticker/request_update/<uuid:ticker_uuid>', dash_views.fill_ticker_data),
     # This is a stock trades page '/gas_dash/<stock_id>/trades'
     path('stocks/<uuid:stock_uuid>/trades', dash_views.trades, name='trades'),
     # This is a trade page '/gas_dash/<trade_id>'

@@ -22,3 +22,15 @@ class IexCloudService():
         quotes_req = r.get(batch_reqs)
         quotes = quotes_req.json()
         return quotes
+
+    def chart_from_date(self, ticker, date):
+        query = f'{self.base_url}/stock/{ticker}/chart/{date}?token={self.token}'
+        iex_req = r.get(query)
+        return iex_req.json()
+
+
+    def simple_chart(self, tickers, date_range):
+        """ Function returns simplified chart data for given range """
+        query = f'{self.base_url}/stock/market/batch?token={self.token}&symbols={tickers}&types=chart&range={date_range}&chartCloseOnly=true'
+        iex_req = r.get(query)
+        return iex_req.json()
