@@ -51,7 +51,8 @@ class Portfolio(models.Model):
         latest['cv'] = statistics.stdev(portfolio_df['gain_pct'])/statistics.mean(portfolio_df['gain_pct'])
         latest['bench_cv'] = statistics.stdev(portfolio_df['bench_gain_pct'])/statistics.mean(portfolio_df['bench_gain_pct'])
         current_value = 0
-        for stock in quotes:
+        active_stocks = [stock for stock in quotes if stock.trades()]
+        for stock in active_stocks:
             current_value += stock.quantity*stock.quote['latestPrice']
         if stock.quote['isUSMarketOpen']:
             latest['marketOpen'] = True

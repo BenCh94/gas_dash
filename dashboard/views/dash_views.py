@@ -25,7 +25,7 @@ def index(request):
 	portfolio = Portfolio.objects.filter(user_profile=context['current_user']).first()
 	context['stocks'] = portfolio.get_current_quotes()
 	context['latest'] = portfolio.latest_day_data(context['stocks'])
-	context['symbols'] = [{'data':stock.ticker, 'value':stock.name} for stock in Ticker.objects.all()]
+	context['symbols'] = [{'data':stock.id, 'value':stock.name} for stock in Ticker.objects.all()]
 	context['portfolio'] = portfolio
 	context['portfolio_form'] = PortfolioForm()
 	return render(request, 'dash/dashboard.html', context)
