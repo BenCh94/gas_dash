@@ -103,4 +103,4 @@ class ProfileForm(ModelForm):
         self.fields['dark_mode'].widget = CheckboxInput()
         self.fields['bio'].widget = TextInput(attrs={
             'placeholder': 'A simple user bio...'})
-        self.fields['iex_api_key'].widget = forms.PasswordInput()
+        self.fields['iex_api_key'].widget = forms.PasswordInput(render_value=True)
