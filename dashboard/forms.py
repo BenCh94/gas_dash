@@ -41,7 +41,7 @@ class StockForm(ModelForm):
     """ Add new stock form """
     class Meta:
         model = Stock
-        fields = ('name', 'status', 'ticker')
+        fields = ('name', 'status', 'ticker_data')
 
     def __init__(self, *args, **kwargs):
         super(StockForm, self).__init__(*args, **kwargs)
@@ -49,7 +49,7 @@ class StockForm(ModelForm):
             'id': 'autocompleteName',
             'placeholder': 'Start typing the company name...'
             })
-        self.fields['ticker'].widget = forms.HiddenInput()
+        self.fields['ticker_data'].widget = forms.HiddenInput()
 
 
 class TradeForm(ModelForm):

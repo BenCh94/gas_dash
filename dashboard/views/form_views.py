@@ -17,10 +17,14 @@ def add_stock(request):
 		if form.is_valid():
 			stock = form.save(commit=False)
 			stock.user_profile_id = request.user.profile.id
+			stock.ticker = stock.ticker_data.ticker
 			stock.save()
 			messages.success(request, 'Congrats, Your stock was added!')
 			return redirect('dash:dashboard')
-	context['symbols'] = [{'data': stock.ticker, 'value': stock.name} for stock in Ticker.objects.all()]
+		errors = form.errors
+		form = StockForm(request, request.POST)
+		messages.warning(request, "There's a problem with the form")
+	context['symbols'] = [{'data': stock.id, 'value': stock.name} for stock in Ticker.objects.all()]
 	context['stock_form'] = StockForm()
 	return render(request, 'dash/add_stock.html', context)
 
