@@ -16,7 +16,7 @@
 {% block sidebar_content %}
 	<hr>
 	<li class="nav-item">
-        <select class="form-control" id="tickerDrop" ONCHANGE="location = this.options[this.selectedIndex].value;">
+        <select class="form-control nav-link" id="tickerDrop" ONCHANGE="location = this.options[this.selectedIndex].value;">
             <option selected class="tickerOption" value="{% url 'dash:stock' stock_uuid=stock.uuid %}">
                 <h5>
                 {{ stock.ticker }}
@@ -59,9 +59,11 @@
           <div class="btn btn-sm btn-outline-success w-100 mb-2 chart_setting" id="reset_chart">
             <i class="fas fa-redo-alt"></i> Reset
           </div>
-          <div class="btn btn-sm btn-outline-primary w-100 mb-2 chart_setting" id="show_trades">
-            <i class="fas fa-dollar"></i> Trades
-          </div>
+          {% if trades %}
+            <div class="btn btn-sm btn-outline-primary w-100 mb-2 chart_setting" id="show_trades">
+              <i class="fas fa-dollar"></i> Trades
+            </div>
+          {% endif %}
           <div class="btn btn-sm btn-outline-warning w-100 chart_setting" id="show_trend">
             <i class="fas fa-chart-line"></i> Trend Line
           </div>
@@ -131,7 +133,7 @@
                           </a>
                         {% endfor %}
                     {% else %}
-                        <h5>No trades found for this stock <a class="btn btn-success" href="{% url 'dash:add_trade' %}">Add Trade</a></h5>
+                        <p>No trades found for this stock <a class="btn btn-sm btn-outline-success ml-2" href="{% url 'dash:add_trade' %}">Add Trade</a></p>
                     {% endif %}
                 </ul>
               </div>
