@@ -47,6 +47,10 @@ i {
     font-size: medium;
 }
 
+.nav-link.active {
+    color: #797D7C;
+}
+
 #openMenu:hover {
     color: #797D7C;
 }
@@ -305,9 +309,11 @@ i {
 
 #tickerDrop {
     background-color: #343a40!important;
-    width: 60%;
+    width: 80%;
     color: #ffffff;
     border-color: #ffffff;
+    box-shadow: inset 0px 0px 0px 0px rgba(0,0,0,0.75);
+    margin: 1rem;
 }
 
 .tickerOption {
