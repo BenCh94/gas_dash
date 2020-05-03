@@ -96,11 +96,10 @@ class ProfileForm(ModelForm):
     """ User profile settings """
     class Meta:
         model = Profile
-        fields = ('dark_mode', 'bio', 'iex_api_key')
+        fields = ('palette', 'bio', 'iex_api_key')
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
-        self.fields['dark_mode'].widget = CheckboxInput()
         self.fields['bio'].widget = TextInput(attrs={
             'placeholder': 'A simple user bio...'})
         self.fields['iex_api_key'].widget = forms.PasswordInput(render_value=True)

@@ -119,7 +119,7 @@ function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
     //##### Legend
 
         // Position the legend relative to the chart origin and specify items' height and separation.
-        .legend(new dc.Legend().x(800).y(10).itemHeight(13).gap(5))
+        .legend(new dc.Legend().x(50).y(10).itemHeight(13).gap(5))
         .brushOn(false)
         .ordinalColors(['#4472CA', '#53dd6c'])
         // Add the base layer of the stack with group. The second parameter specifies a series name for use in the

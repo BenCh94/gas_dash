@@ -19,8 +19,7 @@ def show_profile(request, profile_uuid):
     if request.method == 'POST':
         form = ProfileForm(request.POST)
         if form.is_valid():
-            dark_mode = 'dark_mode' in request.POST
-            Profile.objects.filter(pk=context['current_user'].id).update(bio=request.POST['bio'], dark_mode=dark_mode, iex_api_key=request.POST['iex_api_key'])
+            Profile.objects.filter(pk=context['current_user'].id).update(bio=request.POST['bio'], palette=request.POST['palette'], iex_api_key=request.POST['iex_api_key'])
             messages.success(request, 'Your settings have been saved.')
             return redirect('dash:dashboard')
         errors = form.errors
