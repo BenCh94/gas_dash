@@ -55,6 +55,10 @@ i {
     color: #797D7C;
 }
 
+.navbar-brand {
+    color: #fff!important;
+}
+
 #openMenu:hover {
     color: #797D7C;
 }
@@ -85,7 +89,18 @@ i {
 
 .bg_black {
     background-color: var(--dark);
-    color: var(--text-color); /* yellowish font color */  
+    color: var(--text-color);  
+}
+
+.btn_black {
+    background-color: var(--dark);
+    color: var(--text-color);
+    border: 0.05rem solid var(--text-color);
+}
+
+.btn_black:hover, .btn_black.active {
+    background-color: var(--menu-color);
+    font-weight: bold;
 }
 
 .bg_black_gradient {

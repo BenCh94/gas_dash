@@ -2,7 +2,7 @@
 import pandas as pd
 
 class StockUpdate():
-    """ Class updates a stock gain/loss given hitorical prices and trades """
+    """ Class updates a stock gain/loss given historical prices and trades """
     def __init__(self, benchmark, prices, trades):
         self.benchmark_df = pd.DataFrame(benchmark)
         self.benchmark_df['date'] = pd.to_datetime(self.benchmark_df['date'])
