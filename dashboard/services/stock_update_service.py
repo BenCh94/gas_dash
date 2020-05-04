@@ -38,7 +38,7 @@ class StockUpdate():
                     stock_df.loc[stock_df['date'] > date, ['avg_price']] = sum(current_buys)/len(current_buys)
                 else:
                     stock_df.loc[stock_df['date'] > date, ['invested']] = pre_trade_amounts['invested'].array[0] - (trade.amount*pre_trade_amounts['avg_price'].array[0])
-            return stock_df
+        return stock_df
 
     def trade_amount(self, date, trade):
         """ Function calculates trade amounts given prices on day """

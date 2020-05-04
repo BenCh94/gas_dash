@@ -146,6 +146,7 @@ function monthDiff(d1, d2) {
 
 $(document).ready(function(){
     current_data = parseDate(price_data);
+    console.log(current_data);
     trend = 'none'
     drawTrades = false
     drawChart(current_data, trend, false, drawTrades);
