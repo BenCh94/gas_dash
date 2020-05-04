@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='ticker',
             name='cik',
-            field=models.CharField(max_length=50, null=True, unique=True),
+            field=models.CharField(max_length=50, null=True),
         ),
         migrations.AlterField(
             model_name='ticker',
