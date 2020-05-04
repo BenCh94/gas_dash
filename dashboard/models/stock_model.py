@@ -41,4 +41,20 @@ class Stock(models.Model):
             self.ticker_data = Ticker.objects.get(ticker=self.get_ticker())
         else:
             Ticker.objects.new(ticker=self.get_ticker())
-        
+
+    def add_trade(self, trade):
+        """ Function to update stock details when trade is added """
+        if trade.trade_type == 'b':
+            if len(self.trades()) > 1:
+                self.quantity += trade.amount
+                self.invested += trade.avg_price * trade.amount
+                self.fees_usd += trade.fees_usd
+            else:
+                self.quantity = trade.amount
+                self.invested = trade.avg_price * trade.amount
+                self.fees_usd = trade.fees_usd
+        else:
+            if len(self.trades()) > 1:
+                self.quantity -= trade.quantity
+                self.fees_usd += trade.fees_usd
+        self.save()

@@ -1,0 +1,12 @@
+ 
+:root {
+    --default-font: #fff;
+    --text-color: #c2f970;
+    --dark: #21262E;
+    --positive: #53dd6c;
+    --negative: #EF233C;
+    --menu-color: #2a3439;
+    --main-gradient: #2b303a;
+    --main-gradient1: -webkit-linear-gradient(to bottom, #242830, #2b303a);  /* Chrome 10-25, Safari 5.1-6 */
+    --main-gradient2: linear-gradient(to bottom, #242830, #2b303a); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}

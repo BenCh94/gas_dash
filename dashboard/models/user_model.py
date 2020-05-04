@@ -11,10 +11,11 @@ from .stock_model import Stock
 
 class Profile(models.Model):
     """ The profile for user model """
+    colorPalettes = [('dark_knight', 'Dark Knight'), ('ice_man', 'Ice Man'), ('bright_eyes', 'Bright Eyes'), ('gun_metal', 'Gun Metal'), ('acid_rap', 'Acid Rap')]
     uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, blank=True)
-    dark_mode = models.BooleanField(default=True)
+    palette = models.TextField(default='gun_metal', choices=colorPalettes)
     iex_api_key = encrypt(models.CharField(max_length=100, null=True))
 
     def __str__(self):
@@ -35,7 +36,7 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created and not kwargs.get('raw', False):
         Profile.objects.create(user=instance)
 
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    if not kwargs.get('raw', False):
-        instance.profile.save()
+# @receiver(post_save, sender=User)
+# def save_user_profile(sender, instance, **kwargs):
+#     if not kwargs.get('raw', False):
+#         instance.profile.save()

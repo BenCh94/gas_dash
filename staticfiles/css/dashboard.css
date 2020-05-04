@@ -14,6 +14,10 @@ input[type=text], input[type=password], select {
     box-shadow: inset 4px 4px 25px -5px rgba(0,0,0,0.75);
 }
 
+.bg-nav {
+    background: var(--menu-color);
+}
+
 a {
    color: #ffffff; 
 }
@@ -51,6 +55,10 @@ i {
     color: #797D7C;
 }
 
+.navbar-brand {
+    color: #fff!important;
+}
+
 #openMenu:hover {
     color: #797D7C;
 }
@@ -81,7 +89,18 @@ i {
 
 .bg_black {
     background-color: var(--dark);
-    color: var(--text-color); /* yellowish font color */  
+    color: var(--text-color);  
+}
+
+.btn_black {
+    background-color: var(--dark);
+    color: var(--text-color);
+    border: 0.05rem solid var(--text-color);
+}
+
+.btn_black:hover, .btn_black.active {
+    background-color: var(--menu-color);
+    font-weight: bold;
 }
 
 .bg_black_gradient {
@@ -126,7 +145,7 @@ i {
     pointer-events: none;
 }
 /* Reduced font sizes for smaller desktop screens */
-@media screen and (max-width: 1250px) {
+@media screen and (max-width: 1280px) {
     body {
         font-size: 0.75rem;
     }
@@ -138,10 +157,24 @@ i {
     h6, .h6 {
         font-size: 0.85rem!important;
     }
+
+    .sidebar {
+        padding-top: 4%;
+    }
+
+    .nav-link {
+        padding: 0.3rem 0.75rem;
+    }
+
+    hr {
+        margin-top: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
 }
 
 /*Sidebar styling for desktop devices not mobile*/
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 820px) {
+
     .sidebar.open {
         width:12vw;
     }
@@ -194,11 +227,17 @@ i {
 
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 820px) {
+    body {
+        height: 100%;
+    }
+
     main {
         padding-top: 20%;
         margin-left: 0!important;
         width: 100vw!important;
+        height: 100%;
+        background: var(--main-gradient);
     }
 
     .sidebar {
