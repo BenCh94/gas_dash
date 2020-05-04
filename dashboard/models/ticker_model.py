@@ -22,7 +22,7 @@ class Ticker(models.Model):
     currency = models.CharField(max_length=5, null=True, blank=True)
     active = models.BooleanField(default=True)
     figi = models.CharField(max_length=50, null=True, unique=True, blank=True)
-    cik = models.CharField(max_length=50, null=True, unique=True, blank=True)
+    cik = models.CharField(max_length=50, null=True, blank=True)
 
     class Meta:
         unique_together = ('ticker', 'name', 'region')
