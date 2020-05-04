@@ -36,7 +36,7 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created and not kwargs.get('raw', False):
         Profile.objects.create(user=instance)
 
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    if not kwargs.get('raw', False):
-        instance.profile.save()
+# @receiver(post_save, sender=User)
+# def save_user_profile(sender, instance, **kwargs):
+#     if not kwargs.get('raw', False):
+#         instance.profile.save()

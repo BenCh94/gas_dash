@@ -84,9 +84,8 @@ const tickerValueGroup = stockDimension.group().reduce(
         return {count: 0, value: 0, invested: 0, date: 0};
     }
 );
-// const colors = ["#d53e4f","#f46d43","#fdae61","#fee08b","#e6f598","#abdda4","#66c2a5","#3288bd"]
-const colors = ["#6e40aa","#bf3caf","#fe4b83","#ff7847","#e2b72f","#aff05b","#52f667","#1ddfa3","#23abd8","#4c6edb","#6e40aa"]
-const colorScale = d3.scaleOrdinal(d3.schemeSet2)
+
+const colorScale = d3.scaleOrdinal(chartColors)
 
 function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
 	//#### Stacked Area Chart
@@ -121,7 +120,7 @@ function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
         // Position the legend relative to the chart origin and specify items' height and separation.
         .legend(new dc.Legend().x(50).y(10).itemHeight(13).gap(5))
         .brushOn(false)
-        .ordinalColors(['#4472CA', '#53dd6c'])
+        .ordinalColors([benchmarkColor, portfolioColor])
         // Add the base layer of the stack with group. The second parameter specifies a series name for use in the
         // legend.
         // The `.valueAccessor` will be used for the base layer
@@ -156,7 +155,7 @@ function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
         .group(volumeByDayGroup)
         .centerBar(true)
         .gap(1)
-        .ordinalColors(['#FFED65'])
+        .ordinalColors([volumeColor])
         .x(d3.scaleTime().domain(d3.extent(portfolio, d => d.dd)))
         .round(d3.timeDay.round)
         .alwaysUseRounding(true)
@@ -190,7 +189,7 @@ function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
         .title(d => {
             return `Days Held: ${numberFormat(d.value)}`
         })
-        .ordinalColors(d3.schemeSet2)
+        .ordinalColors(chartColors)
 
     // Render the charts
     dc.renderAll();
