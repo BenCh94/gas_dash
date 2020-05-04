@@ -3,6 +3,7 @@ from datetime import datetime
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from dashboard.services import PortfolioUpdate
 from dashboard.utils import context_assign_user
 from dashboard.forms import StockForm, TradeForm
 from dashboard.models import Ticker
@@ -40,6 +41,8 @@ def add_trade(request):
 			d = datetime.strptime(request.POST['date'], '%d/%m/%Y').date()
 			trade.date = d
 			trade.save()
+			trade.stock.add_trade(trade)
+			PortfolioUpdate(context['current_user']).update()
 			messages.success(request, 'Congrats, Your trade was added!')
 			return redirect('dash:dashboard')
 		errors = form.errors

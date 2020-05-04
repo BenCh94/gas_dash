@@ -31,9 +31,9 @@
 					</div>
 					<div id="daily-volume-chart" style="height: 8vh;width:100%;"></div>
 					<div class="btn-group graph_settings" role="group">
-			            <button type="button" class="btn btn-dark btn-sm portfolio_filters active" id="pct_view">%</button>
-			            <button type="button" class="btn btn-dark btn-sm portfolio_filters" id="dollar_view">$</button>
-			            <button type="button" class="btn btn-dark btn-sm" id="settings" data-toggle="modal" data-target="#portfolioSettingsModal"><i class="fas fa-cog"></i></button>
+			            <button type="button" class="btn btn_black btn-sm portfolio_filters active" id="pct_view">%</button>
+			            <button type="button" class="btn btn_black btn-sm portfolio_filters" id="dollar_view">$</button>
+			            <button type="button" class="btn btn_black btn-sm" id="settings" data-toggle="modal" data-target="#portfolioSettingsModal"><i class="fas fa-cog"></i></button>
 			        </div>
 			    {% endif %}
 			</div>
@@ -51,13 +51,13 @@
 					<div class="d-flex flex-column justify-content-center p-1 flex-fill">
 						<h5 class="black_text text-center">Day $</h5>
 						<span class="badge bg_black">
-							<h5 class="text-{% if latest.day_change < 0 %}danger{% else %}success{% endif %}">{{ latest.day_change|floatformat }}</h5>
+							<h5 class="text_{% if latest.day_change < 0 %}red{% else %}green{% endif %}">{{ latest.day_change|floatformat }}</h5>
 						</span>
 					</div>
 					<div class="d-flex flex-column justify-content-center p-1 flex-fill">
 						<h5 class="black_text text-center">Day %</h5>
 						<span class="badge bg_black">
-							<h5 class="text-{% if latest.day_change < 0 %}danger{% else %}success{% endif %}">{{ latest.pct_change|percentage }}</h5>
+							<h5 class="text_{% if latest.day_change < 0 %}red{% else %}green{% endif %}">{{ latest.pct_change|percentage }}</h5>
 						</span>
 					</div>
 				</div>

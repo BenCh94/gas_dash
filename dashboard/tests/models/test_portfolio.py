@@ -11,6 +11,6 @@ class PortfolioTestCase(TestCase):
 
 	def test_portfolio_string(self):
 		user = get_object_or_404(User, username='testuser')
-		portfolio = get_object_or_404(Portfolio, user_profile=user.profile)
+		portfolio = Portfolio.objects.filter(user_profile=user.profile).first()
 
 		self.assertEqual(str(portfolio), portfolio.name)

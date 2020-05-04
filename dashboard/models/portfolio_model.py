@@ -6,11 +6,14 @@ import datetime
 import uuid
 import pandas as pd
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 from django.contrib.postgres.fields import JSONField
 from django.contrib.postgres.functions import RandomUUID
 from .trade_model import Trade
 from .stock_model import Stock
 from .ticker_model import Ticker
+from .user_model import Profile
 from ..iex_requests import batch_quotes
 
 class Portfolio(models.Model):
@@ -24,6 +27,9 @@ class Portfolio(models.Model):
     benchmark_data = JSONField(null=True)
     def __str__(self):
         return self.name
+    
+    class Meta:
+        unique_together = ('user_profile', 'name')
 
     def latest_day_data(self, quotes):
         """ Returns latest data for the given portfolio """
@@ -86,6 +92,9 @@ class Portfolio(models.Model):
             stock.quote = quotes[stock.ticker]['quote']
         return stocks
 
+@receiver(post_save, sender=Profile)
+def create_user_portfolio(sender, instance, created, **kwargs):
+    # profile creation skipped in testing env to allow manual creation in fixtures
+    if created and not kwargs.get('raw', False):
+        Portfolio.objects.create(user_profile=instance)
 
-    class Meta:
-        unique_together = ('user_profile', 'name')
