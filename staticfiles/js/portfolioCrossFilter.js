@@ -1,11 +1,11 @@
 
 // Initialise chart objects
-const portfolioChart = new dc.LineChart('#portfolio-chart');
+const portfolioChart = new dc.CompositeChart('#portfolio-chart');
 const volumeChart = new dc.BarChart('#daily-volume-chart');
 const stockPie = new dc.PieChart('#ticker-chart');
 const heldBar = new dc.RowChart('#held-chart');
 
-// Convert portfolio dates fro d3
+// Convert portfolio dates for d3
 const dateFormatSpecifier = '%Q';
 const dateFormat = d3.timeFormat(dateFormatSpecifier);
 const dateFormatParser = d3.timeParse(dateFormatSpecifier);
@@ -14,8 +14,6 @@ const numberFormat = d3.format('.2f');
 portfolio.forEach(d => {
     d.dd = dateFormatParser(d.date);
     d.month = d3.timeMonth(d.dd); // pre-calculate month for better performance
-    // d.close = +d.close; // coerce to number
-    // d.open = +d.open;
 });
 
 // Create crossfilter object from portfolio data
@@ -87,7 +85,7 @@ const tickerValueGroup = stockDimension.group().reduce(
 
 const colorScale = d3.scaleOrdinal(chartColors)
 
-function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
+function drawGraphs(gainGroup, benchGroup, gainValueAccessor, benchValueAccessor){
 	//#### Stacked Area Chart
 	// Width/Heights
 	var portfolioWidth = $('#portfolio-chart').width();
@@ -97,11 +95,8 @@ function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
     var piesWidth = $('#ticker-chart').width();
     var heldWidth = $('#held-chart').width();
 
-    //Specify an area chart by using a line chart with `.renderArea(true)`.
-    // <br>API: [Stack Mixin](https://dc-js.github.io/dc.js/docs/html/StackMixin.html),
-    // [Line Chart](https://dc-js.github.io/dc.js/docs/html/LineChart.html)
-    portfolioChart /* dc.lineChart('#monthly-move-chart', 'chartGroup') */
-        .renderArea(true)
+    // Composite chart with benchmark and gain value Accessors define percentage or dollar value
+    portfolioChart
         .width(portfolioWidth)
         .height(portfolioHeight)
         .transitionDuration(2000)
@@ -110,39 +105,43 @@ function drawGraphs(gainGroup, benchGroup, valueAccessor, benchValueAccessor){
         .mouseZoomable(false)
     // Specify a "range chart" to link its brush extent with the zoom of the current "focus chart".
         .rangeChart(volumeChart)
-        .x(d3.scaleTime().domain([d3.min(portfolio, d => d.dd), d3.max(portfolio, d => d.dd)]))
+        .elasticY(true)
+        .x(d3.scaleTime().domain(d3.extent(portfolio, d => d.dd)))
         .round(d3.timeDay.round)
         .xUnits(d3.timeDays)
-        .elasticY(true)
         .renderHorizontalGridLines(true)
-    //##### Legend
-
+    // ##### Legend
         // Position the legend relative to the chart origin and specify items' height and separation.
         .legend(new dc.Legend().x(50).y(10).itemHeight(13).gap(5))
         .brushOn(false)
-        .ordinalColors([benchmarkColor, portfolioColor])
-        // Add the base layer of the stack with group. The second parameter specifies a series name for use in the
-        // legend.
-        // The `.valueAccessor` will be used for the base layer
-        .group(benchGroup, 'Daily Benchmark Gain')
-        .valueAccessor(d => benchValueAccessor(d))
-        // Stack additional layers with `.stack`. The first paramenter is a new group.
-        // The second parameter is the series name. The third is a value accessor.
-        .stack(gainGroup, 'Daily Portfolio Gain', d => valueAccessor(d))
-        // Title can be called by any stack layer.
+        .shareTitle(true)
         .title(d => {
-            let value = valueAccessor(d);
-            let bench_value = benchValueAccessor(d);
-            if (isNaN(value)) {
-                return `${d.key.toISOString().slice(0,10)}\nBenchmark: $ ${numberFormat(bench_value)}`;
-            }
-            else if(bench_value == value){
-            	return `${d.key.toISOString().slice(0,10)}\nGain: $ ${numberFormat(value)}`;
-            }
-            else{
-            	return `${d.key.toISOString().slice(0,10)}\nGain: ${numberFormat(value)} %\nBenchmark: ${numberFormat(bench_value)} %`;
-            }
-        });
+                let value = gainValueAccessor(d);
+                let bench_value = benchValueAccessor(d);
+                if (isNaN(value)) {
+                    return `${d.key.toISOString().slice(0,10)}\nBenchmark: $ ${numberFormat(bench_value)}`;
+                }
+                else if(bench_value == value){
+                    return `${d.key.toISOString().slice(0,10)}\nGain: $ ${numberFormat(value)}`;
+                }
+                else{
+                    return `${d.key.toISOString().slice(0,10)}\nGain: ${numberFormat(value)} %\nBenchmark: ${numberFormat(bench_value)} %`;
+                }
+            })
+        .compose([
+            new dc.LineChart(portfolioChart)
+                    .renderArea(true)
+                    .dimension(gainDays)
+                    .colors(portfolioColor)
+                    .group(gainGroup, 'Daily Portfolio Gain')
+                    .valueAccessor(d => gainValueAccessor(d)),
+            new dc.LineChart(portfolioChart)
+                    .renderArea(true)
+                    .dimension(gainDays)
+                    .colors(benchmarkColor)
+                    .group(benchGroup, 'Daily Benchmark Gain')
+                    .valueAccessor(d => benchValueAccessor(d))
+            ])
 
     //#### Range Chart
 
