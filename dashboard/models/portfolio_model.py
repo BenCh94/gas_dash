@@ -34,9 +34,9 @@ class Portfolio(models.Model):
     def latest_day_data(self, quotes):
         """ Returns latest data for the given portfolio """
         """ WAY too long needs refactoring but functional for now """
-        data = ast.literal_eval(self.data)
-        if not data:
+        if not self.data:
             return 'Empty portfolio response'
+        data = ast.literal_eval(self.data)
         portfolio_df = pd.DataFrame(data)
         portfolio_by_day = portfolio_df.groupby('date')
         latest_date = max(portfolio_df['date'])

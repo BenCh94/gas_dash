@@ -29,7 +29,7 @@ def show_profile(request, profile_uuid):
 
 def update_menu_session(request):
     """ Sets menu open or close in user session """
-    print('setting menu sesson variable...')
+    print('setting menu session variable...')
     if not request.is_ajax() or not request.method == 'GET':
         return HttpResponseNotAllowed(['GET'])
 
