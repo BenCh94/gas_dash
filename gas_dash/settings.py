@@ -127,10 +127,10 @@ WSGI_APPLICATION = 'gas_dash.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd9nvt6p9jokma8',
-        'USER': 'ceapcikcefamzu',
-        'PASSWORD': '418acedbf5e714063fc8aac9e6d34cba9d7a7534ad27880585ccf553f1f1fd65',
-        'HOST': 'ec2-54-83-1-101.compute-1.amazonaws.com',
+        'NAME': 'gaslocaldb',
+        'USER': os.environ.get('db_user'),
+        'PASSWORD': os.environ.get('db_pass'),
+        'HOST': 'localhost',
         'PORT': '5432'
     }
 }
