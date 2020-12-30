@@ -13,6 +13,7 @@ class IexCloudService():
         """ Function gets all available symbols from IEX API """
         req = r.get(f"{self.base_url}/ref-data/symbols?token={self.token}")
         symbols = req.json()
+        print(symbols)
         symbol_list = [stock for stock in symbols]
         return symbol_list
 
