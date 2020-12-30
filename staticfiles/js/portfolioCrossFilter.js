@@ -184,7 +184,7 @@ function drawGraphs(gainGroup, benchGroup, gainValueAccessor, benchValueAccessor
         .dimension(stockDimension)
         .group(tickerHeldGroup)
         .elasticX(true)
-        .gap(15)
+        .gap(10)
         .title(d => {
             return `Days Held: ${numberFormat(d.value)}`
         })

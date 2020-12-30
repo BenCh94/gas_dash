@@ -66,4 +66,3 @@ def login_view(request):
     login_form = LoginForm()
     return render(request, 'registration/login.html', {'signup_form': signup_form, 'login_form': login_form, 'errors': errors, 'page': 'login'})    
 
-

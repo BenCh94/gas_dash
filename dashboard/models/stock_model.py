@@ -20,12 +20,12 @@ class Stock(models.Model):
     start_date = models.DateField(blank=True, null=True)
     status = models.CharField(max_length=2, choices=StockStatuses)
     def __str__(self):
-        return self.name
+        return f'{self.name} ({self.user_profile.user.username})'
 
     def trades(self):
         """ Retrieve all trades for a given stock """
         trades = Trade.objects.filter(stock=self)
-        if trades.count() > 0:
+        if trades.count() > 0 and self.ticker_data:
             trades = trades.order_by('date')
         else:
             trades = None
