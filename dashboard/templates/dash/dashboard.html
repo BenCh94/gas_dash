@@ -123,7 +123,7 @@
             <input type="text" name="name" value="{{ portfolio.name }}" required="" id="id_name">
             {% elif field.name == 'benchmark_name' %}
             <label for="autocompleteName"><i class="fa fa-chart-line"></i> Benchmark</label>
-            <input type="text" name="benchmark_name" value="{{ portfolio.benchmark_name }}" placeholder="Start typing a fund name..."" id="autocompleteName">
+            <input type="text" name="benchmark_name" value="{{ portfolio.benchmark_object.name }}" placeholder="Start typing a fund name..."" id="autocompleteName">
             {% else %}
             {{ field }}
             {% endif %}

@@ -28,7 +28,7 @@ def index(request):
     portfolio = Portfolio.objects.filter(user_profile=context['current_user']).first()
     context['stocks'] = portfolio.get_current_quotes()
     context['latest'] = portfolio.latest_day_data(context['stocks'])
-    context['symbols'] = [{'data':stock.id, 'value':stock.name} for stock in Ticker.objects.all()]
+    context['symbols'] = [{'data':stock.id, 'value':stock.name} for stock in Ticker.objects.all() if stock.name]
     context['portfolio'] = portfolio
     context['portfolio_form'] = PortfolioForm()
     return render(request, 'dash/dashboard.html', context)
@@ -46,6 +46,7 @@ def stock(request, stock_uuid):
     if not stock_object.ticker_data.historical_data:
         messages.warning(request, "No historical data found. <div class='btn btn-primary' id='updateTicker'>Click here to update now.</div>")
     context['price_data'] = json.dumps(stock_object.ticker_data.historical_data)
+    print(context['price_data'])
     return render(request, 'dash/stock_detail.html', context)
 
 def fill_ticker_data(request, ticker_uuid):

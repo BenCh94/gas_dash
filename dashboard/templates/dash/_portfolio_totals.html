@@ -15,7 +15,7 @@
 			<td>{{ latest.cv|floatformat }}</td>
 		</tr>
 		<tr class="text_{% if latest.bench_gain < 0 %}red{% else %}green{% endif %}">
-			<th scope="row">{{ portfolio.benchmark_name }}</th>
+			<th scope="row">{{ portfolio.benchmark_object.name }}</th>
 			<td>{{ latest.bench_gain|floatformat }}</td>
 			<td>{{ latest.bench_gain_pct|floatformat }}</td>
 			<td>{{ latest.bench_mean|floatformat }}</td>

@@ -129,7 +129,7 @@ function filterData(data, months){
 }
 
 function parseDate(data){
-    var dateParser = d3.timeParse('%Q')
+    var dateParser = d3.timeParse('%Y-%m-%d')
     data.forEach(function(d){
         d.date = dateParser(d.date)
     })

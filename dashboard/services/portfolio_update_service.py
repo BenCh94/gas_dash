@@ -17,7 +17,7 @@ class PortfolioUpdate():
 		self.portfolio = Portfolio.objects.update_or_create(user_profile=profile, name=profile.user.username)[0]
 		self.stocks = Stock.objects.filter(user_profile=profile)
 		""" Get the earliest trade date and retrieve benchmark data including that date """
-		self.benchmark = pd.DataFrame(self.get_benchmark())
+		self.benchmark = self.benchmark_object.historical_data
 
 	def update(self):
 		""" For each stock update using price charts if the stock has trades present """

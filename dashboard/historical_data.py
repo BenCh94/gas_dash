@@ -4,7 +4,7 @@ import datetime
 from django.utils import timezone
 import requests as r
 import pandas as pd
-from .models import Stock, Ticker
+from .models import Stock, Ticker, Portfolio
 
 # IEX_BASE_URL set in environemnt variables should use\
 # sandbox unless in production version [beta, stable, v1 etc] to be set in env var
@@ -17,37 +17,47 @@ def update_ticker_data():
 	tickers = find_all_tickers()
 	print(update_create_tickers(tickers))
 
+def update_benchmarks():
+	""" Function to chain methods in update process """
+	tickers = find_all_benchmarks()
+	print(update_create_tickers(tickers))
+
 def hard_update_ticker_data():
 	tickers = find_all_tickers()
 	print(fill_tickers(tickers))
 
 def find_all_tickers():
 	""" Function to retrieve all unique tickers in the system """
-	tickers = list(set(Stock.objects.values_list('ticker', flat=True)))
-	return tickers
+	all_stocks = Stock.objects.all().prefetch_related('ticker_data')
+	return [stock.ticker_data.ticker for stock in all_stocks]
 
-def fill_tickers(tickers):
+def find_all_benchmarks():
+	""" Function to retrieve all unique tickers in the system """
+	all_portfolios = Portfolio.objects.all().prefetch_related('benchmark_object')
+	return [portfolio.benchmark_object for portfolio in all_portfolios]
+
+def fill_tickers(ticker_objects):
 	""" Function creates tickers with chart data """
-	ticker_objects = [Ticker.objects.update_or_create(ticker=ticker) for ticker in tickers]
 	# Initiate new tickers, update_create returns True/False in tuple index 1 if new record created.
-	full_charts = request_iex_charts_simple('5y', ','.join([ticker_object[0].ticker for ticker_object in ticker_objects]))
+	full_charts = request_iex_charts_simple('5y', ','.join([ticker_object.ticker for ticker_object in ticker_objects]))
 	create_charts = [Ticker.objects.filter(ticker=ticker).update(historical_data=pd.DataFrame(full_charts[ticker]['chart']).to_json(orient='records')) for ticker in full_charts.keys()]
 	return f'Force Updated: {len(create_charts)-1} tickers'
 
-def update_create_tickers(tickers):
+def update_create_tickers(ticker_objects):
 	""" Function creates or updates tickers with chart data """
-	ticker_objects = [Ticker.objects.update_or_create(ticker=ticker) for ticker in tickers]
 	# Initiate new tickers, update_create returns True/False in tuple index 1 if new record created.
-	new = [ticker_object[0].ticker for ticker_object in ticker_objects if ticker_object[1]]
-	if new:
-		full_charts = request_iex_charts_simple('5y', ','.join(new))
-		create_charts = [Ticker.objects.filter(ticker=ticker).update(historical_data=full_charts[ticker]) for ticker in full_charts.keys()]
-		created = len(create_charts) - 1
-	else:
-		created = 0
-	# Add to existing tickers
-	existing = [check_updates(ticker_object[0]) for ticker_object in ticker_objects if not ticker_object[1]]
-	return f'Created: {created} new tickers, Updated: {len(existing)} existing tickers'
+	new = [ticker for ticker in ticker_objects if ticker.historical_data == None]
+	print(new)
+	# if new:
+	# 	full_charts = request_iex_charts_simple('5y', ','.join(new))
+	# 	create_charts = [Ticker.objects.filter(ticker=ticker).update(historical_data=full_charts[ticker]) for ticker in full_charts.keys()]
+	# 	created = len(create_charts) - 1
+	# else:
+	# 	created = 0
+	# # Add to existing tickers
+	# existing = ticker_objects.filter(historical_data__isnull=False)
+	# updates = [check_updates(ticker_object) for ticker_object in existing]
+	# return f'Created: {created} new tickers, Updated: {len(existing)} existing tickers'
 
 def request_iex_charts_simple(date_range, tickers):
 	""" Returns open, close, volume data for given time range and tickers """
