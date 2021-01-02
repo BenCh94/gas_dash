@@ -21,8 +21,11 @@
     "model": "dashboard.profile",
     "pk": 1,
     "fields": {
-        "user": 2,
-        "bio": ""
+      "uuid": "9e448154-3e75-4e65-988f-42dd7b714815",
+      "user": 2,
+      "bio": "",
+      "palette": "gun_metal",
+      "iex_api_key": null
     }
 }
 ]
