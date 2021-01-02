@@ -28,7 +28,7 @@ class Stock(models.Model):
         if trades.count() > 0 and self.ticker_data:
             trades = trades.order_by('date')
         else:
-            trades = None
+            trades = []
         return trades
 
     def get_ticker(self):
