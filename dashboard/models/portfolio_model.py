@@ -8,7 +8,6 @@ import pandas as pd
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-from django.contrib.postgres.fields import JSONField
 from django.contrib.postgres.functions import RandomUUID
 from .trade_model import Trade
 from .stock_model import Stock
@@ -20,11 +19,9 @@ class Portfolio(models.Model):
     """ Portfolio model defintion for users overall holdings """
     uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     user_profile = models.ForeignKey('dashboard.Profile', on_delete=models.CASCADE)
-    data = JSONField(null=True)
+    data = models.JSONField(null=True)
     name = models.CharField(max_length=200)
-    benchmark_name = models.CharField(max_length=200, default='Vanguard S&P 500')
-    benchmark_ticker = models.CharField(max_length=5, null='voo')
-    benchmark_data = JSONField(null=True)
+    benchmark_object = models.ForeignKey('dashboard.ticker', on_delete=models.PROTECT, null=True)
     def __str__(self):
         return self.name
     

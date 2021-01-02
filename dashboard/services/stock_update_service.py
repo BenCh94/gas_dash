@@ -4,7 +4,7 @@ import pandas as pd
 class StockUpdate():
     """ Class updates a stock gain/loss given historical prices and trades """
     def __init__(self, benchmark, prices, trades):
-        self.benchmark_df = pd.DataFrame(benchmark)
+        self.benchmark_df = pd.read_json(benchmark)
         self.benchmark_df['date'] = pd.to_datetime(self.benchmark_df['date'])
         self.price_chart = pd.read_json(prices)
         self.price_chart['date'] = pd.to_datetime(self.price_chart['date'])
@@ -60,8 +60,7 @@ class StockUpdate():
     def benchmark_amount(self, to_invest, date):
         """ Calculate amount of benchmark trade value could purchase averaging open, close ,high and low """
         day = self.benchmark_df[self.benchmark_df['date'] == date]
-        bench_avg = (day['high'] + day['low'] + day['open'] + day['close'])/4
-        bench_amount = to_invest/bench_avg
+        bench_amount = to_invest/day['close']
         return bench_amount.array[0]
 
     def apply_price_chart(self, trades_chart):

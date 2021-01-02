@@ -25,5 +25,5 @@ class StockTestCase(TestCase):
 		stock2 = get_object_or_404(Stock, name='testnotrades')
 		trade = TradeFactory.create(stock=stock)
 
-		self.assertEqual(stock.trades().count(), 1)
-		self.assertEqual(stock2.trades(), None)
+		self.assertEqual(len(stock.trades()), 1)
+		self.assertEqual(stock2.trades(), [])

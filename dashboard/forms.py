@@ -82,15 +82,14 @@ class PortfolioForm(ModelForm):
     """ Portfolio settings form """
     class Meta:
         model = Portfolio
-        fields = ('name', 'benchmark_name', 'benchmark_ticker')
+        fields = ('name', 'benchmark_object')
 
     def __init__(self, *args, **kwargs):
         super(PortfolioForm, self).__init__(*args, **kwargs)
         self.fields['name'].widget = TextInput(attrs={'placeholder': 'Name'})
-        self.fields['benchmark_name'].widget = TextInput(attrs={
+        self.fields['benchmark_object'].widget = TextInput(attrs={
             'id': 'autocompleteName',
             'placeholder': 'Start typing a fund name...'})
-        self.fields['benchmark_ticker'].widget = forms.HiddenInput()
 
 class ProfileForm(ModelForm):
     """ User profile settings """

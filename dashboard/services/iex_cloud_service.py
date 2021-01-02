@@ -13,7 +13,6 @@ class IexCloudService():
         """ Function gets all available symbols from IEX API """
         req = r.get(f"{self.base_url}/ref-data/symbols?token={self.token}")
         symbols = req.json()
-        print(symbols)
         symbol_list = [stock for stock in symbols]
         return symbol_list
 
@@ -35,3 +34,10 @@ class IexCloudService():
         query = f'{self.base_url}/stock/market/batch?token={self.token}&symbols={tickers}&types=chart&range={date_range}&chartCloseOnly=true'
         iex_req = r.get(query)
         return iex_req.json()
+
+    def logo_url(self, tickers):
+        """ Batch request for company logos """
+        batch_reqs = f"{self.base_url}/stock/market/batch?token={self.token}&symbols={tickers}&types=logo"
+        logos_req = r.get(batch_reqs)
+        logos = logos_req.json()
+        return logos

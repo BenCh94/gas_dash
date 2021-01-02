@@ -1,7 +1,7 @@
 [
 {
     "model": "auth.user",
-    "pk": 2,
+    "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$150000$jBzLVnxTFngi$HiDSasNn0nHfaqX66f66vNrts1u9MJyomUj+sh8t+pU=",
         "last_login": "2020-03-19T21:59:32.736Z",
@@ -18,11 +18,32 @@
     }
 },
 {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$jBzLVnxTFngi$HiDSasNn0nHfaqX66f66vNrts1u9MJyomUj+sh8t+pU=",
+        "last_login": "2020-03-19T21:59:32.736Z",
+        "is_superuser": false,
+        "username": "tester",
+        "first_name": "",
+        "last_name": "",
+        "email": "tester@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2018-08-19T12:01:59.362Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
     "model": "dashboard.profile",
     "pk": 1,
     "fields": {
-        "user": 2,
-        "bio": ""
+      "uuid": "9e448154-3e75-4e65-988f-42dd7b714815",
+      "user": 1,
+      "bio": "",
+      "palette": "gun_metal",
+      "iex_api_key": null
     }
 }
 ]

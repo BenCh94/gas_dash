@@ -8,6 +8,26 @@
   stroke-width: 0;
 }
 
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+
+.tooltip {
+    fill: var(--dark);
+    stroke: #ddd;
+    opacity: 0.8;
+}
+
+.focus circle {
+    fill: #53dd6c;
+}
+
+.focus text, .tooltip-close, tooltip-date {
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+
 @media screen and (max-width: 768px) {
     .chart_setting {
         display: none;

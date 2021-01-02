@@ -82,17 +82,17 @@
 </div>
 <hr>
 <div class="row card-deck">
-    <div class="card bg_black company-details col-md-8 p-0">
+    <div class="card bg_black company-details col-md-7 p-0">
         <div class="card-header d-flex flex-row align-items-center">
             <ul class="nav nav-tabs bg-dark card-header-tabs" id="stockTab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Stats</a>
+                <a class="nav-link active" id="trades-tab" data-toggle="tab" href="#trades" role="tab" aria-controls="trades" aria-selected="true">Trades</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="false">Stats</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Price</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="trades-tab" data-toggle="tab" href="#trades" role="tab" aria-controls="trades" aria-selected="false">Trades</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="notes-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="notes" aria-selected="false">Notes</a>
@@ -101,7 +101,20 @@
         </div>
         <div class="card-body p-0">
             <div class="tab-content" id="stockTabContent">
-              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+              <div class="tab-pane fade p-2 show active" id="trades" role="tabpanel" aria-labelledby="trades-tab">
+                <ul class="list-group tradeList">
+                    {% if trades %}
+                        {% for trade in trades %}
+                          <a href="{% url 'dash:trade' trade.uuid %}" class="list-group-item {% if trade.type == 'b' %}list-group-item-danger{% else %}list-group-item-success{%endif%}">
+                              {{ trade.date }}: {{ trade.trade_type }},{{ trade.amount }} @ ${{ trade.avg_price }}
+                          </a>
+                        {% endfor %}
+                    {% else %}
+                        <p>No trades found for this stock <a class="btn btn-sm btn-outline-success ml-2" href="{% url 'dash:add_trade' %}">Add Trade</a></p>
+                    {% endif %}
+                </ul>
+              </div>
+              <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <table class="table table-dark table-responsive">
                   <thead>
                     <tr>
@@ -124,29 +137,16 @@
                 </table>
               </div>
               <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">2...</div>
-              <div class="tab-pane fade p-2" id="trades" role="tabpanel" aria-labelledby="trades-tab">
-                <ul class="list-group tradeList">
-                    {% if trades %}
-                        {% for trade in trades %}
-                          <a href="{% url 'dash:trade' trade.uuid %}" class="list-group-item {% if trade.type == 'b' %}list-group-item-danger{% else %}list-group-item-success{%endif%}">
-                              {{ trade.date }}: {{ trade.trade_type }},{{ trade.amount }} @ ${{ trade.avg_price }}
-                          </a>
-                        {% endfor %}
-                    {% else %}
-                        <p>No trades found for this stock <a class="btn btn-sm btn-outline-success ml-2" href="{% url 'dash:add_trade' %}">Add Trade</a></p>
-                    {% endif %}
-                </ul>
-              </div>
               <div class="tab-pane fade p-2" id="notes" role="tabpanel" aria-labelledby="notes-tab">
                 
               </div>
             </div>
         </div>
     </div>
-    <div class="card bg_black company-details col-md-4 p-0">
+    <div class="card bg_black company-details col-md-5 p-0">
         <div class="card-header d-flex flex-row align-items-center">
-            <img src="{{ stock.ticker_data.logo_url }}" alt="logo" id="company-logo" class="mr-auto">
-            <h5 class="p-2 bd-highlight">{{  company.companyName  }}</h5>
+            <img src="{{ stock.ticker_data.logo_url }}" alt="logo" id="company-logo">
+            <h5 class="p-2 bd-highlight">{{  stock.ticker_data.name  }}</h5>
         </div>
         <div class="card-body">
             <!-- <p class="card-title">

@@ -1,7 +1,6 @@
 """ Command to run updates on all stocks and portfolios daily """
 from django.core.management.base import BaseCommand, CommandError
-from dashboard.historical_data import update_ticker_data
-from dashboard.services import PortfolioUpdate
+from dashboard.services import PortfolioUpdate, TickerUpdateService
 from dashboard.models import User
 
 class Command(BaseCommand):
@@ -11,9 +10,14 @@ class Command(BaseCommand):
 	def handle(self, *args, **options):
 		self.stdout.write('updating portfolios...')
 		try:
-			update_ticker_data()
+			TickerUpdateService('tickers').update_tickers('update')
 		except ValueError as e:
 			raise CommandError(f'Something went wrong updating the ticker objects: {e}')
+
+		try:
+			TickerUpdateService('benchmarks').update_tickers('update')
+		except ValueError as e:
+			raise CommandError(f'Something went wrong updating the benchmark ticker objects: {e}')
 
 		try:
 			portfolios = [PortfolioUpdate(user.profile).update() for user in User.objects.all() if user.profile.has_stocks()]

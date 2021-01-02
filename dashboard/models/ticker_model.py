@@ -2,13 +2,12 @@
 import os
 import uuid
 from django.db import models
-from django.contrib.postgres.fields import JSONField
 
 
 class Ticker(models.Model):
     """ Ticker model for the underlying stock/company referenced by users stocks """
     uuid = models.UUIDField(default=uuid.uuid4, unique=True)
-    historical_data = JSONField(null=True, blank=True)
+    historical_data = models.JSONField(null=True, blank=True)
     ticker = models.CharField(max_length=10)
     name = models.CharField(max_length=200, null=True)
     logo_url = models.URLField(default='https://www.fillmurray.com/200/300')
@@ -28,7 +27,7 @@ class Ticker(models.Model):
         unique_together = ('ticker', 'name', 'region')
 
     def __str__(self):
-        return self.ticker
+        return f'{self.ticker} - {self.name}'
 
     @classmethod
     def create_from_iex(cls, symbol):

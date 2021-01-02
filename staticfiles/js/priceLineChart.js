@@ -5,6 +5,9 @@ function drawChart(data, trendLine, update, drawTrades){
     // 1. Access the data
     const xAccessor = d => d.date
     const yAccessor = d => d.close
+    const bisectDate = d3.bisector(function(d) { return d.date; }).left
+    const formatDate = d3.timeFormat("%m/%d/%y")
+    const formatValue = d3.format(',')
 
     // 2. Create Dimensions
     var container = $('#share-price-box')
@@ -12,8 +15,8 @@ function drawChart(data, trendLine, update, drawTrades){
         width: container.width()*0.99,
         height: container.height(),
         margin: {
-            top: 15,
-            right: 5,
+            top: 40,
+            right: 65,
             bottom: 40,
             left: 40,
         }
@@ -117,7 +120,61 @@ function drawChart(data, trendLine, update, drawTrades){
             dimensions.boundedHeight
           }px)`)
 
-    // 7. Set up interactions 
+    // 7. Set up interactions
+
+    // Draw label on mouseover
+    const focus = bounds.append('g')
+        .attr('class', 'focus')
+        .style('display', 'none')
+
+    focus.append("circle")
+            .attr("r", 5);
+
+    focus.append("rect")
+        .attr("class", "tooltip")
+        .attr("width", 100)
+        .attr("height", 50)
+        .attr("x", -30)
+        .attr("y", 22)
+        .attr("rx", 4)
+        .attr("ry", 4);
+
+    focus.append("text")
+        .attr("class", "tooltip-date")
+        .attr('fill', 'white')
+        .attr("x", -18)
+        .attr("y", 40);
+
+    focus.append("text")
+        .attr('fill', 'white')
+        .attr("x", -18)
+        .attr("y", 60)
+        .text("Close: ");
+
+    focus.append("text")
+        .attr("class", "tooltip-close")
+        .attr('fill', 'white')
+        .attr("x", 27)
+        .attr("y", 60);
+
+    bounds.append('rect')
+        .attr('class', 'overlay')
+        .attr('width', dimensions.width)
+        .attr('height', dimensions.height)
+        .on("mouseover", function() { focus.style("display", null); })
+        .on("mouseout", function() { focus.style("display", "none"); })
+        .on("mousemove", mousemove);
+
+    function mousemove() {
+        var x0 = xScale.invert(d3.mouse(this)[0]),
+            i = bisectDate(data, x0, 1),
+            d0 = data[i - 1],
+            d1 = data[i],
+            d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+        focus.attr("transform", "translate(" + xScale(d.date) + "," + yScale(d.close) + ")");
+        focus.select(".tooltip-date").text(formatDate(d.date));
+        focus.select(".tooltip-close").text(formatValue(d.close));
+    }
 }
 
 function filterData(data, months){
