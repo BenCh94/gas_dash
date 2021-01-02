@@ -361,7 +361,7 @@ i {
 }
 
 #held-chart {
-    pointer-events: none;
+    pointer-events: painted;
 }
 
 #held-chart .grid-line {

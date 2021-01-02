@@ -16,7 +16,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, blank=True)
     palette = models.TextField(default='gun_metal', choices=colorPalettes)
-    iex_api_key = encrypt(models.CharField(max_length=100, null=True))
+    iex_api_key = encrypt(models.CharField(max_length=100, null=True, blank=True))
 
     def __str__(self):
         return self.user.username

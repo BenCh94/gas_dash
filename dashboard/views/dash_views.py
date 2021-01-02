@@ -46,7 +46,6 @@ def stock(request, stock_uuid):
     if not stock_object.ticker_data.historical_data:
         messages.warning(request, "No historical data found. <div class='btn btn-primary' id='updateTicker'>Click here to update now.</div>")
     context['price_data'] = json.dumps(stock_object.ticker_data.historical_data)
-    print(context['price_data'])
     return render(request, 'dash/stock_detail.html', context)
 
 def fill_ticker_data(request, ticker_uuid):
