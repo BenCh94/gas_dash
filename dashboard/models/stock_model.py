@@ -20,7 +20,7 @@ class Stock(models.Model):
     start_date = models.DateField(blank=True, null=True)
     status = models.CharField(max_length=2, choices=StockStatuses)
     def __str__(self):
-        return f'{self.name} ({self.user_profile.user.username})'
+        return self.name
 
     def trades(self):
         """ Retrieve all trades for a given stock """
