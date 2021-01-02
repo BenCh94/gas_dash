@@ -12,16 +12,18 @@ class TickerUpdateService():
     def __init__(self, update_type):
         """ all tickers to update """
         self.ticker_objects = self.__all_tickers() if (update_type == 'tickers') else self.__all_benchmarks()
+        self.update_type = update_type
         """ tickers with no historical data """
         self.new_tickers = [ticker for ticker in self.ticker_objects if ticker.historical_data == None]
         """ tickers with historical data """
         self.existing_tickers = [ticker for ticker in self.ticker_objects if not ticker.historical_data == None]
 
     def update_tickers(self, method):
-        print(f'Updating {len(self.existing_tickers)} existing tickers')
+        print(f'Updating {len(self.existing_tickers)} existing {self.update_type}')
         [self.__calculate_update(ticker_object) for ticker_object in self.existing_tickers]
-        print(f'Populating {len(self.new_tickers)} new tickers')
-        self.__populate_tickers(self.new_tickers)
+        print(f'Populating {len(self.new_tickers)} new {self.update_type}')
+        if self.new_tickers:
+            self.__populate_tickers(self.new_tickers) 
 
 
     def __all_tickers(self):
@@ -31,17 +33,20 @@ class TickerUpdateService():
 
     def __all_benchmarks(self):
         """ Function to retrieve all unique tickers in the system """
-        all_portfolios = Portfolio.objects.filter(benchmark_object__is_null=False).prefetch_related('benchmark_object')
+        all_portfolios = Portfolio.objects.filter(benchmark_object_id__isnull=False).prefetch_related('benchmark_object')
         return set([portfolio.benchmark_object for portfolio in all_portfolios])
 
     def __populate_tickers(self, fill_tickers):
         ticker_values = ','.join([ticker_object.ticker for ticker_object in fill_tickers])
         chart_data = IexCloudService(os.environ.get('IEX_API')).simple_chart(ticker_values, 'max')
-        [Ticker.objects.filter(ticker=ticker).update(historical_data=pd.DataFrame(chart_data[ticker]['chart']).to_json(orient='records')) for ticker in chart_data.keys()]
+        for ticker in chart_data.keys():
+            hist_chart = pd.DataFrame(chart_data[ticker]['chart'])
+            hist_chart['date'] = pd.to_datetime(hist_chart['date'])
+            Ticker.objects.filter(ticker=ticker).update(historical_data=hist_chart.to_json(orient='records'))
 
-    def __append_json(ticker_object, chart_data, historical, latest_saved):
+    def __append_json(self, ticker_object, chart_data, historical, latest_saved):
         """ Function updates historical prices with missing data """
-        chart = pd.DataFrame(chart_data)
+        chart = pd.DataFrame(chart_data[ticker_object.ticker]['chart'])
         chart['date'] = pd.to_datetime(chart['date'])
         chart.sort_values(by='date')
         updates_df = chart[chart['date'] > latest_saved]
@@ -51,7 +56,7 @@ class TickerUpdateService():
 
     def __calculate_update(self, ticker_object):
         """ Function to check the necessary data to update and request from IEX API """
-        historical = pd.DataFrame(ticker_object.historical_data)
+        historical = pd.read_json(ticker_object.historical_data)
         historical['date'] = pd.to_datetime(historical['date'])
         historical.sort_values(by='date')
         latest_saved = historical.iloc[-1, historical.columns.get_loc("date")]
@@ -78,4 +83,4 @@ class TickerUpdateService():
                 date_range = '5d'
 
             chart = IexCloudService(os.environ.get('IEX_API')).simple_chart(ticker_object.ticker, date_range)
-            self.__append_json(ticker, chart, historical, latest_saved)
+            self.__append_json(ticker_object, chart, historical, latest_saved)

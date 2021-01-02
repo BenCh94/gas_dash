@@ -34,3 +34,10 @@ class IexCloudService():
         query = f'{self.base_url}/stock/market/batch?token={self.token}&symbols={tickers}&types=chart&range={date_range}&chartCloseOnly=true'
         iex_req = r.get(query)
         return iex_req.json()
+
+    def logo_url(self, tickers):
+        """ Batch request for company logos """
+        batch_reqs = f"{self.base_url}/stock/market/batch?token={self.token}&symbols={tickers}&types=logo"
+        logos_req = r.get(batch_reqs)
+        logos = logos_req.json()
+        return logos
