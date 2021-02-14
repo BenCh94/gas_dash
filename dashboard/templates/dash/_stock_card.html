@@ -1,0 +1,26 @@
+{% load dashboard_extras %}
+<div class="col mb-4">
+    <a href="{% url 'dash:stock' stock_uuid=stock.uuid %}" class="card stock-link" id="{{ stock.ticker }}">
+        <div class="card-header">
+            <h5 class="mb-1">{{ stock.ticker }}</h5>
+            <p class="text-muted">{{ stock.name }}</p>
+        </div>
+        <div class="card-body">
+            <h5 class="price_gain_box">
+                <span data-toggle="tooltip" class="badge bg_{% if stock.quote.changePercent < 0 %}red{% else %}green{% endif %}">
+                    <div class="container-fluid">
+                        <div class="row">
+                            ${{ stock.quote.latestPrice }} ({{ stock.quote.changePercent|percentage }})
+                        </div>
+                        <div class="row">
+                            <small>ytd: {{ stock.quote.ytdChange|percentage }}</small>
+                        </div>
+                    </div>
+                </span>
+            </h5>
+        </div>
+        <div class="card-footer">
+            <small>Added On: {{ stock.created_at }}</small>
+        </div>
+    </a>
+</div>

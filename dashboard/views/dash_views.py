@@ -26,12 +26,22 @@ def index(request):
             messages.success(request, 'Congrats, Your portfolio was updated!')
             return redirect('dash:dashboard')
     portfolio = Portfolio.objects.filter(user_profile=context['current_user']).first()
-    context['stocks'] = portfolio.get_current_quotes()
+    context['stocks'] = portfolio.get_current_quotes('a')
     context['latest'] = portfolio.latest_day_data(context['stocks'])
     context['symbols'] = [{'data':stock.id, 'value':stock.name} for stock in Ticker.objects.all() if stock.name]
     context['portfolio'] = portfolio
     context['portfolio_form'] = PortfolioForm()
     return render(request, 'dash/dashboard.html', context)
+
+@login_required(login_url='/dash/login/')
+def watchlist(request):
+    """ The home dashboard view """
+    context = context_assign_user(request.user)
+    logger.info('loading watchlist %{user.username}')
+    portfolio = Portfolio.objects.filter(user_profile=context['current_user']).first()
+    context['watchlist'] = portfolio.get_current_quotes('i')
+    context['watch_count'] = context['watchlist'].count()
+    return render(request, 'dash/watchlist.html', context)    
 
 
 @login_required(login_url='/dash/login/')

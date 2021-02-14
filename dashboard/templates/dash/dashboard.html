@@ -44,6 +44,7 @@
                             <p>Market Open</p>
                         {% else %}
                             <p>Market Closed - latest data: {{latest.date}}</p>
+                            <p>Portfolio refreshed daily at 08:00am (UTC)</p>
                         {% endif %}
                     </span>
                 </div>
@@ -69,17 +70,17 @@
 				</ul>
 			</div>
 		</div>
-		<div class="metrics_deck card-deck">
-			<div class="card metrics">
+		<div class="metrics_deck card-group">
+			<div class="card metrics m-2">
                 <div class="card-header p-2"> 
                     <h6>Portfolio Metrics</h6>
                 </div>
                 <div class="card-body bg_black p-0">
 				    {% include 'dash/_portfolio_totals.html' %}
-				    <p class="smalll font-italic text-muted ml-2">{{ latest.days }} Days <span  class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-placement="right" title="Time In The Market Beats Market Timing">?</span></p>
+				    <p class="smalll font-italic text-muted ml-2">{{ latest.days }} Days <span  class="badge rounded-pill bg-secondary" data-toggle="tooltip" data-html="true" data-placement="right" title="Time In The Market Beats Market Timing">?</span></p>
                 </div>
 			</div>
-	  		<div class="card metrics">
+	  		<div class="card metrics m-2">
                 <div class="card-header p-2">
                     <h6>Days Held</h6>
                 </div>
@@ -87,7 +88,7 @@
                     <div id="held-chart" class="metric_graph"></div>
                 </div>
 	  		</div>
-	  		<div class="card metrics">
+	  		<div class="card metrics m-2">
                 <div class="card-header p-2">
                     <h6>Value</h6>
                 </div>

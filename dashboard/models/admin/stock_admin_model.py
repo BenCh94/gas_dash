@@ -4,4 +4,4 @@ from .. import Stock
 
 class StockAdmin(admin.ModelAdmin):
     """ Admin site settings for stock model """
-    list_display = ('name', 'user_profile', 'ticker_data')
+    list_display = ('name', 'user_profile', 'ticker_data', 'created_at')

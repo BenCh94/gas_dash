@@ -1,0 +1,24 @@
+{% extends 'dash/base.html' %}
+{% load dashboard_extras %}
+{% block head_files %}
+{% load static %}
+
+
+{% endblock head_files %}
+{% block sidebar_content %}
+    
+{% endblock sidebar_content %}
+{% block content %}
+<!-- Page content goes here-->
+<h3>Your Watchlist</h3>
+<hr>
+<h6>You have {{ watch_count }} stocks in your watchlist.</h6>
+<div class="row row-cols-3 row-cols-md-4">
+    {% for stock in watchlist %}
+        {% include 'dash/_stock_card.html' %}
+    {% endfor %}  
+</div>
+{% endblock content %}
+{% block footer_files %}
+<!-- Javascript files go here -->
+{% endblock footer_files %}

@@ -9,6 +9,8 @@ app_name = 'dash'
 urlpatterns = [
     # This is the home dashboard '/gas_dash'
     path('', dash_views.index, name='dashboard'),
+    # List of watchlist stocks and actions to take
+    path('stocks/watchlist', dash_views.watchlist, name='watchlist'),
     # The registration view
     re_path(r'^signup/$', registration_views.signup, name='signup'),
     # This is the login page

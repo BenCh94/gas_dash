@@ -65,22 +65,26 @@ class Portfolio(models.Model):
             latest['marketOpen'] = False
             second_last_day = date_object - datetime.timedelta(days=1)
             group_label = int(datetime.datetime.timestamp(second_last_day))*1000
-            second_day = portfolio_by_day.get_group(group_label)
-            latest['day_change'] = latest['value'] - sum(second_day['value'])
-            latest['pct_change'] = (latest['day_change']/sum(second_day['value']))
+            if group_label in portfolio_by_day.groups:
+                second_day = portfolio_by_day.get_group(group_label)
+                latest['day_change'] = latest['value'] - sum(second_day['value'])
+                latest['pct_change'] = (latest['day_change']/sum(second_day['value']))
+            else:
+                latest['day_change'] = 0
+                latest['pct_change'] = 0   
         return latest
 
     def earliest_trade(self):
         """ Return the earliest trade in the portfolio """
-        stocks = Stock.objects.filter(user_profile=self.user_profile)
+        stocks = Stock.objects.filter(user_profile=self.user_profile, status='a')
         stock_ids = [stock.id for stock in stocks if stock.trades()]
         trades = Trade.objects.filter(stock_id__in=stock_ids)
         earliest = trades.order_by('date')[0]
         return earliest
 
-    def get_current_quotes(self):
+    def get_current_quotes(self, status):
         """ Retrieves the latest quoted price for users list of stocks """
-        stocks = Stock.objects.filter(user_profile=self.user_profile, status='a')
+        stocks = Stock.objects.filter(user_profile=self.user_profile, status=status)
         tickers = ''
         for stock in stocks:
             tickers += (str(stock.get_ticker())).lower() + ','

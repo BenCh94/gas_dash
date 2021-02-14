@@ -1,10 +1,10 @@
 <table class="table table-responsive table-borderless">
-	<thead>
+	<thead class="text-light">
 		<th scope="col">{{ latest.date }}</th>
 		<th scope="col">$</th>
 		<th scope="col">%</th>
 		<th scope="col">Mean %</th>
-		<th scope="col">CV <span  class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-placement="right" title="<h6>Co-Effcient of Variation</h6><p>The coefficient of variation allows investors to determine how much volatility, or risk, is assumed in comparison to the amount of return expected from investments. The lower the ratio of standard deviation to mean return, the better risk-return trade-off. Note that if the expected return in the denominator is negative or zero, the coefficient of variation could be misleading.</p>">?</span></th>
+		<th scope="col">CV <span class="badge rounded-pill bg-secondary" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="right" title="<h6>Co-Effcient of Variation</h6><p>The coefficient of variation allows investors to determine how much volatility, or risk, is assumed in comparison to the amount of return expected from investments. The lower the ratio of standard deviation to mean return, the better risk-return trade-off. Note that if the expected return in the denominator is negative or zero, the coefficient of variation could be misleading.</p>">?</span></th>
 	</thead>
 	<tbody>
 		<tr class="text_{% if latest.gain < 0 %}red{% else %}green{% endif %}">

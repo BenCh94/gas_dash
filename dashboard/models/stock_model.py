@@ -1,6 +1,7 @@
 """ The user stock model definition refers to a specific """
 """ users stock. Ticker model contains overall company data """
 import uuid
+import datetime
 from django.db import models
 from django.contrib.postgres.functions import RandomUUID
 from .trade_model import Trade
@@ -19,6 +20,8 @@ class Stock(models.Model):
     fees_usd = models.FloatField(blank=True, null=True)
     start_date = models.DateField(blank=True, null=True)
     status = models.CharField(max_length=2, choices=StockStatuses)
+    created_at = models.DateTimeField(auto_now_add=True, editable=True)
+    updated_at = models.DateTimeField(auto_now=True, editable=True)
     def __str__(self):
         return self.name
 

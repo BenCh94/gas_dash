@@ -30,6 +30,12 @@
           <i class="fas fa-line-chart"></i>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'dash:watchlist' %}">
+          <span data-feather="watchlist"></span>
+          <i class="fas fa-eye"></i>
+        </a>
+      </li>
     </ul>
     <ul class="nav flex-column" id="sidebar_nav">
       {% if current_user.is_admin %}
@@ -53,6 +59,13 @@
           <span data-feather="home"></span>
           <i class="fas fa-line-chart"></i>
           Dashboard
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'dash:watchlist' %}">
+          <span data-feather="watchlist"></span>
+          <i class="fas fa-eye"></i>
+          Watchlist
         </a>
       </li>
       <li class="nav-item">
