@@ -1,10 +1,10 @@
 {% load static %}
 <nav class="bg-nav sidebar {% if request.session.menuSetting == 'open' %}open{% else %}closed{% endif %}">
   <div class="sidebar-sticky pt-2">
-    <div class="float-right mr-2">
-      <i class="fa fa-caret-square-left btn" id="closeMenu"></i>
+    <div class="d-flex justify-content-end mr-2">
+      <i class="fa fa-caret-square-left btn text-light" id="closeMenu"></i>
     </div>
-    <ul class="nav flex-column align-items-center" id="sidebar_icons">
+    <ul class="nav flex-column" id="sidebar_icons">
       <li class="nav-item" id="openMenu" style="cursor: pointer;color:#fff;">
         <div class="nav-link">
           <i class="fas fa-bars"></i>
