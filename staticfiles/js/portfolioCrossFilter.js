@@ -63,7 +63,6 @@ const tickerValueGroup = stockDimension.group().reduce(
             p.value = v.value
             p.invested = v.invested
         }
-        console.log(p)
         return p
     },
     // remove
@@ -74,7 +73,6 @@ const tickerValueGroup = stockDimension.group().reduce(
             p.value = v.value
             p.invested = v.invested
         }
-        console.log(p)
         return p
     },
     // Init
@@ -100,7 +98,7 @@ function drawGraphs(gainGroup, benchGroup, gainValueAccessor, benchValueAccessor
         .width(portfolioWidth)
         .height(portfolioHeight)
         .transitionDuration(2000)
-        .margins({top: 50, right: 20, bottom: 25, left: 40})
+        .margins({top: 100, right: 20, bottom: 25, left: 40})
         .dimension(gainDays)
         .mouseZoomable(false)
     // Specify a "range chart" to link its brush extent with the zoom of the current "focus chart".
@@ -183,8 +181,9 @@ function drawGraphs(gainGroup, benchGroup, gainValueAccessor, benchValueAccessor
         .height(piesHeight*0.9)
         .dimension(stockDimension)
         .group(tickerHeldGroup)
+        .valueAccessor(d => d.value)
         .elasticX(true)
-        .gap(10)
+        .gap(15)
         .title(d => {
             return `Days Held: ${numberFormat(d.value)}`
         })
