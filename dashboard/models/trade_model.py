@@ -12,6 +12,7 @@ class Trade(models.Model):
     amount = models.FloatField()
     fees_usd = models.FloatField()
     avg_price = models.FloatField()
+    target_return = models.FloatField(null=True)
 
     def __str__(self):
         return f'{self.trade_type}: {self.amount} @ {self.avg_price} - {self.date}'
