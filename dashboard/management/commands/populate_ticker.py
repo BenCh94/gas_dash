@@ -31,7 +31,7 @@ class Command(BaseCommand):
                         print(f"Already up to date {ticker.ticker}")
                         continue
                     else:
-                        exsisting.first().update(
+                        exsisting.update(
                             name=ticker.name,
                             reference_date=ticker.reference_date,
                             active=ticker.active,
@@ -42,7 +42,7 @@ class Command(BaseCommand):
                 elif exsisting.count() > 1:
                     exsisting = Ticker.objects.filter(provider_id=ticker.provider_id)
                     if exsisting.count() == 1:
-                        exsisting.first().update(
+                        exsisting.update(
                             name=ticker.name,
                             reference_date=ticker.reference_date,
                             active=ticker.active,
