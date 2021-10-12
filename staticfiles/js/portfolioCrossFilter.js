@@ -206,7 +206,7 @@ $(document).ready(function(){
 		$(this).addClass('active')
         $('#ticker-chart').removeClass('pct')
 	})
-	drawGraphs(dailyGainPctGroup, dailyGainPctGroup, function(x){return x.value.gain_percentage}, function(x){return x.value.bench_gain_percentage});
+    drawGraphs(dailyGainGroup, dailyBenchGainGroup, function(x){return x.value}, function(x){return x.value});
     $('#openMenu').click(function(){
         setTimeout(function(){
             drawGraphs(dailyGainPctGroup, dailyGainPctGroup, function(x){return x.value.gain_percentage}, function(x){return x.value.bench_gain_percentage});
