@@ -91,6 +91,7 @@ class Portfolio(models.Model):
         quotes = batch_quotes(tickers)
         for stock in stocks:
             stock.quote = quotes[stock.ticker]['quote']
+            stock.held = stock.days_held()
         return stocks
 
 @receiver(post_save, sender=Profile)

@@ -3,13 +3,13 @@
 const portfolioChart = new dc.CompositeChart('#portfolio-chart');
 const volumeChart = new dc.BarChart('#daily-volume-chart');
 const stockPie = new dc.PieChart('#ticker-chart');
-const heldBar = new dc.RowChart('#held-chart');
 
 // Convert portfolio dates for d3
 const dateFormatSpecifier = '%Q';
 const dateFormat = d3.timeFormat(dateFormatSpecifier);
 const dateFormatParser = d3.timeParse(dateFormatSpecifier);
 const numberFormat = d3.format('.2f');
+
 
 portfolio.forEach(d => {
     d.dd = dateFormatParser(d.date);
@@ -176,18 +176,18 @@ function drawGraphs(gainGroup, benchGroup, gainValueAccessor, benchValueAccessor
             })
         });
 
-    // A row chart showing odays tciker held for
-    heldBar.width(heldWidth*0.98)
-        .height(piesHeight*0.9)
-        .dimension(stockDimension)
-        .group(tickerHeldGroup)
-        .valueAccessor(d => d.value)
-        .elasticX(true)
-        .gap(15)
-        .title(d => {
-            return `Days Held: ${numberFormat(d.value)}`
-        })
-        .ordinalColors(chartColors)
+    // // A row chart showing days ticker held for
+    // heldBar.width(heldWidth*0.98)
+    //     .height(piesHeight*0.9)
+    //     .dimension(stockDimension)
+    //     .group(tickerHeldGroup)
+    //     .valueAccessor(d => d.value)
+    //     .elasticX(true)
+    //     .gap(15)
+    //     .title(d => {
+    //         return `Days Held: ${numberFormat(d.value)}`
+    //     })
+    //     .ordinalColors(chartColors)
 
     // Render the charts
     dc.renderAll();

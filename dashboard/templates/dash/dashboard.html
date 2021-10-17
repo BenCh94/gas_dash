@@ -5,6 +5,7 @@
 	<script type="text/javascript">
 		var None = null;
 		var portfolio = {{ portfolio.data|safe }};
+		var days = {{ days_held|safe }};
 		var quotes = [];
 		var stocks = {};
 		var symbols = {{ symbols|safe }};
@@ -144,6 +145,7 @@
 	<script src="{% static 'vendor/crossfilter-1.5.2/crossfilter.js' %}"></script>
 	<script src="{% static 'vendor/dc-4.0.0/js/dc.js' %}"></script>
 	<script src="{% static 'js/portfolioCrossFilter.js' %}"></script>
+	<script src="{% static 'js/daysHeld.js' %}"></script>
 	<script src="{% static 'js/jquery.autocomplete.js' %}"></script>
 	<script src="{% static 'js/tickerSearch.js' %}"></script>
 {% endblock footer_files %}

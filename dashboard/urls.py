@@ -11,6 +11,10 @@ urlpatterns = [
     path('', dash_views.index, name='dashboard'),
     # List of watchlist stocks and actions to take
     path('stocks/watchlist', dash_views.watchlist, name='watchlist'),
+    # Crypto dash
+    path('crypto', dash_views.crypto, name='crypto'),
+    # Crypto chart for symbol
+    path('crypto/<symbol_id>', dash_views.crypto_symbol, name='crypto_symbol'),
     # The registration view
     re_path(r'^signup/$', registration_views.signup, name='signup'),
     # This is the login page
