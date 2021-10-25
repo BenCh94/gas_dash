@@ -1248,15 +1248,6 @@ async function drawLineChart() {
     .domain(d3.extent(dataset, yAccessor))
     .range([dimensions.boundedHeight, 0])
 
-  // const freezingTemperaturePlacement = yScale(32)
-  // const freezingTemperatures = bounds.append("rect")
-  //     .attr("x", 0)
-  //     .attr("width", dimensions.boundedWidth)
-  //     .attr("y", freezingTemperaturePlacement)
-  //     .attr("height", dimensions.boundedHeight
-  //       - freezingTemperaturePlacement)
-  //     .attr("fill", "#e0f3f3")
-
   const xScale = d3.scaleTime()
     .domain(d3.extent(dataset, xAccessor))
     .range([0, dimensions.boundedWidth])
@@ -1289,6 +1280,57 @@ async function drawLineChart() {
       .style("transform", `translateY(${
         dimensions.boundedHeight
       }px)`)
+
+  // 7. Setup Interactions
+  const focus = bounds.append('g')
+        .attr('class', 'focus')
+        .style('display', 'none')
+
+  focus.append("circle")
+          .attr("r", 5);
+
+  focus.append("rect")
+      .attr("class", "tooltip")
+      .attr("width", 100)
+      .attr("height", 50)
+      .attr("x", -30)
+      .attr("y", 22)
+      .attr("rx", 4)
+      .attr("ry", 4);
+
+  focus.append("text")
+      .attr("class", "tooltip-date")
+      .attr('fill', 'white')
+      .attr("x", -18)
+      .attr("y", 40);
+
+  focus.append("text")
+      .attr('fill', 'white')
+      .attr("x", -18)
+      .attr("y", 60)
+      .text("Close: ");
+
+  focus.append("text")
+      .attr("class", "tooltip-close")
+      .attr('fill', 'white')
+      .attr("x", 27)
+      .attr("y", 60);
+
+  bounds.append('rect')
+      .attr('class', 'overlay')
+      .attr('width', dimensions.width)
+      .attr('height', dimensions.height)
+      .on("mouseover", function() { focus.style("display", null); })
+      .on("mouseout", function() { focus.style("display", "none"); })
+      .on("mousemove", mousemove);
+
+  function mousemove() {
+    var x = xScale.invert(d3.mouse(this)[0]);
+    var y = yScale.invert(d3.mouse(this)[1]);
+    focus.attr("transform", "translate(" + xScale(x) + "," + yScale(y) + ")");
+    focus.select(".tooltip-date").text(x);
+    focus.select(".tooltip-close").text(y);
+  }    
 }
 
 drawLineChart()

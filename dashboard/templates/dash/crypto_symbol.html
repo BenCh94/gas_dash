@@ -2,11 +2,11 @@
 {% load dashboard_extras %}
 {% block head_files %}
 {% load static %}
-    <script type="text/javascript">
-        // var symbolData = {{ chart|safe }}
-    </script>
+<script type="text/javascript">
+    // var symbolData = {{ chart|safe }}
+</script>
 
-
+<link href="{% static 'css/stock-chart.css' %}" rel="stylesheet">
 {% endblock head_files %}
 {% block sidebar_content %}
     
@@ -17,6 +17,7 @@
 <hr>
 <div class="row row-cols-1 row-cols-md-4">
     <div id="wrapper"></div>
+    <div id="tooltip"></div>
 </div>
 {% endblock content %}
 {% block footer_files %}
