@@ -1205,7 +1205,7 @@ async function drawLineChart() {
 ];
   console.log(dataset);
 
-  const yAccessor = d => d.price_high
+  const yAccessor = d => d.price_close
   const dateParser = d3.timeParse("%Y-%m-%dT%H:%M:%S")
   const xAccessor = d => dateParser(d.time_period_end.split('.')[0])
 
@@ -1246,16 +1246,8 @@ async function drawLineChart() {
 
   const yScale = d3.scaleLinear()
     .domain(d3.extent(dataset, yAccessor))
+    .nice()
     .range([dimensions.boundedHeight, 0])
-
-  // const freezingTemperaturePlacement = yScale(32)
-  // const freezingTemperatures = bounds.append("rect")
-  //     .attr("x", 0)
-  //     .attr("width", dimensions.boundedWidth)
-  //     .attr("y", freezingTemperaturePlacement)
-  //     .attr("height", dimensions.boundedHeight
-  //       - freezingTemperaturePlacement)
-  //     .attr("fill", "#e0f3f3")
 
   const xScale = d3.scaleTime()
     .domain(d3.extent(dataset, xAccessor))
@@ -1289,6 +1281,62 @@ async function drawLineChart() {
       .style("transform", `translateY(${
         dimensions.boundedHeight
       }px)`)
+
+  // 7. Setup Interactions
+  const focus = bounds.append('g')
+        .attr('class', 'focus')
+        // .style('display', 'none')
+
+  focus.append("circle")
+          .attr("r", 5);
+
+  focus.append("rect")
+      .attr("class", "tooltip")
+      .attr("width", 100)
+      .attr("height", 50)
+      .attr("x", -30)
+      .attr("y", 22)
+      .attr("rx", 4)
+      .attr("ry", 4);
+
+  focus.append("text")
+      .attr("class", "tooltip-date")
+      .attr('fill', 'white')
+      .attr("x", -18)
+      .attr("y", 40);
+
+  focus.append("text")
+      .attr('fill', 'white')
+      .attr("x", -18)
+      .attr("y", 60)
+      .text("Close: ");
+
+  focus.append("text")
+      .attr("class", "tooltip-close")
+      .attr('fill', 'white')
+      .attr("x", 27)
+      .attr("y", 60);
+
+  bounds.append('rect')
+      .attr('class', 'overlay')
+      .attr('width', dimensions.boundedWidth)
+      .attr('height', dimensions.boundedHeight)
+      .attr('fill', 'blue')
+      .on("mouseover", function() { focus.style("display", null); })
+      .on("mouseout", function() { focus.style("display", "none"); })
+      .on("mousemove", mousemove);
+
+  // Bisect function
+  const bisectDate = d3.bisector(xAccessor).left;
+
+  function mousemove() {
+    var x = xScale.invert(d3.mouse(this)[0]);
+    var i = bisectDate(dataset, x);
+    var y = dataset[i].price_close;
+    focus.attr("transform", "translate(" + xScale(x) + "," + yScale(y) + ")");
+    focus.select(".tooltip-date").text(x);
+    focus.select(".tooltip-close").text(y);
+  }    
 }
 
 drawLineChart()
