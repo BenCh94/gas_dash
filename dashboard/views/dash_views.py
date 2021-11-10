@@ -9,6 +9,7 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from django.contrib import messages
 from dashboard.models import Stock, Trade, Portfolio, Ticker
 from dashboard.services import IexCloudService
+from dashboard.services import CoinApiService
 from dashboard.forms import PortfolioForm
 from dashboard.utils import context_assign_user
 
@@ -27,6 +28,7 @@ def index(request):
             return redirect('dash:dashboard')
     portfolio = Portfolio.objects.filter(user_profile=context['current_user']).first()
     context['stocks'] = portfolio.get_current_quotes('a')
+    context['days_held'] = json.dumps([{'stock':stock.ticker, 'days':stock.held} for stock in context['stocks']])
     context['latest'] = portfolio.latest_day_data(context['stocks'])
     context['symbols'] = [{'data':stock.id, 'value':stock.name} for stock in Ticker.objects.all() if stock.name]
     context['portfolio'] = portfolio
@@ -41,7 +43,23 @@ def watchlist(request):
     portfolio = Portfolio.objects.filter(user_profile=context['current_user']).first()
     context['watchlist'] = portfolio.get_current_quotes('i')
     context['watch_count'] = context['watchlist'].count()
-    return render(request, 'dash/watchlist.html', context)    
+    return render(request, 'dash/watchlist.html', context)
+
+@login_required(login_url='/dash/login/')
+def crypto(request):
+    """ The home dashboard view """
+    context = context_assign_user(request.user)
+    logger.info('loading crypto %{user.username}')
+    context['symbols'] = CoinApiService().list_symbols()
+    return render(request, 'dash/crypto.html', context)
+
+@login_required(login_url='/dash/login/')
+def crypto_symbol(request, symbol_id):
+    """ The home dashboard view """
+    context = context_assign_user(request.user)
+    logger.info('loading crypto %{user.username}')
+    # context['chart'] = CoinApiService().symbol_historical(symbol_id)
+    return render(request, 'dash/crypto_symbol.html', context)            
 
 
 @login_required(login_url='/dash/login/')

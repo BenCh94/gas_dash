@@ -1,0 +1,26 @@
+{% extends 'dash/base.html' %}
+{% load dashboard_extras %}
+{% block head_files %}
+{% load static %}
+    <script type="text/javascript">
+        // var symbolData = {{ chart|safe }}
+    </script>
+
+
+{% endblock head_files %}
+{% block sidebar_content %}
+    
+{% endblock sidebar_content %}
+{% block content %}
+<!-- Page content goes here-->
+<h3>Crypto Symobls</h3>
+<hr>
+<div class="row row-cols-1 row-cols-md-4">
+    <div id="wrapper"></div>
+</div>
+{% endblock content %}
+{% block footer_files %}
+<!-- Javascript files go here -->
+    <script src="{% static 'vendor/d3/d3.js' %}"></script>
+    <script src="{% static 'js/cryptoPriceChart.js' %}"></script>
+{% endblock footer_files %}

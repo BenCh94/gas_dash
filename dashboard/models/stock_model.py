@@ -34,6 +34,13 @@ class Stock(models.Model):
             trades = []
         return trades
 
+    def days_held(self):
+        trades = Trade.objects.filter(stock_id=self.id)
+        earliest = trades.order_by('date')[0]
+        delta = datetime.date.today() - earliest.date
+        return delta.days
+        
+
     def get_ticker(self):
         """ Convenience method to get ticker for given stock """
         return self.ticker
